@@ -1,0 +1,157 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* CSS Variables - Design System */
+:root {
+  --green-900: #1E332A;
+  --green-700: #2F4A3D;
+  --green-500: #4A6B54;
+  --sage: #9CB39C;
+  --sage-100: #E7EFE4;
+  --cream: #FAF6EC;
+  --beige: #EFE6CF;
+  --beige-200: #F5EFDF;
+  --charcoal: #2A2B26;
+  --charcoal-60: #6B6C63;
+  --gold: #C79A4B;
+  --gold-100: #F4E9D2;
+  --line: #E1D9C4;
+  --white: #FFFFFF;
+  --danger: #B4553F;
+  
+  /* Spacing */
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 20px;
+  
+  /* Shadow */
+  --shadow: 0 8px 24px rgba(30, 51, 42, 0.08);
+}
+
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--beige-200);
+  color: var(--charcoal);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--beige-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sage);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--green-500);
+}
+
+/* Responsive Media Query */
+@media (max-width: 900px) {
+  :root {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
+  
+  body {
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 13px;
+  }
+}

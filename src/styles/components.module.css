@@ -1,0 +1,405 @@
+/* ========== BUTTON STYLES ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 11px 22px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btnPrimary {
+  background: var(--green-700);
+  color: #fff;
+}
+
+.btnPrimary:hover {
+  background: var(--green-900);
+}
+
+.btnGold {
+  background: var(--gold);
+  color: var(--green-900);
+}
+
+.btnGold:hover {
+  background: #b8893a;
+}
+
+.btnOutline {
+  background: transparent;
+  border-color: var(--green-700);
+  color: var(--green-700);
+}
+
+.btnOutline:hover {
+  background: var(--green-700);
+  color: #fff;
+}
+
+.btnOutlineLight {
+  background: transparent;
+  border-color: #fff;
+  color: #fff;
+}
+
+.btnGhost {
+  background: var(--sage-100);
+  color: var(--green-700);
+}
+
+.btnGhost:hover {
+  background: var(--sage);
+}
+
+.btnDanger {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btnDanger:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btnSm {
+  padding: 7px 14px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+.btnBlock {
+  width: 100%;
+}
+
+.btnDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========== CARD STYLES ========== */
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: #fff;
+  overflow: hidden;
+}
+
+.cardPadded {
+  padding: 20px;
+}
+
+.cardHover {
+  transition: all 0.3s ease;
+}
+
+.cardHover:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+/* ========== BADGE STYLES ========== */
+.badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.badgePending {
+  background: #FBE9CF;
+  color: #8A5A0E;
+}
+
+.badgeProcessing {
+  background: #DCE7F5;
+  color: #2F5A9E;
+}
+
+.badgeShipped {
+  background: #E3DCF5;
+  color: #5A3E9E;
+}
+
+.badgeDelivered {
+  background: var(--sage-100);
+  color: var(--green-700);
+}
+
+.badgeCancelled {
+  background: #F5DCDC;
+  color: var(--danger);
+}
+
+.badgeActive {
+  background: var(--sage-100);
+  color: var(--green-700);
+}
+
+.badgeLow {
+  background: #FBE9CF;
+  color: #8A5A0E;
+}
+
+.badgeOut {
+  background: #F5DCDC;
+  color: var(--danger);
+}
+
+/* ========== PAGINATION ========== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.paginationItem {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--charcoal-60);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.paginationItem:hover {
+  border-color: var(--green-700);
+  color: var(--green-700);
+}
+
+.paginationItemActive {
+  background: var(--green-700);
+  color: #fff;
+  border-color: var(--green-700);
+}
+
+/* ========== DIVIDER ========== */
+.leafDivider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 0 18px;
+}
+
+.stem {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+
+.stem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 22px,
+    var(--sage) 22px,
+    var(--sage) 24px
+  );
+  opacity: 0.5;
+}
+
+.leafMark {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* ========== CHIP ========== */
+.chip {
+  font-size: 11.5px;
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: var(--charcoal-60);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--sage);
+  background: var(--sage-100);
+}
+
+.chipActive {
+  background: var(--sage-100);
+  border-color: var(--sage);
+  color: var(--green-700);
+  font-weight: 600;
+}
+
+/* ========== FORM FIELD ========== */
+.formField {
+  margin-bottom: 16px;
+}
+
+.formLabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--green-900);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px rgba(47, 74, 61, 0.1);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ========== EMPTY STATE ========== */
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--charcoal-60);
+}
+
+.emptyStateIcon {
+  font-size: 40px;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.emptyStateTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--green-900);
+  margin: 0 0 6px;
+}
+
+.emptyStateText {
+  font-size: 12px;
+  margin: 0 0 16px;
+  line-height: 1.6;
+}
+
+/* ========== AVATAR ========== */
+.avatarSm {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--sage-100);
+  flex-shrink: 0;
+}
+
+.avatarLg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--sage-100);
+}
+
+/* ========== QUANTITY BOX ========== */
+.qtyBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.qtyButton {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qtyButton:hover {
+  background: var(--beige-200);
+}
+
+.qtyValue {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ========== BREADCRUMB ========== */
+.breadcrumb {
+  font-size: 11.5px;
+  color: var(--charcoal-60);
+  margin-bottom: 10px;
+}
+
+.breadcrumbActive {
+  color: var(--green-900);
+  font-weight: 600;
+}
+
+/* ========== ICON ========== */
+.icon {
+  font-size: 14px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconSm {
+  font-size: 12px;
+}
+
+.iconMd {
+  font-size: 20px;
+}
+
+.iconLg {
+  font-size: 28px;
+}

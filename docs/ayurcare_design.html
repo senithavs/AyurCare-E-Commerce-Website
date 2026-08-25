@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AyurCare — Complete Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green-900:#1E332A;
+  --green-700:#2F4A3D;
+  --green-500:#4A6B54;
+  --sage:#9CB39C;
+  --sage-100:#E7EFE4;
+  --cream:#FAF6EC;
+  --beige:#EFE6CF;
+  --beige-200:#F5EFDF;
+  --charcoal:#2A2B26;
+  --charcoal-60:#6B6C63;
+  --gold:#C79A4B;
+  --gold-100:#F4E9D2;
+  --line:#E1D9C4;
+  --white:#FFFFFF;
+  --danger:#B4553F;
+  --radius-s:6px;
+  --radius-m:12px;
+  --radius-l:20px;
+  --shadow: 0 8px 24px rgba(30,51,42,.08);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--beige-200); color:var(--charcoal);
+  font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.disp{ font-family:'Poppins',sans-serif; }
+img,svg{ display:block; }
+a{ color:inherit; text-decoration:none; }
+
+/* ---------- leaf motif divider (signature element) ---------- */
+.leaf-divider{ display:flex; align-items:center; gap:14px; padding:36px 0 18px; }
+.leaf-divider .stem{ flex:1; height:1px; background:var(--line); position:relative; }
+.leaf-divider .stem::before{
+  content:""; position:absolute; left:0; top:-1px; width:100%; height:2px;
+  background:repeating-linear-gradient(90deg, transparent, transparent 22px, var(--sage) 22px, var(--sage) 24px);
+  opacity:.5;
+}
+.leaf-mark{ width:20px; height:20px; flex-shrink:0; }
+
+/* ---------- top scroll nav ---------- */
+.scrollnav{
+  position:sticky; top:0; z-index:100; background:var(--green-900); color:#fff;
+  padding:12px 26px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  font-size:12px;
+}
+.scrollnav .brand{ font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; letter-spacing:.02em; margin-right:8px; color:var(--gold);}
+.scrollnav select{
+  background:var(--green-700); color:#fff; border:1px solid var(--green-500); border-radius:6px;
+  padding:7px 10px; font-size:12px; font-family:inherit;
+}
+.scrollnav .tag{ color:#cfe0d3; opacity:.8; }
+
+/* ---------- frame wrapper for each screen ---------- */
+.screen{ padding:54px 24px 10px; max-width:1320px; margin:0 auto; }
+.screen-head{ margin-bottom:18px; }
+.screen-eyebrow{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--green-500); font-weight:600; }
+.screen-title{ font-size:22px; font-weight:600; color:var(--green-900); margin:4px 0 0; }
+.frame{
+  background:var(--white); border:1px solid var(--line); border-radius:var(--radius-l);
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.browserbar{
+  display:flex; align-items:center; gap:6px; padding:10px 16px; background:var(--beige-200);
+  border-bottom:1px solid var(--line);
+}
+.dot{ width:9px; height:9px; border-radius:50%; background:var(--line); }
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-family:'Inter',sans-serif; font-weight:600; font-size:13px;
+  border-radius:999px; padding:11px 22px; cursor:pointer; border:1px solid transparent;
+  white-space:nowrap;
+}
+.btn-primary{ background:var(--green-700); color:#fff; }
+.btn-gold{ background:var(--gold); color:var(--green-900); }
+.btn-outline{ background:transparent; border-color:var(--green-700); color:var(--green-700); }
+.btn-outline-light{ background:transparent; border-color:#fff; color:#fff; }
+.btn-ghost{ background:var(--sage-100); color:var(--green-700); }
+.btn-danger{ background:transparent; border-color:var(--danger); color:var(--danger); }
+.btn-sm{ padding:7px 14px; font-size:12px; border-radius:8px; }
+.btn-block{ width:100%; }
+.icon{ font-size:14px; line-height:1; }
+
+/* ---------- header/nav (customer) ---------- */
+.site-header{ display:flex; align-items:center; justify-content:space-between; padding:18px 32px; border-bottom:1px solid var(--line); background:#fff; }
+.logo{ font-family:'Poppins',sans-serif; font-weight:700; font-size:19px; color:var(--green-900); display:flex; align-items:center; gap:8px; }
+.logo .mark{ width:26px; height:26px; border-radius:50%; background:var(--green-700); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:13px; }
+.nav-links{ display:flex; gap:30px; font-size:13px; font-weight:500; color:var(--charcoal); }
+.nav-links a.active{ color:var(--green-700); font-weight:600; }
+.nav-actions{ display:flex; align-items:center; gap:18px; font-size:15px; color:var(--green-900); }
+.badge-count{ background:var(--gold); color:var(--green-900); font-size:9px; font-weight:700; border-radius:50%; width:15px; height:15px; display:flex; align-items:center; justify-content:center; position:relative; top:-9px; left:-8px; }
+
+/* ---------- footer ---------- */
+.site-footer{ background:var(--green-900); color:#DCE6DD; padding:40px 32px 22px; display:grid; grid-template-columns:1.3fr 1fr 1fr 1.2fr; gap:30px; font-size:13px; }
+.site-footer h5{ color:#fff; font-size:12px; text-transform:uppercase; letter-spacing:.08em; margin:0 0 14px; }
+.site-footer p, .site-footer a{ color:#B9C7BB; line-height:1.9; display:block; font-size:12.5px; }
+.footer-bottom{ background:var(--green-900); color:#8FA391; font-size:11px; padding:14px 32px; border-top:1px solid #2B4438; display:flex; justify-content:space-between; }
+.social-row{ display:flex; gap:10px; margin-top:12px; }
+.social-row span{ width:28px; height:28px; border-radius:50%; border:1px solid #3E5A4A; display:flex; align-items:center; justify-content:center; font-size:12px; }
+
+/* ---------- hero ---------- */
+.hero{ position:relative; display:grid; grid-template-columns:1fr 1fr; align-items:center; background:var(--sage-100); }
+.hero-copy{ padding:64px 56px; }
+.eyebrow-pill{ display:inline-block; background:var(--gold-100); color:#8A6423; font-size:11px; font-weight:600; padding:6px 14px; border-radius:999px; letter-spacing:.04em; }
+.hero-copy h1{ font-size:38px; line-height:1.15; color:var(--green-900); margin:18px 0 14px; font-weight:600; }
+.hero-copy p{ font-size:14.5px; color:var(--charcoal-60); line-height:1.7; max-width:420px; margin:0 0 26px; }
+.hero-cta{ display:flex; gap:12px; }
+.hero-img{ height:100%; min-height:420px; background:
+    radial-gradient(circle at 30% 30%, #7E9C7F 0%, transparent 55%),
+    radial-gradient(circle at 70% 70%, #4A6B54 0%, transparent 50%),
+    linear-gradient(135deg, var(--green-500), var(--green-900)); position:relative;
+}
+.hero-img::after{ content:"🌿"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:120px; opacity:.5;}
+
+/* ---------- generic section ---------- */
+.inner{ padding:52px 40px; }
+.section-title-row{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; }
+.section-title-row h2{ font-size:22px; color:var(--green-900); margin:0; font-weight:600; }
+.section-title-row .sub{ font-size:12.5px; color:var(--charcoal-60); margin-top:4px; }
+
+/* ---------- category cards ---------- */
+.cat-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:16px; }
+.cat-card{ background:var(--beige-200); border-radius:var(--radius-m); padding:20px 14px; text-align:center; border:1px solid var(--line); }
+.cat-icon{ width:48px; height:48px; border-radius:50%; background:var(--sage-100); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.cat-card .name{ font-size:12.5px; font-weight:600; color:var(--green-900); }
+
+/* ---------- product cards ---------- */
+.prod-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.prod-card{ border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; background:#fff; position:relative; }
+.prod-photo{ height:150px; position:relative; background:linear-gradient(135deg,#DCE9DC,#B9CBB6); display:flex; align-items:center; justify-content:center; font-size:34px; }
+.wishlist-dot{ position:absolute; top:10px; right:10px; width:28px; height:28px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; box-shadow:0 2px 6px rgba(0,0,0,.12); }
+.discount-tag{ position:absolute; top:10px; left:10px; background:var(--danger); color:#fff; font-size:10px; font-weight:700; padding:3px 8px; border-radius:6px; }
+.prod-body{ padding:14px; }
+.prod-cat{ font-size:10px; text-transform:uppercase; color:var(--sage); font-weight:700; letter-spacing:.05em; }
+.prod-name{ font-size:13.5px; font-weight:600; color:var(--green-900); margin:5px 0 4px; }
+.stars{ color:var(--gold); font-size:11px; }
+.prod-price-row{ display:flex; align-items:center; gap:8px; margin:8px 0 12px; }
+.price{ font-weight:700; font-size:14px; color:var(--green-900); }
+.old-price{ font-size:11.5px; color:var(--charcoal-60); text-decoration:line-through; }
+
+/* ---------- feature cards ---------- */
+.feat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.feat-card{ text-align:center; padding:26px 16px; }
+.feat-icon{ width:52px; height:52px; border-radius:50%; background:var(--sage-100); margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--green-700);}
+.feat-card h4{ font-size:13.5px; margin:0 0 6px; color:var(--green-900); }
+.feat-card p{ font-size:11.5px; color:var(--charcoal-60); line-height:1.6; margin:0; }
+
+/* ---------- promo banner ---------- */
+.promo{ background:linear-gradient(120deg, var(--green-700), var(--green-900)); border-radius:var(--radius-l); padding:44px 48px; color:#fff; display:flex; justify-content:space-between; align-items:center; }
+.promo h3{ font-size:24px; margin:0 0 8px; }
+.promo p{ font-size:13px; color:#CBDBCC; margin:0; }
+
+/* ---------- filters / shop layout ---------- */
+.shop-body{ display:grid; grid-template-columns:230px 1fr; gap:28px; }
+.filter-block{ margin-bottom:22px; }
+.filter-block .ftitle{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--green-900); margin-bottom:10px; }
+.filter-chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip{ font-size:11.5px; border:1px solid var(--line); padding:6px 12px; border-radius:999px; color:var(--charcoal-60); }
+.chip.on{ background:var(--sage-100); border-color:var(--sage); color:var(--green-700); font-weight:600; }
+.range-track{ height:5px; border-radius:3px; background:var(--line); position:relative; margin-top:14px; }
+.range-fill{ position:absolute; left:15%; right:35%; top:0; bottom:0; background:var(--gold); border-radius:3px; }
+.toolbar-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-size:12.5px; color:var(--charcoal-60); }
+.select-mini{ border:1px solid var(--line); border-radius:8px; padding:8px 12px; font-size:12px; }
+.breadcrumb{ font-size:11.5px; color:var(--charcoal-60); margin-bottom:10px; }
+.breadcrumb b{ color:var(--green-900); }
+.pagination{ display:flex; justify-content:center; gap:8px; margin-top:28px; }
+.pagination span{ width:32px; height:32px; border-radius:8px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--charcoal-60); }
+.pagination span.on{ background:var(--green-700); color:#fff; border-color:var(--green-700); }
+
+/* ---------- product detail ---------- */
+.pd-grid{ display:grid; grid-template-columns:1fr 1fr; gap:44px; }
+.pd-gallery-main{ height:340px; border-radius:var(--radius-m); background:linear-gradient(135deg,#DCE9DC,#B9CBB6); display:flex; align-items:center; justify-content:center; font-size:60px; }
+.pd-thumbs{ display:flex; gap:10px; margin-top:12px; }
+.pd-thumbs div{ width:60px; height:60px; border-radius:8px; background:var(--sage-100); border:1px solid var(--line); }
+.pd-title{ font-size:24px; color:var(--green-900); margin:0 0 6px; font-weight:600; }
+.pd-price-row{ display:flex; align-items:center; gap:10px; margin:14px 0; }
+.pd-price{ font-size:24px; font-weight:700; color:var(--green-900); }
+.stock-pill{ font-size:11px; background:var(--sage-100); color:var(--green-700); padding:4px 10px; border-radius:999px; font-weight:600; }
+.qty-row{ display:flex; align-items:center; gap:14px; margin:20px 0; }
+.qty-box{ display:flex; align-items:center; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+.qty-box span{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+.pd-tabs{ display:flex; gap:24px; border-bottom:1px solid var(--line); margin:38px 0 18px; font-size:13px; }
+.pd-tabs span{ padding-bottom:12px; color:var(--charcoal-60); }
+.pd-tabs span.on{ color:var(--green-700); font-weight:600; border-bottom:2px solid var(--green-700); }
+.review-row{ display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line); }
+.avatar-sm{ width:36px; height:36px; border-radius:50%; background:var(--sage-100); flex-shrink:0; }
+
+/* ---------- cart ---------- */
+.cart-grid{ display:grid; grid-template-columns:1fr 340px; gap:30px; }
+.cart-row{ display:grid; grid-template-columns:70px 1fr auto auto auto; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid var(--line); font-size:13px; }
+.cart-thumb{ width:60px; height:60px; border-radius:8px; background:var(--sage-100); }
+.summary-card{ border:1px solid var(--line); border-radius:var(--radius-m); padding:22px; background:var(--beige-200); height:fit-content; }
+.summary-line{ display:flex; justify-content:space-between; font-size:13px; padding:8px 0; color:var(--charcoal-60); }
+.summary-line.total{ font-weight:700; color:var(--green-900); font-size:15px; border-top:1px solid var(--line); margin-top:6px; padding-top:14px; }
+
+/* ---------- auth ---------- */
+.auth-wrap{ max-width:440px; margin:0 auto; padding:52px 44px; }
+.auth-wrap h2{ text-align:center; color:var(--green-900); }
+.auth-wrap p.lead{ text-align:center; font-size:12.5px; color:var(--charcoal-60); margin-top:-8px; margin-bottom:30px; }
+.field{ margin-bottom:16px; }
+.field label{ font-size:11.5px; font-weight:600; color:var(--green-900); display:block; margin-bottom:6px; }
+.field input{ width:100%; border:1px solid var(--line); border-radius:8px; padding:11px 14px; font-size:13px; font-family:inherit; background:#fff; }
+.field-row-between{ display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:var(--charcoal-60); margin:6px 0 20px;}
+.divider-or{ display:flex; align-items:center; gap:10px; font-size:11px; color:var(--charcoal-60); margin:20px 0; }
+.divider-or::before,.divider-or::after{ content:""; flex:1; height:1px; background:var(--line); }
+
+/* ---------- checkout stepper ---------- */
+.stepper{ display:flex; justify-content:center; gap:0; margin-bottom:38px; }
+.step{ display:flex; align-items:center; }
+.step .circ{ width:30px; height:30px; border-radius:50%; background:var(--sage-100); color:var(--green-700); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; border:1px solid var(--sage); }
+.step.on .circ{ background:var(--green-700); color:#fff; border-color:var(--green-700); }
+.step .stxt{ font-size:11.5px; margin-left:8px; color:var(--charcoal-60); font-weight:600; }
+.step.on .stxt{ color:var(--green-900); }
+.step-line{ width:56px; height:1px; background:var(--line); margin:0 12px; }
+
+/* ---------- order tracker ---------- */
+.tracker{ display:flex; justify-content:space-between; position:relative; margin:30px 0 10px; }
+.tracker::before{ content:""; position:absolute; top:14px; left:5%; right:5%; height:2px; background:var(--line); }
+.tnode{ position:relative; z-index:1; text-align:center; flex:1; }
+.tnode .dotc{ width:30px; height:30px; border-radius:50%; background:#fff; border:2px solid var(--sage); margin:0 auto 8px; display:flex; align-items:center;justify-content:center; font-size:13px; }
+.tnode.done .dotc{ background:var(--green-700); border-color:var(--green-700); color:#fff; }
+.tnode .tlabel{ font-size:11px; color:var(--charcoal-60); }
+.tnode.done .tlabel{ color:var(--green-900); font-weight:600; }
+
+/* ---------- account dashboard ---------- */
+.acc-shell{ display:grid; grid-template-columns:230px 1fr; }
+.acc-side{ background:var(--beige-200); border-right:1px solid var(--line); padding:26px 0; }
+.acc-side .aitem{ padding:12px 26px; font-size:13px; color:var(--charcoal-60); display:flex; align-items:center; gap:10px; }
+.acc-side .aitem.on{ background:#fff; color:var(--green-700); font-weight:600; border-left:3px solid var(--green-700); }
+.acc-main{ padding:36px 40px; }
+.profile-head{ display:flex; align-items:center; gap:16px; margin-bottom:30px; }
+.avatar-lg{ width:64px; height:64px; border-radius:50%; background:var(--sage-100); }
+
+/* ---------- tables (shared: orders / admin) ---------- */
+table.data{ width:100%; border-collapse:collapse; }
+table.data th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--charcoal-60); padding:10px 12px; border-bottom:1px solid var(--line); background:var(--beige-200); }
+table.data td{ font-size:12.5px; padding:12px; border-bottom:1px solid var(--line); color:var(--charcoal); }
+.status-badge{ font-size:10.5px; font-weight:700; padding:4px 11px; border-radius:999px; }
+.st-pending{ background:#FBE9CF; color:#8A5A0E; }
+.st-processing{ background:#DCE7F5; color:#2F5A9E; }
+.st-shipped{ background:#E3DCF5; color:#5A3E9E; }
+.st-delivered{ background:var(--sage-100); color:var(--green-700); }
+.st-cancelled{ background:#F5DCDC; color:var(--danger); }
+.st-active{ background:var(--sage-100); color:var(--green-700); }
+.st-low{ background:#FBE9CF; color:#8A5A0E; }
+.st-out{ background:#F5DCDC; color:var(--danger); }
+
+/* ---------- accordion (FAQ) ---------- */
+.acc-item{ border:1px solid var(--line); border-radius:10px; margin-bottom:10px; overflow:hidden; }
+.acc-q{ padding:15px 18px; font-size:13px; font-weight:600; color:var(--green-900); display:flex; justify-content:space-between; align-items:center; background:var(--beige-200); }
+.acc-a{ padding:14px 18px; font-size:12px; color:var(--charcoal-60); line-height:1.7; border-top:1px solid var(--line); }
+
+/* ---------- ADMIN shared ---------- */
+.admin-shell{ display:grid; grid-template-columns:220px 1fr; min-height:620px; background:#fff; }
+.admin-sidebar{ background:var(--green-900); color:#CBDBCC; padding:22px 0; }
+.admin-sidebar .alogo{ font-family:'Poppins',sans-serif; font-weight:700; color:#fff; padding:0 22px 20px; font-size:15px; border-bottom:1px solid #2B4438; margin-bottom:10px; }
+.admin-sidebar .aitem{ padding:11px 22px; font-size:12.5px; display:flex; gap:10px; align-items:center; color:#AABBAC; }
+.admin-sidebar .aitem.on{ background:#28402F; color:#fff; border-left:3px solid var(--gold); font-weight:600; }
+.admin-main{ padding:26px 30px; }
+.admin-topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
+.admin-topbar h2{ font-size:18px; margin:0; color:var(--green-900); }
+.searchbox{ border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-size:12px; color:var(--charcoal-60); width:220px; }
+.kpi-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-bottom:22px; }
+.kpi{ border:1px solid var(--line); border-radius:12px; padding:16px 14px; background:#fff; }
+.kpi .klabel{ font-size:10px; text-transform:uppercase; color:var(--charcoal-60); font-weight:600; letter-spacing:.03em;}
+.kpi .kval{ font-size:19px; font-weight:700; color:var(--green-900); margin:8px 0 4px; }
+.kpi .ktrend{ font-size:10.5px; color:var(--green-700); }
+.panel{ border:1px solid var(--line); border-radius:12px; padding:20px; background:#fff; }
+.panel .ptitle{ font-size:12.5px; font-weight:700; color:var(--green-900); margin-bottom:14px; text-transform:uppercase; letter-spacing:.03em; }
+.chart-area{ height:180px; border-radius:8px; background:
+   linear-gradient(0deg, var(--sage-100) 0%, transparent 60%),
+   repeating-linear-gradient(90deg, transparent, transparent 38px, var(--line) 38px, var(--line) 39px);
+   position:relative; }
+.chart-line{ position:absolute; inset:16px 8px 20px; background:
+   linear-gradient(120deg, transparent 55%, var(--sage-100) 55%);
+   clip-path:polygon(0 80%,15% 60%,30% 70%,45% 40%,60% 55%,75% 25%,90% 35%,100% 15%,100% 100%,0 100%);
+}
+.admin-grid-2{ display:grid; grid-template-columns:1.4fr 1fr; gap:18px; }
+.bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.bar-row .blabel{ width:80px; font-size:11px; color:var(--charcoal-60); }
+.bar-track{ flex:1; height:8px; background:var(--beige-200); border-radius:4px; overflow:hidden; }
+.bar-fill{ height:100%; background:var(--green-700); border-radius:4px; }
+
+/* ---------- forms (admin add/edit) ---------- */
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.form-field{ margin-bottom:6px; }
+.form-field label{ font-size:11px; font-weight:600; color:var(--green-900); display:block; margin-bottom:6px; }
+.form-field input, .form-field select, .form-field textarea{ width:100%; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:12.5px; font-family:inherit; }
+.upload-box{ border:1.5px dashed var(--line); border-radius:10px; padding:28px; text-align:center; font-size:12px; color:var(--charcoal-60); background:var(--beige-200); }
+
+/* ---------- misc ---------- */
+.two-col-40-60{ display:grid; grid-template-columns:1fr 1.6fr; gap:40px; align-items:center; }
+.imgblock{ height:280px; border-radius:var(--radius-m); background:linear-gradient(135deg,#DCE9DC,#B9CBB6); display:flex; align-items:center; justify-content:center; font-size:54px; }
+.contact-grid{ display:grid; grid-template-columns:1fr 1.3fr; gap:36px; }
+.info-row{ display:flex; gap:12px; align-items:flex-start; margin-bottom:20px; font-size:12.5px; color:var(--charcoal-60); }
+.info-row .ic{ width:34px; height:34px; border-radius:50%; background:var(--sage-100); display:flex; align-items:center; justify-content:center; color:var(--green-700); flex-shrink:0; }
+.empty-state{ text-align:center; padding:60px 20px; color:var(--charcoal-60); }
+.empty-state .eicon{ font-size:40px; margin-bottom:14px; }
+
+@media (max-width:900px){
+  .prod-grid,.cat-grid,.feat-grid{ grid-template-columns:repeat(2,1fr); }
+  .hero{ grid-template-columns:1fr; }
+  .shop-body,.pd-grid,.cart-grid,.acc-shell,.admin-shell,.two-col-40-60,.contact-grid,.form-grid{ grid-template-columns:1fr; }
+  .kpi-grid{ grid-template-columns:repeat(3,1fr); }
+  .site-footer{ grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="scrollnav">
+  <span class="brand">🌿 AyurCare</span>
+  <span class="tag">Wireframe → Hi-Fi Design System</span>
+  <select onchange="location.hash=this.value">
+    <option>Jump to screen…</option>
+    <optgroup label="Customer">
+      <option value="#home">01 Home</option>
+      <option value="#shop">02 Shop</option>
+      <option value="#category">03 Category</option>
+      <option value="#search">04 Search Results</option>
+      <option value="#product">05 Product Details</option>
+      <option value="#cart">06 Cart</option>
+      <option value="#login">07 Login</option>
+      <option value="#register">08 Register</option>
+      <option value="#forgot">09 Forgot Password</option>
+      <option value="#checkout">10 Checkout</option>
+      <option value="#confirmation">11 Order Confirmation</option>
+      <option value="#account">12 Account Dashboard</option>
+      <option value="#orders">13 My Orders</option>
+      <option value="#orderdetail">14 Order Details</option>
+      <option value="#addresses">15 Addresses</option>
+      <option value="#wishlist">16 Wishlist</option>
+      <option value="#about">17 About</option>
+      <option value="#contact">18 Contact</option>
+      <option value="#faq">19 FAQ</option>
+    </optgroup>
+    <optgroup label="Admin">
+      <option value="#adminlogin">20 Admin Login</option>
+      <option value="#admindash">21 Admin Dashboard</option>
+      <option value="#productmgmt">22 Product Management</option>
+      <option value="#addproduct">23 Add Product</option>
+      <option value="#productadmin">25 Product Details (Admin)</option>
+      <option value="#categorymgmt">26 Category Management</option>
+      <option value="#ordermgmt">27 Order Management</option>
+      <option value="#orderadmin">28 Order Details (Admin)</option>
+      <option value="#inventory">29 Inventory Management</option>
+      <option value="#customers">30 Customer Management</option>
+      <option value="#customerdetail">31 Customer Details</option>
+      <option value="#reports">32 Reports &amp; Analytics</option>
+      <option value="#settings">33 Admin Settings</option>
+    </optgroup>
+  </select>
+</div>
+
+<!-- ============================================================ 01 HOME ============================================================ -->
+<section class="screen" id="home">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 01</div><h2 class="screen-title">Home Page</h2></div>
+  <div class="frame">
+    <div class="browserbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+
+    <header class="site-header">
+      <div class="logo"><span class="mark">A</span> AyurCare</div>
+      <div class="nav-links">
+        <a class="active">Home</a><a>Shop</a><a>Categories</a><a>About</a><a>Contact</a>
+      </div>
+      <div class="nav-actions">
+        <span>🔍</span><span>♡</span>
+        <span style="position:relative;">🛒<span class="badge-count">3</span></span>
+        <span class="btn btn-outline btn-sm">Account</span>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow-pill">100% Authentic Ayurveda</span>
+        <h1>Nature's Wisdom, Delivered to Your Door.</h1>
+        <p>AyurCare brings authentic Ayurvedic and herbal wellness products — supplements, oils, teas and skincare — sourced for purity and backed by tradition.</p>
+        <div class="hero-cta">
+          <span class="btn btn-gold">Shop Now</span>
+          <span class="btn btn-outline-light" style="border-color:var(--green-700); color:var(--green-700);">Explore Categories</span>
+        </div>
+      </div>
+      <div class="hero-img"></div>
+    </div>
+
+    <div class="inner">
+      <div class="section-title-row"><h2>Shop by Category</h2><span class="sub">6 collections</span></div>
+      <div class="cat-grid">
+        <div class="cat-card"><div class="cat-icon">🌱</div><div class="name">Herbal Supplements</div></div>
+        <div class="cat-card"><div class="cat-icon">🧴</div><div class="name">Ayurvedic Oils</div></div>
+        <div class="cat-card"><div class="cat-icon">✨</div><div class="name">Natural Skincare</div></div>
+        <div class="cat-card"><div class="cat-icon">🍵</div><div class="name">Organic Teas</div></div>
+        <div class="cat-card"><div class="cat-icon">🧼</div><div class="name">Personal Care</div></div>
+        <div class="cat-card"><div class="cat-icon">🕉️</div><div class="name">Wellness Kits</div></div>
+      </div>
+    </div>
+
+    <div class="inner" style="padding-top:0;">
+      <div class="section-title-row"><h2>Featured Products</h2><span class="sub">Bestsellers this month</span></div>
+      <div class="prod-grid">
+        <div class="prod-card">
+          <div class="prod-photo"><div class="discount-tag">-15%</div><div class="wishlist-dot">♡</div>🌿</div>
+          <div class="prod-body">
+            <div class="prod-cat">Supplements</div>
+            <div class="prod-name">Ashwagandha Capsules</div>
+            <div class="stars">★★★★☆ (128)</div>
+            <div class="prod-price-row"><span class="price">Rs. 1,450</span><span class="old-price">Rs. 1,700</span></div>
+            <span class="btn btn-ghost btn-block btn-sm">Add to Cart</span>
+          </div>
+        </div>
+        <div class="prod-card">
+          <div class="prod-photo"><div class="wishlist-dot">♡</div>🧴</div>
+          <div class="prod-body">
+            <div class="prod-cat">Oils</div>
+            <div class="prod-name">Bhringraj Hair Oil</div>
+            <div class="stars">★★★★★ (94)</div>
+            <div class="prod-price-row"><span class="price">Rs. 980</span></div>
+            <span class="btn btn-ghost btn-block btn-sm">Add to Cart</span>
+          </div>
+        </div>
+        <div class="prod-card">
+          <div class="prod-photo"><div class="wishlist-dot">♡</div>🍵</div>
+          <div class="prod-body">
+            <div class="prod-cat">Teas</div>
+            <div class="prod-name">Chamomile Wellness Tea</div>
+            <div class="stars">★★★★☆ (61)</div>
+            <div class="prod-price-row"><span class="price">Rs. 650</span></div>
+            <span class="btn btn-ghost btn-block btn-sm">Add to Cart</span>
+          </div>
+        </div>
+        <div class="prod-card">
+          <div class="prod-photo"><div class="discount-tag">-10%</div><div class="wishlist-dot">♡</div>✨</div>
+          <div class="prod-body">
+            <div class="prod-cat">Skincare</div>
+            <div class="prod-name">Neem &amp; Turmeric Face Wash</div>
+            <div class="stars">★★★★★ (210)</div>
+            <div class="prod-price-row"><span class="price">Rs. 890</span><span class="old-price">Rs. 990</span></div>
+            <span class="btn btn-ghost btn-block btn-sm">Add to Cart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inner" style="padding-top:0;">
+      <div class="section-title-row"><h2>Why Choose AyurCare</h2></div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="feat-icon">🌿</div><h4>Authentic Products</h4><p>Sourced directly from certified Ayurvedic manufacturers.</p></div>
+        <div class="feat-card"><div class="feat-icon">🍃</div><h4>Natural Ingredients</h4><p>No synthetic fillers — plant-based formulations only.</p></div>
+        <div class="feat-card"><div class="feat-icon">🛡️</div><h4>Trusted Quality</h4><p>Every batch tested for purity and potency.</p></div>
+        <div class="feat-card"><div class="feat-icon">🚚</div><h4>Convenient Shopping</h4><p>Fast, tracked delivery across the island.</p></div>
+      </div>
+    </div>
+
+    <div class="inner" style="padding-top:0;">
+      <div class="promo">
+        <div><h3>Immunity Season Bundle</h3><p>Save 20% on curated wellness kits — this week only.</p></div>
+        <span class="btn btn-gold">Shop the Bundle</span>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div>
+        <div class="logo" style="color:#fff;"><span class="mark">A</span> AyurCare</div>
+        <p style="margin-top:14px;">Authentic Ayurvedic and herbal wellness, delivered with care.</p>
+        <div class="social-row"><span>f</span><span>ig</span><span>x</span></div>
+      </div>
+      <div><h5>Customer Service</h5><a>Shipping Info</a><a>Returns</a><a>FAQ</a><a>Contact Us</a></div>
+      <div><h5>Quick Links</h5><a>Shop All</a><a>About Us</a><a>Track Order</a><a>My Account</a></div>
+      <div><h5>Get In Touch</h5><p>123 Herbal Lane, Colombo</p><p>hello@ayurcare.lk</p><p>+94 77 000 0000</p></div>
+    </footer>
+    <div class="footer-bottom"><span>© 2026 AyurCare. All rights reserved.</span><span>Privacy Policy · Terms &amp; Conditions</span></div>
+  </div>
+</section>
+
+<div class="leaf-divider"><div class="stem"></div><span class="leaf-mark">🌿</span><div class="stem"></div></div>
+
+<!-- ============================================================ 02 SHOP ============================================================ -->
+<section class="screen" id="shop">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 02</div><h2 class="screen-title">Shop Page</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="breadcrumb">Home / <b>Shop</b></div>
+    <div class="section-title-row"><h2>All Products</h2><input class="searchbox" placeholder="Search products…" style="width:260px;"></div>
+    <div class="shop-body">
+      <div>
+        <div class="filter-block"><div class="ftitle">Category</div>
+          <div class="filter-chip-row"><span class="chip on">All</span><span class="chip">Supplements</span><span class="chip">Oils</span><span class="chip">Skincare</span><span class="chip">Teas</span></div></div>
+        <div class="filter-block"><div class="ftitle">Health Benefit</div>
+          <div class="filter-chip-row"><span class="chip">Immunity</span><span class="chip">Sleep</span><span class="chip">Skin</span><span class="chip">Digestion</span></div></div>
+        <div class="filter-block"><div class="ftitle">Price Range</div><div class="range-track"><div class="range-fill"></div></div></div>
+        <div class="filter-block"><div class="ftitle">Availability</div>
+          <div class="filter-chip-row"><span class="chip on">In Stock</span><span class="chip">Pre-order</span></div></div>
+      </div>
+      <div>
+        <div class="toolbar-row"><span>Showing 1–8 of 42 products</span><select class="select-mini"><option>Sort: Featured</option></select></div>
+        <div class="prod-grid">
+          <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-cat">Supplements</div><div class="prod-name">Triphala Tablets</div><div class="stars">★★★★☆</div><div class="prod-price-row"><span class="price">Rs. 720</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+          <div class="prod-card"><div class="prod-photo">🧴</div><div class="prod-body"><div class="prod-cat">Oils</div><div class="prod-name">Sesame Body Oil</div><div class="stars">★★★★★</div><div class="prod-price-row"><span class="price">Rs. 640</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+          <div class="prod-card"><div class="prod-photo">🍵</div><div class="prod-body"><div class="prod-cat">Teas</div><div class="prod-name">Tulsi Green Tea</div><div class="stars">★★★★☆</div><div class="prod-price-row"><span class="price">Rs. 590</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+          <div class="prod-card"><div class="prod-photo">✨</div><div class="prod-body"><div class="prod-cat">Skincare</div><div class="prod-name">Sandalwood Face Pack</div><div class="stars">★★★★★</div><div class="prod-price-row"><span class="price">Rs. 850</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+        </div>
+        <div class="pagination"><span class="on">1</span><span>2</span><span>3</span><span>›</span></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 03 CATEGORY ============================================================ -->
+<section class="screen" id="category">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 03</div><h2 class="screen-title">Category Page — Ayurvedic Oils</h2></div>
+  <div class="frame">
+    <div class="hero-img" style="height:150px; display:flex; align-items:center; justify-content:center;">
+      <h2 style="color:#fff; font-size:26px; margin:0;">Ayurvedic Oils</h2>
+    </div>
+    <div class="inner">
+      <p style="font-size:12.5px; color:var(--charcoal-60); max-width:600px; margin-top:-10px;">Cold-pressed herbal oils for hair, body and massage — formulated using traditional Ayurvedic recipes.</p>
+      <div class="toolbar-row" style="margin-top:20px;"><span>18 products</span><select class="select-mini"><option>Sort: Popularity</option></select></div>
+      <div class="prod-grid">
+        <div class="prod-card"><div class="prod-photo">🧴</div><div class="prod-body"><div class="prod-cat">Oils</div><div class="prod-name">Coconut Hair Oil</div><div class="stars">★★★★☆</div><div class="prod-price-row"><span class="price">Rs. 540</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+        <div class="prod-card"><div class="prod-photo">🧴</div><div class="prod-body"><div class="prod-cat">Oils</div><div class="prod-name">Neem Massage Oil</div><div class="stars">★★★★★</div><div class="prod-price-row"><span class="price">Rs. 760</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+        <div class="prod-card"><div class="prod-photo">🧴</div><div class="prod-body"><div class="prod-cat">Oils</div><div class="prod-name">Brahmi Scalp Oil</div><div class="stars">★★★★☆</div><div class="prod-price-row"><span class="price">Rs. 690</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+        <div class="prod-card"><div class="prod-photo">🧴</div><div class="prod-body"><div class="prod-cat">Oils</div><div class="prod-name">Herbal Foot Care Oil</div><div class="stars">★★★★★</div><div class="prod-price-row"><span class="price">Rs. 610</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+      </div>
+      <div class="pagination"><span class="on">1</span><span>2</span><span>›</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 04 SEARCH RESULTS ============================================================ -->
+<section class="screen" id="search">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 04</div><h2 class="screen-title">Search Results</h2></div>
+  <div class="frame"><div class="inner">
+    <input class="searchbox" style="width:100%; padding:14px 18px; font-size:14px; margin-bottom:14px;" value="ashwagandha">
+    <div class="toolbar-row"><span>6 results for "ashwagandha"</span><select class="select-mini"><option>Sort: Relevance</option></select></div>
+    <div class="prod-grid">
+      <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-cat">Supplements</div><div class="prod-name">Ashwagandha Capsules</div><div class="stars">★★★★☆</div><div class="prod-price-row"><span class="price">Rs. 1,450</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+      <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-cat">Supplements</div><div class="prod-name">Ashwagandha Powder</div><div class="stars">★★★★★</div><div class="prod-price-row"><span class="price">Rs. 980</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+      <div class="prod-card"><div class="prod-photo">🍵</div><div class="prod-body"><div class="prod-cat">Teas</div><div class="prod-name">Ashwagandha Calm Tea</div><div class="stars">★★★★☆</div><div class="prod-price-row"><span class="price">Rs. 620</span></div><span class="btn btn-ghost btn-block btn-sm">Add to Cart</span></div></div>
+    </div>
+    <div class="leaf-divider" style="padding:30px 0 6px;"><div class="stem"></div><span style="font-size:11px; color:var(--charcoal-60);">empty state example below</span><div class="stem"></div></div>
+    <div class="empty-state"><div class="eicon">🔍</div><h4 style="margin:0 0 6px; color:var(--green-900);">No products found for "shilajit gold max"</h4><p style="font-size:12px;">Try checking your spelling or search for a category instead.</p></div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 05 PRODUCT DETAILS ============================================================ -->
+<section class="screen" id="product">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 05</div><h2 class="screen-title">Product Details Page</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="breadcrumb">Home / Shop / Supplements / <b>Ashwagandha Capsules</b></div>
+    <div class="pd-grid">
+      <div>
+        <div class="pd-gallery-main">🌿</div>
+        <div class="pd-thumbs"><div></div><div></div><div></div><div></div></div>
+      </div>
+      <div>
+        <div class="prod-cat">Herbal Supplements</div>
+        <h1 class="pd-title">Ashwagandha Capsules — 60ct</h1>
+        <div class="stars">★★★★☆ &nbsp;4.3 (128 reviews)</div>
+        <div class="pd-price-row"><span class="pd-price">Rs. 1,450</span><span class="old-price">Rs. 1,700</span><span class="discount-tag" style="position:static;">-15%</span></div>
+        <span class="stock-pill">● In Stock — 42 units</span>
+        <div class="qty-row">
+          <div class="qty-box"><span>–</span><span>1</span><span>+</span></div>
+          <span class="btn btn-primary">Add to Cart</span>
+          <span class="btn btn-gold">Buy Now</span>
+          <span class="wishlist-dot" style="position:static;">♡</span>
+        </div>
+        <div class="pd-tabs"><span class="on">Description</span><span>Ingredients</span><span>Health Benefits</span><span>Usage</span></div>
+        <p style="font-size:12.5px; color:var(--charcoal-60); line-height:1.8;">Traditionally used to support stress response and vitality, our Ashwagandha capsules are made from root extract standardized for potency and purity, free from synthetic additives.</p>
+      </div>
+    </div>
+
+    <div class="section-title-row" style="margin-top:44px;"><h2>Customer Reviews</h2></div>
+    <div class="review-row"><div class="avatar-sm"></div><div><div class="stars">★★★★★</div><div style="font-size:12px; font-weight:600; margin:4px 0;">Priya K.</div><div style="font-size:12px; color:var(--charcoal-60);">Noticeably calmer sleep within two weeks of daily use.</div></div></div>
+    <div class="review-row"><div class="avatar-sm"></div><div><div class="stars">★★★★☆</div><div style="font-size:12px; font-weight:600; margin:4px 0;">Ruwan D.</div><div style="font-size:12px; color:var(--charcoal-60);">Good quality, packaging could be more compact.</div></div></div>
+
+    <div class="section-title-row" style="margin-top:36px;"><h2>Related Products</h2></div>
+    <div class="prod-grid">
+      <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-name">Brahmi Capsules</div><div class="price">Rs. 1,200</div></div></div>
+      <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-name">Shatavari Powder</div><div class="price">Rs. 950</div></div></div>
+      <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-name">Triphala Tablets</div><div class="price">Rs. 720</div></div></div>
+      <div class="prod-card"><div class="prod-photo">🌿</div><div class="prod-body"><div class="prod-name">Moringa Capsules</div><div class="price">Rs. 890</div></div></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 06 CART ============================================================ -->
+<section class="screen" id="cart">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 06</div><h2 class="screen-title">Shopping Cart</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="cart-grid">
+      <div>
+        <h2 style="font-size:16px;">Your Cart (3 items)</h2>
+        <div class="cart-row"><div class="cart-thumb"></div><div><div style="font-weight:600; font-size:13px;">Ashwagandha Capsules</div><div style="font-size:11px; color:var(--charcoal-60);">60ct bottle</div></div><div class="qty-box"><span>–</span><span>1</span><span>+</span></div><div style="font-weight:600;">Rs. 1,450</div><div style="color:var(--danger); font-size:12px;">Remove</div></div>
+        <div class="cart-row"><div class="cart-thumb"></div><div><div style="font-weight:600; font-size:13px;">Bhringraj Hair Oil</div><div style="font-size:11px; color:var(--charcoal-60);">100ml</div></div><div class="qty-box"><span>–</span><span>2</span><span>+</span></div><div style="font-weight:600;">Rs. 1,960</div><div style="color:var(--danger); font-size:12px;">Remove</div></div>
+        <div class="cart-row"><div class="cart-thumb"></div><div><div style="font-weight:600; font-size:13px;">Chamomile Wellness Tea</div><div style="font-size:11px; color:var(--charcoal-60);">25 bags</div></div><div class="qty-box"><span>–</span><span>1</span><span>+</span></div><div style="font-weight:600;">Rs. 650</div><div style="color:var(--danger); font-size:12px;">Remove</div></div>
+      </div>
+      <div class="summary-card">
+        <h4 style="margin-top:0;">Order Summary</h4>
+        <div class="summary-line"><span>Subtotal</span><span>Rs. 4,060</span></div>
+        <div class="summary-line"><span>Delivery Fee</span><span>Rs. 350</span></div>
+        <div class="summary-line"><span>Discount</span><span>– Rs. 260</span></div>
+        <div class="summary-line total"><span>Total</span><span>Rs. 4,150</span></div>
+        <span class="btn btn-primary btn-block" style="margin-top:16px;">Proceed to Checkout</span>
+      </div>
+    </div>
+    <div class="leaf-divider"><div class="stem"></div><span style="font-size:11px; color:var(--charcoal-60);">empty cart state</span><div class="stem"></div></div>
+    <div class="empty-state"><div class="eicon">🛒</div><h4 style="margin:0 0 6px; color:var(--green-900);">Your cart is empty</h4><p style="font-size:12px; margin-bottom:16px;">Explore our collections to find your next wellness essential.</p><span class="btn btn-primary">Continue Shopping</span></div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 07 LOGIN ============================================================ -->
+<section class="screen" id="login">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 07</div><h2 class="screen-title">Login</h2></div>
+  <div class="frame"><div class="auth-wrap">
+    <div class="logo" style="justify-content:center; margin-bottom:18px;"><span class="mark">A</span> AyurCare</div>
+    <h2>Welcome back</h2>
+    <p class="lead">Log in to continue your wellness journey</p>
+    <div class="field"><label>Email</label><input placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input placeholder="••••••••" type="password"></div>
+    <div class="field-row-between"><span>👁 Show password &nbsp; ☐ Remember me</span><a style="color:var(--green-700); font-weight:600;">Forgot password?</a></div>
+    <span class="btn btn-primary btn-block">Log In</span>
+    <div class="divider-or">or</div>
+    <p style="text-align:center; font-size:12.5px;">Don't have an account? <a style="color:var(--green-700); font-weight:700;">Register</a></p>
+  </div></div>
+</section>
+
+<!-- ============================================================ 08 REGISTER ============================================================ -->
+<section class="screen" id="register">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 08</div><h2 class="screen-title">Register</h2></div>
+  <div class="frame"><div class="auth-wrap">
+    <h2>Create your account</h2>
+    <p class="lead">Join AyurCare for faster checkout and order tracking</p>
+    <div class="field"><label>Full Name</label><input placeholder="Amara Perera"></div>
+    <div class="field"><label>Email</label><input placeholder="you@example.com"></div>
+    <div class="field"><label>Phone</label><input placeholder="+94 7X XXX XXXX"></div>
+    <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+    <div class="field"><label>Confirm Password</label><input type="password" placeholder="••••••••"></div>
+    <div class="field-row-between"><span>☐ I agree to the Terms &amp; Conditions</span></div>
+    <span class="btn btn-primary btn-block">Create Account</span>
+  </div></div>
+</section>
+
+<!-- ============================================================ 09 FORGOT PASSWORD ============================================================ -->
+<section class="screen" id="forgot">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 09</div><h2 class="screen-title">Forgot Password</h2></div>
+  <div class="frame"><div class="auth-wrap">
+    <h2>Reset your password</h2>
+    <p class="lead">We'll email you a link to reset it</p>
+    <div class="field"><label>Email</label><input placeholder="you@example.com"></div>
+    <span class="btn btn-primary btn-block">Send Reset Link</span>
+    <p style="text-align:center; font-size:12.5px; margin-top:18px;">← <a style="color:var(--green-700); font-weight:700;">Back to Login</a></p>
+  </div></div>
+</section>
+
+<!-- ============================================================ 10 CHECKOUT ============================================================ -->
+<section class="screen" id="checkout">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 10</div><h2 class="screen-title">Checkout</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="stepper">
+      <div class="step on"><span class="circ">1</span><span class="stxt">Delivery</span></div><div class="step-line"></div>
+      <div class="step"><span class="circ">2</span><span class="stxt">Review</span></div><div class="step-line"></div>
+      <div class="step"><span class="circ">3</span><span class="stxt">Payment</span></div><div class="step-line"></div>
+      <div class="step"><span class="circ">4</span><span class="stxt">Confirmation</span></div>
+    </div>
+    <div class="cart-grid">
+      <div>
+        <h3 style="font-size:14px;">Delivery Information</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>Full Name</label><input placeholder="Amara Perera"></div>
+          <div class="form-field"><label>Phone</label><input placeholder="+94 7X XXX XXXX"></div>
+          <div class="form-field" style="grid-column:1/-1;"><label>Address</label><input placeholder="No. 12, Herbal Lane"></div>
+          <div class="form-field"><label>City</label><input placeholder="Colombo"></div>
+          <div class="form-field"><label>Postal Code</label><input placeholder="00300"></div>
+        </div>
+        <h3 style="font-size:14px; margin-top:26px;">Payment (Sandbox)</h3>
+        <div class="form-grid">
+          <div class="form-field" style="grid-column:1/-1;"><label>Card Number</label><input placeholder="4242 4242 4242 4242"></div>
+          <div class="form-field"><label>Expiry</label><input placeholder="MM/YY"></div>
+          <div class="form-field"><label>CVV</label><input placeholder="•••"></div>
+        </div>
+        <p style="font-size:11px; color:var(--charcoal-60);">🔒 This is a demo payment flow — no real transaction is processed.</p>
+      </div>
+      <div class="summary-card">
+        <h4 style="margin-top:0;">Order Summary</h4>
+        <div class="summary-line"><span>Ashwagandha Capsules ×1</span><span>Rs. 1,450</span></div>
+        <div class="summary-line"><span>Bhringraj Hair Oil ×2</span><span>Rs. 1,960</span></div>
+        <div class="summary-line"><span>Delivery Fee</span><span>Rs. 350</span></div>
+        <div class="summary-line total"><span>Total</span><span>Rs. 3,760</span></div>
+        <span class="btn btn-primary btn-block" style="margin-top:16px;">Place Order</span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 11 ORDER CONFIRMATION ============================================================ -->
+<section class="screen" id="confirmation">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 11</div><h2 class="screen-title">Order Confirmation</h2></div>
+  <div class="frame"><div class="inner" style="max-width:560px; margin:0 auto; text-align:center;">
+    <div style="font-size:46px;">✅</div>
+    <h2 style="color:var(--green-900);">Order Placed Successfully</h2>
+    <p style="font-size:12.5px; color:var(--charcoal-60);">Order <b>#AC-1042</b> has been confirmed and is being prepared.</p>
+    <div class="summary-card" style="text-align:left; margin-top:20px;">
+      <div class="summary-line"><span>Order Total</span><span>Rs. 3,760</span></div>
+      <div class="summary-line"><span>Delivery Address</span><span>Colombo 03</span></div>
+      <div class="summary-line total"><span>Estimated Delivery</span><span>3–5 business days</span></div>
+    </div>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:22px;">
+      <span class="btn btn-primary">View Order</span>
+      <span class="btn btn-outline">Continue Shopping</span>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 12 ACCOUNT DASHBOARD ============================================================ -->
+<section class="screen" id="account">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 12</div><h2 class="screen-title">Customer Account</h2></div>
+  <div class="frame"><div class="acc-shell">
+    <div class="acc-side">
+      <div class="aitem on">👤 Profile</div>
+      <div class="aitem">📦 My Orders</div>
+      <div class="aitem">📍 Addresses</div>
+      <div class="aitem">♡ Wishlist</div>
+      <div class="aitem">⚙ Settings</div>
+      <div class="aitem">↪ Logout</div>
+    </div>
+    <div class="acc-main">
+      <div class="profile-head"><div class="avatar-lg"></div><div><h3 style="margin:0;">Amara Perera</h3><p style="font-size:12px; color:var(--charcoal-60); margin:4px 0 0;">amara.p@email.com</p></div></div>
+      <div class="form-grid">
+        <div class="form-field"><label>Full Name</label><input value="Amara Perera"></div>
+        <div class="form-field"><label>Email</label><input value="amara.p@email.com"></div>
+        <div class="form-field"><label>Phone</label><input value="+94 77 123 4567"></div>
+        <div class="form-field"><label>Date of Birth</label><input value="12 / 04 / 1994"></div>
+      </div>
+      <span class="btn btn-primary" style="margin-top:14px;">Save Changes</span>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 13 MY ORDERS ============================================================ -->
+<section class="screen" id="orders">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 13</div><h2 class="screen-title">My Orders</h2></div>
+  <div class="frame"><div class="acc-shell">
+    <div class="acc-side">
+      <div class="aitem">👤 Profile</div>
+      <div class="aitem on">📦 My Orders</div>
+      <div class="aitem">📍 Addresses</div>
+      <div class="aitem">♡ Wishlist</div>
+      <div class="aitem">⚙ Settings</div>
+      <div class="aitem">↪ Logout</div>
+    </div>
+    <div class="acc-main">
+      <table class="data">
+        <tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th></th></tr>
+        <tr><td>#AC-1042</td><td>18 Aug 2026</td><td>3</td><td>Rs. 3,760</td><td>Paid</td><td><span class="status-badge st-processing">Processing</span></td><td>View</td></tr>
+        <tr><td>#AC-1039</td><td>10 Aug 2026</td><td>1</td><td>Rs. 1,450</td><td>Paid</td><td><span class="status-badge st-shipped">Shipped</span></td><td>View</td></tr>
+        <tr><td>#AC-1027</td><td>29 Jul 2026</td><td>2</td><td>Rs. 2,110</td><td>Paid</td><td><span class="status-badge st-delivered">Delivered</span></td><td>View</td></tr>
+        <tr><td>#AC-1019</td><td>14 Jul 2026</td><td>1</td><td>Rs. 720</td><td>Refunded</td><td><span class="status-badge st-cancelled">Cancelled</span></td><td>View</td></tr>
+      </table>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 14 ORDER DETAILS ============================================================ -->
+<section class="screen" id="orderdetail">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 14</div><h2 class="screen-title">Order Details / Tracking</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="section-title-row"><h2>Order #AC-1042</h2><span class="status-badge st-processing">Processing</span></div>
+    <p style="font-size:12px; color:var(--charcoal-60); margin-top:-14px;">Placed on 18 Aug 2026</p>
+    <div class="tracker">
+      <div class="tnode done"><div class="dotc">✓</div><div class="tlabel">Order Placed</div></div>
+      <div class="tnode done"><div class="dotc">✓</div><div class="tlabel">Processing</div></div>
+      <div class="tnode"><div class="dotc">3</div><div class="tlabel">Shipped</div></div>
+      <div class="tnode"><div class="dotc">4</div><div class="tlabel">Delivered</div></div>
+    </div>
+    <div class="cart-grid" style="margin-top:30px;">
+      <div>
+        <table class="data">
+          <tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+          <tr><td>Ashwagandha Capsules</td><td>1</td><td>Rs. 1,450</td><td>Rs. 1,450</td></tr>
+          <tr><td>Bhringraj Hair Oil</td><td>2</td><td>Rs. 980</td><td>Rs. 1,960</td></tr>
+        </table>
+      </div>
+      <div class="summary-card">
+        <div class="summary-line"><span>Shipping Address</span></div>
+        <p style="font-size:12px; color:var(--charcoal-60); margin-top:-6px;">No. 12, Herbal Lane, Colombo 03</p>
+        <div class="summary-line"><span>Payment Status</span><span>Paid</span></div>
+        <div class="summary-line total"><span>Total</span><span>Rs. 3,760</span></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 15 ADDRESSES ============================================================ -->
+<section class="screen" id="addresses">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 15</div><h2 class="screen-title">Address Management</h2></div>
+  <div class="frame"><div class="acc-shell">
+    <div class="acc-side">
+      <div class="aitem">👤 Profile</div><div class="aitem">📦 My Orders</div>
+      <div class="aitem on">📍 Addresses</div><div class="aitem">♡ Wishlist</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="acc-main">
+      <div class="section-title-row"><h2>Saved Addresses</h2><span class="btn btn-primary btn-sm">+ Add Address</span></div>
+      <div class="form-grid">
+        <div class="panel"><b style="font-size:13px;">Home</b> <span class="status-badge st-active" style="margin-left:6px;">Default</span><p style="font-size:12px; color:var(--charcoal-60);">No. 12, Herbal Lane, Colombo 03, 00300</p><div style="display:flex; gap:10px;"><span class="btn btn-outline btn-sm">Edit</span><span class="btn btn-danger btn-sm">Delete</span></div></div>
+        <div class="panel"><b style="font-size:13px;">Office</b><p style="font-size:12px; color:var(--charcoal-60);">45 Wellness Ave, Colombo 05, 00500</p><div style="display:flex; gap:10px;"><span class="btn btn-outline btn-sm">Edit</span><span class="btn btn-danger btn-sm">Delete</span><span class="btn btn-ghost btn-sm">Set Default</span></div></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 16 WISHLIST ============================================================ -->
+<section class="screen" id="wishlist">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 16</div><h2 class="screen-title">Wishlist</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="prod-grid">
+      <div class="prod-card"><div class="prod-photo"><div class="wishlist-dot">♥</div>🌿</div><div class="prod-body"><div class="prod-name">Shatavari Powder</div><div class="stock-pill" style="margin:6px 0;">In Stock</div><div class="price">Rs. 950</div><span class="btn btn-ghost btn-block btn-sm" style="margin-top:8px;">Add to Cart</span></div></div>
+      <div class="prod-card"><div class="prod-photo"><div class="wishlist-dot">♥</div>🍵</div><div class="prod-body"><div class="prod-name">Tulsi Green Tea</div><div class="stock-pill" style="margin:6px 0;">In Stock</div><div class="price">Rs. 590</div><span class="btn btn-ghost btn-block btn-sm" style="margin-top:8px;">Add to Cart</span></div></div>
+      <div class="prod-card"><div class="prod-photo"><div class="wishlist-dot">♥</div>✨</div><div class="prod-body"><div class="prod-name">Sandalwood Face Pack</div><div class="status-badge st-out" style="margin:6px 0; display:inline-block;">Out of Stock</div><div class="price">Rs. 850</div><span class="btn btn-ghost btn-block btn-sm" style="margin-top:8px; opacity:.5;">Notify Me</span></div></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 17 ABOUT ============================================================ -->
+<section class="screen" id="about">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 17</div><h2 class="screen-title">About Page</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="two-col-40-60">
+      <div class="imgblock">🌿</div>
+      <div>
+        <span class="eyebrow-pill">Our Story</span>
+        <h2 style="margin:14px 0 10px;">Rooted in tradition, made for modern life</h2>
+        <p style="font-size:13px; color:var(--charcoal-60); line-height:1.8;">AyurCare began with a simple belief: that Ayurveda's centuries-old wisdom deserves a trustworthy home online. We work directly with certified producers to bring authentic, chemical-free wellness products to every doorstep — tested for purity, and rooted in traditional formulations.</p>
+        <div class="feat-grid" style="grid-template-columns:repeat(2,1fr); margin-top:20px;">
+          <div class="feat-card" style="text-align:left; padding:14px 0;"><h4>Our Mission</h4><p>Make holistic wellness accessible and trustworthy.</p></div>
+          <div class="feat-card" style="text-align:left; padding:14px 0;"><h4>Authenticity First</h4><p>Every product traced back to its source.</p></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 18 CONTACT ============================================================ -->
+<section class="screen" id="contact">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 18</div><h2 class="screen-title">Contact Page</h2></div>
+  <div class="frame"><div class="inner">
+    <div class="contact-grid">
+      <div>
+        <h2>Get in touch</h2>
+        <div class="info-row"><span class="ic">✉</span><div><b>Email</b><br>hello@ayurcare.lk</div></div>
+        <div class="info-row"><span class="ic">☎</span><div><b>Phone</b><br>+94 77 000 0000</div></div>
+        <div class="info-row"><span class="ic">📍</span><div><b>Address</b><br>123 Herbal Lane, Colombo</div></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field"><label>Name</label><input placeholder="Your name"></div>
+        <div class="form-field"><label>Email</label><input placeholder="you@example.com"></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Subject</label><input placeholder="How can we help?"></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Message</label><textarea rows="4" placeholder="Write your message…"></textarea></div>
+        <span class="btn btn-primary" style="grid-column:1/-1; width:fit-content;">Send Message</span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 19 FAQ ============================================================ -->
+<section class="screen" id="faq">
+  <div class="screen-head"><div class="screen-eyebrow">Customer · 19</div><h2 class="screen-title">FAQ Page</h2></div>
+  <div class="frame"><div class="inner" style="max-width:700px; margin:0 auto;">
+    <div class="acc-item"><div class="acc-q">How long does delivery take? <span>▾</span></div><div class="acc-a">Orders are typically delivered within 3–5 business days across Sri Lanka.</div></div>
+    <div class="acc-item"><div class="acc-q">Are your products certified organic? <span>▾</span></div></div>
+    <div class="acc-item"><div class="acc-q">Can I return a product? <span>▾</span></div></div>
+    <div class="acc-item"><div class="acc-q">What payment methods are accepted? <span>▾</span></div></div>
+    <div class="acc-item"><div class="acc-q">How do I track my order? <span>▾</span></div></div>
+  </div></div>
+</section>
+
+<div class="leaf-divider"><div class="stem"></div><span class="leaf-mark">🌿</span><div class="stem"></div></div>
+
+<!-- ============================================================ 20 ADMIN LOGIN ============================================================ -->
+<section class="screen" id="adminlogin">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 20</div><h2 class="screen-title">Admin Login</h2></div>
+  <div class="frame" style="background:var(--green-900);">
+    <div class="auth-wrap" style="color:#fff;">
+      <div class="logo" style="justify-content:center; color:#fff;"><span class="mark">A</span> AyurCare Admin</div>
+      <p class="lead" style="color:#AABBAC;">Secure access for store administrators</p>
+      <div class="field"><label style="color:#DCE6DD;">Email</label><input placeholder="admin@ayurcare.lk"></div>
+      <div class="field"><label style="color:#DCE6DD;">Password</label><input type="password" placeholder="••••••••"></div>
+      <div class="field-row-between" style="color:#AABBAC;"><span>☐ Remember me</span><a style="color:var(--gold);">Forgot password?</a></div>
+      <span class="btn btn-gold btn-block">Log In</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 21 ADMIN DASHBOARD ============================================================ -->
+<section class="screen" id="admindash">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 21</div><h2 class="screen-title">Admin Dashboard</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem on">▣ Dashboard</div>
+      <div class="aitem">📦 Products</div>
+      <div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div>
+      <div class="aitem">📊 Inventory</div>
+      <div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div>
+      <div class="aitem">⚙ Settings</div>
+      <div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Dashboard</h2><div style="display:flex; gap:14px; align-items:center;"><input class="searchbox" placeholder="Search…"><span>🔔</span><div class="avatar-sm"></div></div></div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="klabel">Total Sales</div><div class="kval">Rs. 842K</div><div class="ktrend">↑ 12.4%</div></div>
+        <div class="kpi"><div class="klabel">Total Orders</div><div class="kval">1,204</div><div class="ktrend">↑ 6.1%</div></div>
+        <div class="kpi"><div class="klabel">Total Products</div><div class="kval">186</div><div class="ktrend">+4 this week</div></div>
+        <div class="kpi"><div class="klabel">Total Customers</div><div class="kval">3,410</div><div class="ktrend">↑ 8.9%</div></div>
+        <div class="kpi"><div class="klabel">Pending Orders</div><div class="kval">27</div><div class="ktrend" style="color:#8A5A0E;">needs review</div></div>
+        <div class="kpi"><div class="klabel">Low Stock</div><div class="kval">9</div><div class="ktrend" style="color:var(--danger);">restock soon</div></div>
+      </div>
+      <div class="admin-grid-2">
+        <div class="panel"><div class="ptitle">Sales Overview</div><div class="chart-area"><div class="chart-line"></div></div></div>
+        <div class="panel">
+          <div class="ptitle">Order Statistics</div>
+          <div class="bar-row"><span class="blabel">Pending</span><div class="bar-track"><div class="bar-fill" style="width:20%; background:#C79A4B;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Processing</span><div class="bar-track"><div class="bar-fill" style="width:35%; background:#2F5A9E;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Shipped</span><div class="bar-track"><div class="bar-fill" style="width:25%; background:#5A3E9E;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Delivered</span><div class="bar-track"><div class="bar-fill" style="width:70%;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Cancelled</span><div class="bar-track"><div class="bar-fill" style="width:8%; background:#B4553F;"></div></div></div>
+        </div>
+      </div>
+      <div class="admin-grid-2" style="margin-top:18px;">
+        <div class="panel">
+          <div class="ptitle">Best-Selling Products</div>
+          <table class="data"><tr><th>Product</th><th>Units Sold</th><th>Revenue</th></tr>
+          <tr><td>Ashwagandha Capsules</td><td>412</td><td>Rs. 597K</td></tr>
+          <tr><td>Neem Face Wash</td><td>301</td><td>Rs. 268K</td></tr>
+          <tr><td>Bhringraj Hair Oil</td><td>245</td><td>Rs. 240K</td></tr></table>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Low Stock Alert</div>
+          <table class="data"><tr><th>Product</th><th>Stock</th></tr>
+          <tr><td>Sandalwood Face Pack</td><td><span class="status-badge st-low">6 left</span></td></tr>
+          <tr><td>Tulsi Green Tea</td><td><span class="status-badge st-out">0 left</span></td></tr></table>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:18px;">
+        <div class="ptitle">Recent Orders</div>
+        <table class="data"><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th>Action</th></tr>
+        <tr><td>#AC-1042</td><td>Amara Perera</td><td>18 Aug</td><td>Rs. 3,760</td><td><span class="status-badge st-processing">Processing</span></td><td>View</td></tr>
+        <tr><td>#AC-1041</td><td>Ruwan D.</td><td>18 Aug</td><td>Rs. 1,450</td><td><span class="status-badge st-pending">Pending</span></td><td>View</td></tr>
+        <tr><td>#AC-1040</td><td>Nadeesha S.</td><td>17 Aug</td><td>Rs. 2,110</td><td><span class="status-badge st-shipped">Shipped</span></td><td>View</td></tr></table>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 22 PRODUCT MANAGEMENT ============================================================ -->
+<section class="screen" id="productmgmt">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 22</div><h2 class="screen-title">Product Management</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem on">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Products</h2><span class="btn btn-primary btn-sm">+ Add Product</span></div>
+      <div style="display:flex; gap:10px; margin-bottom:16px;"><input class="searchbox" placeholder="Search products…"><select class="select-mini"><option>All Categories</option></select><select class="select-mini"><option>All Stock</option></select></div>
+      <table class="data">
+        <tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Ashwagandha Capsules</td><td>Supplements</td><td>Rs. 1,450</td><td>42</td><td><span class="status-badge st-active">Active</span></td><td>View · Edit · Delete</td></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Bhringraj Hair Oil</td><td>Oils</td><td>Rs. 980</td><td>18</td><td><span class="status-badge st-active">Active</span></td><td>View · Edit · Delete</td></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Sandalwood Face Pack</td><td>Skincare</td><td>Rs. 850</td><td>6</td><td><span class="status-badge st-low">Low Stock</span></td><td>View · Edit · Delete</td></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Tulsi Green Tea</td><td>Teas</td><td>Rs. 590</td><td>0</td><td><span class="status-badge st-out">Out of Stock</span></td><td>View · Edit · Delete</td></tr>
+      </table>
+      <div class="pagination"><span class="on">1</span><span>2</span><span>3</span><span>›</span></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 23/24 ADD / EDIT PRODUCT ============================================================ -->
+<section class="screen" id="addproduct">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 23–24</div><h2 class="screen-title">Add / Edit Product</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem on">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Add New Product</h2></div>
+      <div class="form-grid">
+        <div class="form-field"><label>Product Name</label><input placeholder="Ashwagandha Capsules"></div>
+        <div class="form-field"><label>Category</label><select><option>Herbal Supplements</option></select></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Description</label><textarea rows="3" placeholder="Short product description…"></textarea></div>
+        <div class="form-field"><label>Price (Rs.)</label><input placeholder="1450"></div>
+        <div class="form-field"><label>Discount (%)</label><input placeholder="15"></div>
+        <div class="form-field"><label>Stock Quantity</label><input placeholder="42"></div>
+        <div class="form-field"><label>Status</label><select><option>Active</option><option>Draft</option></select></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Ingredients</label><textarea rows="2" placeholder="Withania somnifera root extract…"></textarea></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Health Benefits</label><textarea rows="2" placeholder="Supports stress response, promotes vitality…"></textarea></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Usage Instructions</label><textarea rows="2" placeholder="Take 1 capsule twice daily after meals…"></textarea></div>
+        <div class="form-field" style="grid-column:1/-1;"><label>Product Images</label><div class="upload-box">📷 Drag &amp; drop images, or click to browse</div></div>
+      </div>
+      <div style="display:flex; gap:12px; margin-top:18px;"><span class="btn btn-primary">Save Product</span><span class="btn btn-outline">Cancel</span></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 25 PRODUCT DETAILS (ADMIN) ============================================================ -->
+<section class="screen" id="productadmin">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 25</div><h2 class="screen-title">Product Details (Admin View)</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem on">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Ashwagandha Capsules</h2><div style="display:flex; gap:10px;"><span class="btn btn-outline btn-sm">Edit</span><span class="btn btn-danger btn-sm">Delete</span></div></div>
+      <div class="admin-grid-2">
+        <div class="panel"><div class="pd-gallery-main" style="height:200px;">🌿</div></div>
+        <div class="panel">
+          <div class="summary-line"><span>Category</span><span>Supplements</span></div>
+          <div class="summary-line"><span>Price</span><span>Rs. 1,450</span></div>
+          <div class="summary-line"><span>Stock</span><span>42 units</span></div>
+          <div class="summary-line"><span>Status</span><span class="status-badge st-active">Active</span></div>
+        </div>
+      </div>
+      <div class="admin-grid-2" style="margin-top:16px;">
+        <div class="panel"><div class="ptitle">Sales Statistics</div><div class="chart-area"><div class="chart-line"></div></div></div>
+        <div class="panel"><div class="ptitle">Recent Orders Containing This Product</div>
+          <table class="data"><tr><th>Order</th><th>Qty</th></tr><tr><td>#AC-1042</td><td>1</td></tr><tr><td>#AC-1039</td><td>1</td></tr></table>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 26 CATEGORY MANAGEMENT ============================================================ -->
+<section class="screen" id="categorymgmt">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 26</div><h2 class="screen-title">Category Management</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem on">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Categories</h2><span class="btn btn-primary btn-sm">+ Add Category</span></div>
+      <table class="data">
+        <tr><th>Image</th><th>Category</th><th>Products</th><th>Status</th><th>Actions</th></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Herbal Supplements</td><td>52</td><td><span class="status-badge st-active">Active</span></td><td>Edit · Delete</td></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Ayurvedic Oils</td><td>34</td><td><span class="status-badge st-active">Active</span></td><td>Edit · Delete</td></tr>
+        <tr><td><div class="cart-thumb" style="width:36px; height:36px;"></div></td><td>Organic Teas</td><td>21</td><td><span class="status-badge st-active">Active</span></td><td>Edit · Delete</td></tr>
+      </table>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 27 ORDER MANAGEMENT ============================================================ -->
+<section class="screen" id="ordermgmt">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 27</div><h2 class="screen-title">Order Management</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem on">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Orders</h2></div>
+      <div style="display:flex; gap:10px; margin-bottom:16px;"><input class="searchbox" placeholder="Search order ID or customer…"><select class="select-mini"><option>All Status</option></select><select class="select-mini"><option>All Dates</option></select></div>
+      <table class="data">
+        <tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr>
+        <tr><td>#AC-1042</td><td>Amara Perera</td><td>18 Aug</td><td>3</td><td>Rs. 3,760</td><td>Paid</td><td><span class="status-badge st-processing">Processing</span></td><td>View</td></tr>
+        <tr><td>#AC-1041</td><td>Ruwan D.</td><td>18 Aug</td><td>1</td><td>Rs. 1,450</td><td>Unpaid</td><td><span class="status-badge st-pending">Pending</span></td><td>View</td></tr>
+        <tr><td>#AC-1040</td><td>Nadeesha S.</td><td>17 Aug</td><td>2</td><td>Rs. 2,110</td><td>Paid</td><td><span class="status-badge st-shipped">Shipped</span></td><td>View</td></tr>
+        <tr><td>#AC-1019</td><td>Kasun F.</td><td>14 Jul</td><td>1</td><td>Rs. 720</td><td>Refunded</td><td><span class="status-badge st-cancelled">Cancelled</span></td><td>View</td></tr>
+      </table>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 28 ORDER DETAILS (ADMIN) ============================================================ -->
+<section class="screen" id="orderadmin">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 28</div><h2 class="screen-title">Order Details (Admin)</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem on">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Order #AC-1042</h2><span class="status-badge st-processing">Processing</span></div>
+      <div class="admin-grid-2">
+        <div class="panel"><div class="ptitle">Customer Information</div><p style="font-size:12.5px;">Amara Perera<br>amara.p@email.com<br>+94 77 123 4567</p></div>
+        <div class="panel"><div class="ptitle">Shipping Information</div><p style="font-size:12.5px;">No. 12, Herbal Lane<br>Colombo 03, 00300</p></div>
+      </div>
+      <div class="panel" style="margin-top:16px;">
+        <div class="ptitle">Ordered Products</div>
+        <table class="data"><tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+        <tr><td>Ashwagandha Capsules</td><td>1</td><td>Rs. 1,450</td><td>Rs. 1,450</td></tr>
+        <tr><td>Bhringraj Hair Oil</td><td>2</td><td>Rs. 980</td><td>Rs. 1,960</td></tr></table>
+      </div>
+      <div class="admin-grid-2" style="margin-top:16px;">
+        <div class="panel"><div class="ptitle">Payment Information</div>
+          <div class="summary-line"><span>Method</span><span>Card (sandbox)</span></div>
+          <div class="summary-line"><span>Status</span><span>Paid</span></div>
+          <div class="summary-line"><span>Reference ID</span><span>TXN-88213</span></div>
+        </div>
+        <div class="panel"><div class="ptitle">Update Order Status</div>
+          <div class="tracker" style="margin:20px 0 0;">
+            <div class="tnode done"><div class="dotc">✓</div><div class="tlabel">Pending</div></div>
+            <div class="tnode done"><div class="dotc">✓</div><div class="tlabel">Confirmed</div></div>
+            <div class="tnode done"><div class="dotc">✓</div><div class="tlabel">Processing</div></div>
+            <div class="tnode"><div class="dotc">4</div><div class="tlabel">Shipped</div></div>
+            <div class="tnode"><div class="dotc">5</div><div class="tlabel">Delivered</div></div>
+          </div>
+          <span class="btn btn-primary btn-sm" style="margin-top:16px;">Mark as Shipped</span>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 29 INVENTORY MANAGEMENT ============================================================ -->
+<section class="screen" id="inventory">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 29</div><h2 class="screen-title">Inventory Management</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem on">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Inventory</h2></div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="kpi"><div class="klabel">Total Stock</div><div class="kval">8,420</div></div>
+        <div class="kpi"><div class="klabel">Low Stock Items</div><div class="kval">9</div></div>
+        <div class="kpi"><div class="klabel">Out of Stock</div><div class="kval">3</div></div>
+        <div class="kpi"><div class="klabel">Inventory Value</div><div class="kval">Rs. 6.2M</div></div>
+      </div>
+      <table class="data">
+        <tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Status</th><th>Last Updated</th><th>Action</th></tr>
+        <tr><td>Ashwagandha Capsules</td><td>SUP-001</td><td>42</td><td><span class="status-badge st-active">In Stock</span></td><td>17 Aug</td><td>Update Stock</td></tr>
+        <tr><td>Sandalwood Face Pack</td><td>SKN-014</td><td>6</td><td><span class="status-badge st-low">Low</span></td><td>15 Aug</td><td>Update Stock</td></tr>
+        <tr><td>Tulsi Green Tea</td><td>TEA-007</td><td>0</td><td><span class="status-badge st-out">Out</span></td><td>10 Aug</td><td>Update Stock</td></tr>
+      </table>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 30 CUSTOMER MANAGEMENT ============================================================ -->
+<section class="screen" id="customers">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 30</div><h2 class="screen-title">Customer Management</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem on">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Customers</h2><input class="searchbox" placeholder="Search customers…"></div>
+      <table class="data">
+        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Registered</th><th>Status</th><th>Action</th></tr>
+        <tr><td>Amara Perera</td><td>amara.p@email.com</td><td>077 123 4567</td><td>6</td><td>Rs. 14,200</td><td>Feb 2026</td><td><span class="status-badge st-active">Active</span></td><td>View</td></tr>
+        <tr><td>Ruwan D.</td><td>ruwan.d@email.com</td><td>071 987 6543</td><td>2</td><td>Rs. 3,100</td><td>May 2026</td><td><span class="status-badge st-active">Active</span></td><td>View</td></tr>
+        <tr><td>Nadeesha S.</td><td>nadee.s@email.com</td><td>076 555 2211</td><td>9</td><td>Rs. 21,850</td><td>Nov 2025</td><td><span class="status-badge st-active">Active</span></td><td>View</td></tr>
+      </table>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 31 CUSTOMER DETAILS (ADMIN) ============================================================ -->
+<section class="screen" id="customerdetail">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 31</div><h2 class="screen-title">Customer Details (Admin)</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem on">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="profile-head"><div class="avatar-lg"></div><div><h3 style="margin:0;">Amara Perera</h3><p style="font-size:12px; color:var(--charcoal-60); margin:4px 0 0;">amara.p@email.com · 077 123 4567</p></div><span class="status-badge st-active" style="margin-left:auto;">Active</span></div>
+      <div class="admin-grid-2">
+        <div class="panel"><div class="ptitle">Addresses</div><p style="font-size:12px;">No. 12, Herbal Lane, Colombo 03</p></div>
+        <div class="panel"><div class="ptitle">Account Summary</div>
+          <div class="summary-line"><span>Total Orders</span><span>6</span></div>
+          <div class="summary-line"><span>Total Spent</span><span>Rs. 14,200</span></div>
+          <div class="summary-line"><span>Member Since</span><span>Feb 2026</span></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:16px;"><div class="ptitle">Order History</div>
+        <table class="data"><tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th></tr>
+        <tr><td>#AC-1042</td><td>18 Aug</td><td>Rs. 3,760</td><td><span class="status-badge st-processing">Processing</span></td></tr>
+        <tr><td>#AC-1039</td><td>10 Aug</td><td>Rs. 1,450</td><td><span class="status-badge st-shipped">Shipped</span></td></tr></table>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 32 REPORTS & ANALYTICS ============================================================ -->
+<section class="screen" id="reports">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 32</div><h2 class="screen-title">Reports &amp; Analytics</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem on">📈 Reports</div><div class="aitem">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Reports &amp; Analytics</h2><select class="select-mini"><option>Last 30 Days</option></select></div>
+      <div class="admin-grid-2">
+        <div class="panel"><div class="ptitle">Revenue Overview</div><div class="chart-area"><div class="chart-line"></div></div></div>
+        <div class="panel"><div class="ptitle">Customer Growth</div><div class="chart-area"><div class="chart-line"></div></div></div>
+      </div>
+      <div class="admin-grid-2" style="margin-top:16px;">
+        <div class="panel"><div class="ptitle">Popular Categories</div>
+          <div class="bar-row"><span class="blabel">Supplements</span><div class="bar-track"><div class="bar-fill" style="width:80%;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Oils</span><div class="bar-track"><div class="bar-fill" style="width:55%;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Skincare</span><div class="bar-track"><div class="bar-fill" style="width:40%;"></div></div></div>
+          <div class="bar-row"><span class="blabel">Teas</span><div class="bar-track"><div class="bar-fill" style="width:30%;"></div></div></div>
+        </div>
+        <div class="panel"><div class="ptitle">Inventory Movement</div>
+          <table class="data"><tr><th>Product</th><th>In</th><th>Out</th></tr><tr><td>Ashwagandha Capsules</td><td>+120</td><td>-96</td></tr><tr><td>Bhringraj Hair Oil</td><td>+60</td><td>-52</td></tr></table>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============================================================ 33 ADMIN SETTINGS ============================================================ -->
+<section class="screen" id="settings">
+  <div class="screen-head"><div class="screen-eyebrow">Admin · 33</div><h2 class="screen-title">Admin Settings</h2></div>
+  <div class="frame"><div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="alogo">🌿 AyurCare Admin</div>
+      <div class="aitem">▣ Dashboard</div><div class="aitem">📦 Products</div><div class="aitem">🗂 Categories</div>
+      <div class="aitem">🧾 Orders</div><div class="aitem">📊 Inventory</div><div class="aitem">👥 Customers</div>
+      <div class="aitem">📈 Reports</div><div class="aitem on">⚙ Settings</div><div class="aitem">↪ Logout</div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar"><h2>Settings</h2></div>
+      <div class="admin-grid-2">
+        <div class="panel"><div class="ptitle">General Settings</div>
+          <div class="form-field"><label>Store Name</label><input value="AyurCare"></div>
+          <div class="form-field"><label>Store Logo</label><div class="upload-box">📷 Upload logo</div></div>
+          <div class="form-field"><label>Contact Email</label><input value="hello@ayurcare.lk"></div>
+        </div>
+        <div class="panel"><div class="ptitle">Account Settings</div>
+          <div class="form-field"><label>Admin Name</label><input value="Store Admin"></div>
+          <div class="form-field"><label>Email</label><input value="admin@ayurcare.lk"></div>
+          <div class="form-field"><label>New Password</label><input type="password" placeholder="••••••••"></div>
+        </div>
+      </div>
+      <div class="admin-grid-2" style="margin-top:16px;">
+        <div class="panel"><div class="ptitle">Payment Settings</div>
+          <div class="form-field"><label>Payment Gateway</label><select><option>Sandbox Gateway</option></select></div>
+        </div>
+        <div class="panel"><div class="ptitle">Shipping Settings</div>
+          <div class="form-field"><label>Standard Delivery Fee (Rs.)</label><input value="350"></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:16px;"><div class="ptitle">Notification Settings</div>
+        <div class="summary-line"><span>Email Notifications</span><span>✅ On</span></div>
+        <div class="summary-line"><span>New Order Alerts</span><span>✅ On</span></div>
+        <div class="summary-line"><span>Low Stock Alerts</span><span>✅ On</span></div>
+      </div>
+      <span class="btn btn-primary" style="margin-top:16px;">Save Settings</span>
+    </div>
+  </div></div>
+</section>
+
+<div style="text-align:center; padding:50px 20px 70px; color:var(--charcoal-60); font-size:12px;">
+  🌿 End of AyurCare design system — 33 screens, one continuous scroll.
+</div>
+
+</body>
+</html>
