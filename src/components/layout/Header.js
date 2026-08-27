@@ -13,8 +13,7 @@ export default function Header({
   return (
     <header className={styles.siteHeader}>
       <Link href="/" className={styles.logo}>
-        <span className={styles.logoMark}>A</span>
-        AyurCare
+        <img src='/logo.png'></img>
       </Link>
 
       <nav className={styles.navLinks}>

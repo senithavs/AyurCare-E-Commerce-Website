@@ -21,14 +21,9 @@
 }
 
 .logo {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 19px;
-  color: var(--green-900);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
+  width: 200px;
+  height: auto;
+  max-width: 100%;
 }
 
 .logoMark {

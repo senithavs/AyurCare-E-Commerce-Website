@@ -121,7 +121,7 @@ export default function HomePage() {
         <PromoCard
           title="Immunity Season Bundle"
           description="Save 20% on curated wellness kits — this week only."
-          buttonLabel="Shop the Bundle"
+          buttonLabel="Shop Now"
         />
       </Section>
     </div>

@@ -11,11 +11,10 @@ export default function Footer() {
       <footer className={styles.siteFooter}>
         <div>
           <div className={styles.logo} style={{ color: '#fff', marginBottom: '14px' }}>
-            <span className={styles.logoMark}>A</span>
-            AyurCare
+            <img src='/footerLogo.png'></img>
           </div>
           <p className={styles.footerText}>
-            Authentic Ayurvedic and herbal wellness, delivered with care.
+            Authentic Ayurvedic and herbal wellness, delivered with casre.
           </p>
           <div className={styles.socialRow}>
             <button className={styles.socialIcon} aria-label="Facebook">
