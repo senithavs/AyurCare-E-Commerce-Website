@@ -34,7 +34,7 @@ export default function Header({
         </Link>
       </nav>
 
-      <div className={styles.navActions}>
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
         {/* Search Bar */}
         <input
           type="text"
@@ -46,26 +46,28 @@ export default function Header({
             borderRadius: '8px',
             padding: '8px 12px',
             fontSize: '13px',
-            width: '200px',
+            width: '180px',
             fontFamily: 'inherit',
             color: 'var(--charcoal)',
           }}
         />
 
-        <span role="button" aria-label="Wishlist" style={{ cursor: 'pointer' }}>
-          ♡
-        </span>
-        <span
-          role="button"
-          aria-label="Shopping cart"
-          style={{ cursor: 'pointer', position: 'relative' }}
-        >
-          🛒
-          {cartCount > 0 && <span className={styles.badgeCount}>{cartCount}</span>}
-        </span>
-        <Button variant="outline" size="sm" onClick={onAccountClick}>
-          Account
-        </Button>
+        <div className={styles.navActions}>
+          <span role="button" aria-label="Wishlist" style={{ cursor: 'pointer' }}>
+            ♡
+          </span>
+          <span
+            role="button"
+            aria-label="Shopping cart"
+            style={{ cursor: 'pointer', position: 'relative' }}
+          >
+            🛒
+            {cartCount > 0 && <span className={styles.badgeCount}>{cartCount}</span>}
+          </span>
+          <Button variant="outline" size="sm" onClick={onAccountClick}>
+            Account
+          </Button>
+        </div>
       </div>
     </header>
   );
