@@ -16,17 +16,6 @@ export default function Footer() {
           <p className={styles.footerText}>
             Authentic Ayurvedic and herbal wellness, delivered with casre.
           </p>
-          <div className={styles.socialRow}>
-            <button className={styles.socialIcon} aria-label="Facebook">
-              f
-            </button>
-            <button className={styles.socialIcon} aria-label="Instagram">
-              ig
-            </button>
-            <button className={styles.socialIcon} aria-label="Twitter">
-              x
-            </button>
-          </div>
         </div>
 
         <div className={styles.footerSection}>
@@ -35,10 +24,7 @@ export default function Footer() {
             Shipping Info
           </Link>
           <Link href="/returns" className={styles.footerLink}>
-            Returns
-          </Link>
-          <Link href="/faq" className={styles.footerLink}>
-            FAQ
+            Return Policy
           </Link>
           <Link href="/contact" className={styles.footerLink}>
             Contact Us
@@ -52,9 +38,6 @@ export default function Footer() {
           </Link>
           <Link href="/about" className={styles.footerLink}>
             About Us
-          </Link>
-          <Link href="/orders" className={styles.footerLink}>
-            Track Order
           </Link>
           <Link href="/account" className={styles.footerLink}>
             My Account

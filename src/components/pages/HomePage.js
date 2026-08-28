@@ -93,11 +93,11 @@ export default function HomePage() {
       {/* Hero Section */}
       <Hero
         badge="100% Authentic Ayurveda"
-        title="Nature's Wisdom, Delivered to Your Door."
-        description="AyurCare brings authentic Ayurvedic and herbal wellness products — supplements, oils, teas and skincare — sourced for purity and backed by tradition."
+        title="Nature's Wisdom Delivered to Your Door."
+        description="AyurCare brings authentic Ayurvedic and herbal wellness products, oils, teas and skincare — sourced for purity and backed by tradition."
         ctaButtons={[
           { label: 'Shop Now', variant: 'gold' },
-          { label: 'Explore Categories', variant: 'outline' },
+          { label: 'Explore Categories', variant: 'green' },
         ]}
       />
 

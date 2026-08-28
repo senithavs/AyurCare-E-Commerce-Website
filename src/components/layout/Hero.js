@@ -7,21 +7,42 @@ export default function Hero({
   title,
   description,
   ctaButtons = [],
-  backgroundImage,
+  backgroundImage = '/backgroundImage.jpeg',
 }) {
   return (
     <div
       style={{
         position: 'relative',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        display: 'flex',
         alignItems: 'center',
-        background: 'var(--sage-100)',
-        minHeight: '420px',
+        justifyContent: 'left',
+        minHeight: '600px',
+        padding: '20px',
+        background: `url(${backgroundImage}) center/cover no-repeat`,
+        backgroundAttachment: 'fixed',
       }}
     >
+      {/* Overlay for text readability */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.4)',
+          zIndex: 1,
+        }}
+      />
+
       {/* Copy Section */}
-      <div style={{ padding: '64px 56px' }}>
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          padding: '64px 56px',
+          maxWidth: '800px',
+          color: '#fff',
+          textAlign: 'left',
+        }}
+      >
         {badge && (
           <span
             style={{
@@ -40,9 +61,9 @@ export default function Hero({
         )}
         <h1
           style={{
-            fontSize: '38px',
+            fontSize: '45px',
             lineHeight: 1.15,
-            color: 'var(--green-900)',
+            color: '#fff',
             margin: '18px 0 14px',
             fontWeight: 600,
           }}
@@ -52,15 +73,14 @@ export default function Hero({
         <p
           style={{
             fontSize: '14.5px',
-            color: 'var(--charcoal-60)',
+            color: '#E8E8E8',
             lineHeight: 1.7,
-            maxWidth: '420px',
             margin: '0 0 26px',
           }}
         >
           {description}
         </p>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '18px', justifyContent: 'left' }}>
           {ctaButtons.map((btn, idx) => (
             <Button
               key={idx}
@@ -73,47 +93,26 @@ export default function Hero({
         </div>
       </div>
 
-      {/* Image Section */}
-      <div
-        style={{
-          height: '100%',
-          minHeight: '420px',
-          background: backgroundImage
-            ? `url(${backgroundImage})`
-            : `
-                radial-gradient(circle at 30% 30%, #7E9C7F 0%, transparent 55%),
-                radial-gradient(circle at 70% 70%, #4A6B54 0%, transparent 50%),
-                linear-gradient(135deg, var(--green-500), var(--green-900))`,
-          backgroundSize: backgroundImage ? 'cover' : 'auto',
-          backgroundPosition: 'center',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '120px',
-            opacity: 0.5,
-          }}
-        >
-          🌿
-        </div>
-      </div>
-
       {/* Responsive */}
       <style>{`
         @media (max-width: 900px) {
-          @supports (display: grid) {
-            [data-hero] {
-              grid-template-columns: 1fr;
-            }
+          [data-hero-section] {
+            minHeight: 350px;
+            padding: 40px 20px;
+          }
+          [data-hero-content] {
+            padding: 40px 20px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-hero-section] {
+            minHeight: 280px;
+          }
+          [data-hero-content] h1 {
+            fontSize: 28px !important;
+          }
+          [data-hero-content] p {
+            fontSize: 13px !important;
           }
         }
       `}</style>

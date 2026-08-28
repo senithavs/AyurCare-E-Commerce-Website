@@ -99,7 +99,7 @@
 
 .footerSection h5 {
   color: #fff;
-  font-size: 12px;
+  font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 0 0 14px;
@@ -110,7 +110,7 @@
   color: #B9C7BB;
   line-height: 1.9;
   display: block;
-  font-size: 12.5px;
+  font-size: 13.5px;
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -121,7 +121,7 @@
 
 .footerText {
   color: #B9C7BB;
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.9;
   margin: 0;
 }

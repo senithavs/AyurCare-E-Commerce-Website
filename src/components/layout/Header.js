@@ -7,13 +7,13 @@ import styles from '@/styles/layout.module.css';
 export default function Header({
   cartCount = 0,
   onAccountClick,
-  searchQuery,
+  searchQuery = '',
   onSearchChange,
 }) {
   return (
     <header className={styles.siteHeader}>
       <Link href="/" className={styles.logo}>
-        <img src='/logo.png'></img>
+        <img src='/logo.png' alt="AyurCare Logo"></img>
       </Link>
 
       <nav className={styles.navLinks}>
@@ -35,9 +35,23 @@ export default function Header({
       </nav>
 
       <div className={styles.navActions}>
-        <span role="button" aria-label="Search" style={{ cursor: 'pointer' }}>
-          🔍
-        </span>
+        {/* Search Bar */}
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => onSearchChange?.(e.target.value)}
+          style={{
+            border: '1px solid var(--line)',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            fontSize: '13px',
+            width: '200px',
+            fontFamily: 'inherit',
+            color: 'var(--charcoal)',
+          }}
+        />
+
         <span role="button" aria-label="Wishlist" style={{ cursor: 'pointer' }}>
           ♡
         </span>
