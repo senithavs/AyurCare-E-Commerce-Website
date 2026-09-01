@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
 import styles from '@/styles/layout.module.css';
 
@@ -10,6 +11,12 @@ export default function Header({
   searchQuery = '',
   onSearchChange,
 }) {
+  const router = useRouter();
+
+  const handleCartClick = () => {
+    router.push('/cart');
+  };
+
   return (
     <header className={styles.siteHeader}>
       <Link href="/" className={styles.logo}>
@@ -54,14 +61,15 @@ export default function Header({
 
         <div className={styles.navActions}>
           <span role="button" aria-label="Wishlist" style={{ cursor: 'pointer' }}>
-            ♡
+            <img src='/wishlist.png' style={{ width: '24px', height: '24px' }} />
           </span>
           <span
             role="button"
             aria-label="Shopping cart"
+            onClick={handleCartClick}
             style={{ cursor: 'pointer', position: 'relative' }}
           >
-            🛒
+            <img src='/cart.png' style={{ width: '24px', height: '24px' }} />
             {cartCount > 0 && <span className={styles.badgeCount}>{cartCount}</span>}
           </span>
           <Button variant="outline" size="sm" onClick={onAccountClick}>
