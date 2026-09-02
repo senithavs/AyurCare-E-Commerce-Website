@@ -12,7 +12,7 @@ const categoryCardStyles = {
   },
   icon: {
     width: '48px',
-    height: '48px',
+    height: '80px',
     borderRadius: '50%',
     background: 'var(--sage-100)',
     margin: '0 auto 12px',

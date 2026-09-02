@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button, Badge } from '@/components/ui';
 
 const productCardStyles = {
@@ -10,6 +11,11 @@ const productCardStyles = {
     background: '#fff',
     position: 'relative',
     transition: 'all 0.3s ease',
+    cursor: 'pointer',
+  },
+  cardHover: {
+    boxShadow: 'var(--shadow)',
+    transform: 'translateY(-4px)',
   },
   photo: {
     height: '150px',
@@ -34,6 +40,7 @@ const productCardStyles = {
     fontSize: '13px',
     boxShadow: '0 2px 6px rgba(0,0,0,.12)',
     cursor: 'pointer',
+    zIndex: 10,
   },
   discountTag: {
     position: 'absolute',
@@ -92,55 +99,80 @@ export default function ProductCard({
   onAddToCart,
   onWishlistToggle,
   isWishlisted = false,
+  slug = 'product',
 }) {
+  const handleCardHover = (e, isEnter) => {
+    if (isEnter) {
+      e.currentTarget.style.boxShadow = 'var(--shadow)';
+      e.currentTarget.style.transform = 'translateY(-4px)';
+    } else {
+      e.currentTarget.style.boxShadow = 'none';
+      e.currentTarget.style.transform = 'none';
+    }
+  };
+
   return (
-    <div style={productCardStyles.card}>
-      {/* Product Photo */}
-      <div style={productCardStyles.photo}>
-        {discount && (
-          <Badge variant="pending" style={productCardStyles.discountTag}>
-            {discount}
-          </Badge>
-        )}
-        <button
-          style={productCardStyles.wishlistDot}
-          onClick={() => onWishlistToggle?.(id)}
-          aria-label="Toggle wishlist"
-        >
-          {isWishlisted ? '♥' : '♡'}
-        </button>
-        {image}
-      </div>
-
-      {/* Product Info */}
-      <div style={productCardStyles.body}>
-        <div style={productCardStyles.category}>{category}</div>
-        <div style={productCardStyles.name}>{name}</div>
-
-        {/* Rating */}
-        <div style={productCardStyles.stars}>
-          ★★★★☆ {reviewCount > 0 && `(${reviewCount})`}
-        </div>
-
-        {/* Price */}
-        <div style={productCardStyles.priceRow}>
-          <span style={productCardStyles.price}>Rs. {price.toLocaleString()}</span>
-          {oldPrice && (
-            <span style={productCardStyles.oldPrice}>Rs. {oldPrice.toLocaleString()}</span>
+    <Link href={`/shop/${slug}`} style={{ textDecoration: 'none' }}>
+      <div
+        style={productCardStyles.card}
+        onMouseEnter={(e) => handleCardHover(e, true)}
+        onMouseLeave={(e) => handleCardHover(e, false)}
+      >
+        {/* Product Photo */}
+        <div style={productCardStyles.photo}>
+          {discount && (
+            <Badge variant="pending" style={productCardStyles.discountTag}>
+              {discount}
+            </Badge>
           )}
+          <button
+            style={productCardStyles.wishlistDot}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onWishlistToggle?.(id);
+            }}
+            aria-label="Toggle wishlist"
+          >
+            {isWishlisted ? '♥' : '♡'}
+          </button>
+          {image}
         </div>
 
-        {/* Add to Cart Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          block
-          onClick={() => onAddToCart?.(id)}
-          disabled={!inStock}
-        >
-          {inStock ? 'Add to Cart' : 'Out of Stock'}
-        </Button>
+        {/* Product Info */}
+        <div style={productCardStyles.body}>
+          <div style={productCardStyles.category}>{category}</div>
+          <div style={productCardStyles.name}>{name}</div>
+
+          {/* Rating */}
+          <div style={productCardStyles.stars}>
+            ★★★★☆ {reviewCount > 0 && `(${reviewCount})`}
+          </div>
+
+          {/* Price */}
+          <div style={productCardStyles.priceRow}>
+            <span style={productCardStyles.price}>Rs. {price.toLocaleString()}</span>
+            {oldPrice && (
+              <span style={productCardStyles.oldPrice}>Rs. {oldPrice.toLocaleString()}</span>
+            )}
+          </div>
+
+          {/* Add to Cart Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            block
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onAddToCart?.(id);
+            }}
+            disabled={!inStock}
+          >
+            {inStock ? 'Add to Cart' : 'Out of Stock'}
+          </Button>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

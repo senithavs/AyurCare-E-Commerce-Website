@@ -29,6 +29,7 @@ const mockProducts = [
     oldPrice: 1700,
     discount: '-15%',
     inStock: true,
+    slug: 'ashwagandha-capsules',
   },
   {
     id: 2,
@@ -39,6 +40,7 @@ const mockProducts = [
     reviewCount: 94,
     price: 980,
     inStock: true,
+    slug: 'bhringraj-hair-oil',
   },
   {
     id: 3,
@@ -49,6 +51,7 @@ const mockProducts = [
     reviewCount: 61,
     price: 650,
     inStock: true,
+    slug: 'chamomile-wellness-tea',
   },
   {
     id: 4,
@@ -61,6 +64,7 @@ const mockProducts = [
     oldPrice: 990,
     discount: '-10%',
     inStock: true,
+    slug: 'neem-turmeric-face-wash',
   },
 ];
 

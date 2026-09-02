@@ -45,14 +45,15 @@ const shopStyles = {
 };
 
 const mockProducts = [
-  { id: 1, image: '🌿', category: 'Supplements', name: 'Triphala Tablets', rating: 4, reviewCount: 80, price: 720 },
-  { id: 2, image: '🧴', category: 'Oils', name: 'Sesame Body Oil', rating: 5, reviewCount: 45, price: 640 },
-  { id: 3, image: '🍵', category: 'Teas', name: 'Tulsi Green Tea', rating: 4, reviewCount: 60, price: 590 },
-  { id: 4, image: '✨', category: 'Skincare', name: 'Sandalwood Face Pack', rating: 5, reviewCount: 120, price: 850 },
+  { id: 1, image: '🌿', category: 'Supplements', name: 'Triphala Tablets', rating: 4, reviewCount: 80, price: 720, slug: 'triphala-tablets' },
+  { id: 2, image: '🧴', category: 'Oils', name: 'Sesame Body Oil', rating: 5, reviewCount: 45, price: 640, slug: 'sesame-body-oil' },
+  { id: 3, image: '🍵', category: 'Teas', name: 'Tulsi Green Tea', rating: 4, reviewCount: 60, price: 590, slug: 'tulsi-green-tea' },
+  { id: 4, image: '✨', category: 'Skincare', name: 'Sandalwood Face Pack', rating: 5, reviewCount: 120, price: 850, slug: 'sandalwood-face-pack' },
 ];
 
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState({
     category: ['All'],
     benefit: [],
@@ -76,6 +77,12 @@ export default function ShopPage() {
     });
   };
 
+  // Filter products based on search and filters
+  const filteredProducts = mockProducts.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
+
   return (
     <Section title="All Products">
       <div style={shopStyles.shopBody}>
@@ -84,6 +91,8 @@ export default function ShopPage() {
           <FormField
             type="text"
             placeholder="Search products…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             style={{ marginBottom: '24px' }}
           />
 
@@ -139,7 +148,7 @@ export default function ShopPage() {
         {/* Products Area */}
         <div>
           <div style={shopStyles.toolbarRow}>
-            <span>Showing 1–8 of 42 products</span>
+            <span>Showing 1–{filteredProducts.length} of {mockProducts.length} products</span>
             <select style={shopStyles.selectMini}>
               <option>Sort: Featured</option>
               <option>Price: Low to High</option>
@@ -148,9 +157,9 @@ export default function ShopPage() {
             </select>
           </div>
 
-          {mockProducts.length > 0 ? (
+          {filteredProducts.length > 0 ? (
             <>
-              <ProductGrid products={mockProducts} columns={4} />
+              <ProductGrid products={filteredProducts} columns={4} />
               <Pagination
                 currentPage={currentPage}
                 totalPages={3}
@@ -161,7 +170,7 @@ export default function ShopPage() {
             <EmptyState
               icon="🔍"
               title="No products found"
-              description="Try adjusting your filters"
+              description={searchQuery ? 'Try a different search term' : 'Try adjusting your filters'}
             />
           )}
         </div>
