@@ -1,6 +1,7 @@
 'use client';
 
 import FeatureCard from './FeatureCard';
+import styles from '@/styles/products.module.css';
 
 export default function FeatureGrid({
   features = [],
@@ -8,35 +9,20 @@ export default function FeatureGrid({
 }) {
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gridTemplateColumns: 'repeat(4, 1fr)',
     gap: '20px',
   };
 
   return (
-    <>
-      <div style={gridStyle} className={className}>
-        {features.map((feature, idx) => (
-          <FeatureCard
-            key={idx}
-            icon={feature.icon}
-            title={feature.title}
-            description={feature.description}
-          />
-        ))}
-      </div>
-      <style>{`
-        @media (max-width: 1024px) {
-          [data-feature-grid] {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-        @media (max-width: 768px) {
-          [data-feature-grid] {
-            grid-template-columns: 1fr;
-            gap: 16px;
-          }
-        }
-      `}</style>
-    </>
+    <div style={gridStyle} className={className}>
+      {features.map((feature, idx) => (
+        <FeatureCard
+          key={idx}
+          icon={feature.icon}
+          title={feature.title}
+          description={feature.description}
+        />
+      ))}
+    </div>
   );
 }

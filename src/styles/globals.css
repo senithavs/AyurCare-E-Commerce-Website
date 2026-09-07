@@ -133,25 +133,103 @@ textarea {
   background: var(--green-500);
 }
 
-/* Responsive Media Query */
-@media (max-width: 900px) {
+/* Responsive Media Queries */
+
+/* DESKTOP: 1024px and up */
+@media (max-width: 1024px) {
   :root {
     font-size: 15px;
   }
 }
 
+/* TABLET: 768px - 1023px */
 @media (max-width: 768px) {
   :root {
     font-size: 14px;
   }
-  
+
   body {
     padding: 0;
   }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+  p {
+    font-size: 13px;
+  }
 }
 
+/* MOBILE: 480px - 767px */
 @media (max-width: 480px) {
   :root {
     font-size: 13px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  h4 {
+    font-size: 12px;
+  }
+
+  p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: 12px;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 13px;
+  }
+}
+
+/* SMALL MOBILE: < 375px */
+@media (max-width: 374px) {
+  :root {
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 14px;
+  }
+
+  h3 {
+    font-size: 12px;
+  }
+
+  p {
+    font-size: 11px;
   }
 }

@@ -85,6 +85,35 @@
   cursor: not-allowed;
 }
 
+/* ========== RESPONSIVE - BUTTONS ========== */
+@media (max-width: 768px) {
+  .btn {
+    padding: 9px 18px;
+    font-size: 12px;
+  }
+
+  .btnSm {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+
+  .btnSm {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .btnBlock {
+    width: 100%;
+  }
+}
+
 /* ========== CARD STYLES ========== */
 .card {
   border: 1px solid var(--line);
@@ -383,23 +412,34 @@
   font-weight: 600;
 }
 
-/* ========== ICON ========== */
-.icon {
-  font-size: 14px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* ========== RESPONSIVE - Form Fields ========== */
+@media (max-width: 768px) {
+  .formInput,
+  .formSelect,
+  .formTextarea {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .formLabel {
+    font-size: 11px;
+  }
 }
 
-.iconSm {
-  font-size: 12px;
-}
+@media (max-width: 480px) {
+  .formInput,
+  .formSelect,
+  .formTextarea {
+    padding: 8px 10px;
+    font-size: 11px;
+    width: 100%;
+  }
 
-.iconMd {
-  font-size: 20px;
-}
+  .formLabel {
+    font-size: 10px;
+  }
 
-.iconLg {
-  font-size: 28px;
+  .formField {
+    margin-bottom: 12px;
+  }
 }

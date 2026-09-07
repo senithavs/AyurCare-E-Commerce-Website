@@ -1,6 +1,25 @@
 'use client';
 
 import ProductCard from './ProductCard';
+import styles from '@/styles/products.module.css';
+
+const gridStyles = {
+  grid4: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '20px',
+  },
+  grid3: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '20px',
+  },
+  grid2: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '20px',
+  },
+};
 
 export default function ProductGrid({
   products = [],
@@ -9,43 +28,24 @@ export default function ProductGrid({
   onWishlistToggle,
   className = '',
 }) {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))`,
-    gap: '20px',
+  const columnMap = {
+    4: gridStyles.grid4,
+    3: gridStyles.grid3,
+    2: gridStyles.grid2,
   };
 
+  const gridStyle = columnMap[columns] || gridStyles.grid4;
+
   return (
-    <>
-      <div style={gridStyle} className={className}>
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            {...product}
-            onAddToCart={onAddToCart}
-            onWishlistToggle={onWishlistToggle}
-          />
-        ))}
-      </div>
-      <style>{`
-        @media (max-width: 1200px) {
-          [data-product-grid] {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          }
-        }
-        @media (max-width: 768px) {
-          [data-product-grid] {
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-          }
-        }
-        @media (max-width: 480px) {
-          [data-product-grid] {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-          }
-        }
-      `}</style>
-    </>
+    <div style={gridStyle} className={className}>
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          {...product}
+          onAddToCart={onAddToCart}
+          onWishlistToggle={onWishlistToggle}
+        />
+      ))}
+    </div>
   );
 }
