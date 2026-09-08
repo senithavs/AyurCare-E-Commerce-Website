@@ -80,7 +80,7 @@ export default function Hero({
         >
           {description}
         </p>
-        <div style={{ display: 'flex', gap: '18px', justifyContent: 'left', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '18px', justifyContent: 'left' }}>
           {ctaButtons.map((btn, idx) => (
             <Button
               key={idx}
@@ -95,85 +95,24 @@ export default function Hero({
 
       {/* Responsive */}
       <style>{`
-        /* Tablet: 1024px */
-        @media (max-width: 1024px) {
-          [data-hero-container] {
-            min-height: 500px;
+        @media (max-width: 900px) {
+          [data-hero-section] {
+            minHeight: 350px;
+            padding: 40px 20px;
           }
           [data-hero-content] {
-            padding: 48px 40px !important;
-            max-width: 700px !important;
-          }
-          [data-hero-content] h1 {
-            font-size: 36px !important;
+            padding: 40px 20px !important;
           }
         }
-
-        /* Tablet: 768px */
-        @media (max-width: 768px) {
-          [data-hero-container] {
-            min-height: 380px;
-            background-attachment: scroll;
-          }
-          [data-hero-content] {
-            padding: 32px 24px !important;
-            max-width: 100% !important;
-          }
-          [data-hero-content] h1 {
-            font-size: 28px !important;
-            margin: 12px 0 10px !important;
-          }
-          [data-hero-content] p {
-            font-size: 12px !important;
-            margin: 0 0 18px !important;
-          }
-          [data-hero-buttons] {
-            gap: 12px !important;
-          }
-        }
-
-        /* Mobile: 480px */
         @media (max-width: 480px) {
-          [data-hero-container] {
-            min-height: 280px;
-            padding: 12px;
-          }
-          [data-hero-content] {
-            padding: 20px 16px !important;
-            max-width: 100% !important;
+          [data-hero-section] {
+            minHeight: 280px;
           }
           [data-hero-content] h1 {
-            font-size: 20px !important;
-            margin: 10px 0 8px !important;
+            fontSize: 28px !important;
           }
           [data-hero-content] p {
-            font-size: 11px !important;
-            margin: 0 0 14px !important;
-          }
-          [data-hero-buttons] {
-            gap: 8px !important;
-            flex-direction: column;
-          }
-          [data-hero-buttons] button {
-            width: 100%;
-            font-size: 11px !important;
-          }
-        }
-
-        /* Small Mobile: < 375px */
-        @media (max-width: 374px) {
-          [data-hero-container] {
-            min-height: 240px;
-            padding: 8px;
-          }
-          [data-hero-content] {
-            padding: 16px 12px !important;
-          }
-          [data-hero-content] h1 {
-            font-size: 18px !important;
-          }
-          [data-hero-content] p {
-            font-size: 10px !important;
+            fontSize: 13px !important;
           }
         }
       `}</style>

@@ -1,7 +1,6 @@
 'use client';
 
 import FeatureCard from './FeatureCard';
-import styles from '@/styles/products.module.css';
 
 export default function FeatureGrid({
   features = [],

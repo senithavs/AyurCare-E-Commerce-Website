@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
@@ -13,40 +12,18 @@ export default function Header({
   onSearchChange,
 }) {
   const router = useRouter();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleCartClick = () => {
     router.push('/cart');
   };
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
-
   return (
-    <header className={styles.siteHeader} style={{ position: 'relative' }}>
+    <header className={styles.siteHeader}>
       <Link href="/" className={styles.logo}>
         <img src='/logo.png' alt="AyurCare Logo"></img>
       </Link>
 
-      {/* Hamburger Menu Button - Mobile Only */}
-      <button
-        className={styles.hamburger}
-        onClick={toggleMobileMenu}
-        aria-label="Toggle menu"
-        aria-expanded={mobileMenuOpen}
-      >
-        {mobileMenuOpen ? '✕' : '☰'}
-      </button>
-
-      {/* Desktop Navigation */}
-      <nav className={styles.navLinks} style={{
-        order: 2,
-      }}>
+      <nav className={styles.navLinks}>
         <Link href="/" className={styles.navLink}>
           Home
         </Link>
@@ -64,35 +41,7 @@ export default function Header({
         </Link>
       </nav>
 
-      {/* Mobile Navigation Menu */}
-      <nav className={`${styles.mobileNav} ${mobileMenuOpen ? styles.open : ''}`}>
-        <Link href="/" className={styles.navLink} onClick={closeMobileMenu}>
-          Home
-        </Link>
-        <Link href="/shop" className={styles.navLink} onClick={closeMobileMenu}>
-          Shop
-        </Link>
-        <Link href="/categories" className={styles.navLink} onClick={closeMobileMenu}>
-          Categories
-        </Link>
-        <Link href="/about" className={styles.navLink} onClick={closeMobileMenu}>
-          About
-        </Link>
-        <Link href="/contact" className={styles.navLink} onClick={closeMobileMenu}>
-          Contact
-        </Link>
-      </nav>
-
-      {/* Search Bar & Actions */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: '16px', 
-        order: 3,
-        marginLeft: 'auto',
-        flexWrap: 'wrap',
-        width: '100%',
-      }}>
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
         {/* Search Bar */}
         <input
           type="text"
@@ -107,7 +56,6 @@ export default function Header({
             width: '180px',
             fontFamily: 'inherit',
             color: 'var(--charcoal)',
-            flex: '0 0 auto',
           }}
         />
 

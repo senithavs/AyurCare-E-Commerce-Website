@@ -92,15 +92,14 @@ export default function CheckoutForm({
   return (
     <div>
       {/* Stepper */}
-      <div style={checkoutStyles.stepper} data-stepper>
+      <div style={checkoutStyles.stepper}>
         {steps.map((step, idx) => (
-          <div key={step.number} style={checkoutStyles.step} data-step>
+          <div key={step.number} style={checkoutStyles.step}>
             <div
               style={{
                 ...checkoutStyles.circ,
                 ...(currentStep >= step.number ? checkoutStyles.circActive : {}),
               }}
-              data-circ
             >
               {currentStep > step.number ? '✓' : step.number}
             </div>
@@ -109,22 +108,21 @@ export default function CheckoutForm({
                 ...checkoutStyles.stxt,
                 color: currentStep >= step.number ? 'var(--green-900)' : 'var(--charcoal-60)',
               }}
-              data-stxt
             >
               {step.label}
             </div>
-            {idx < steps.length - 1 && <div style={checkoutStyles.stepLine} data-step-line /></}
+            {idx < steps.length - 1 && <div style={checkoutStyles.stepLine} />}
           </div>
         ))}
       </div>
 
       {/* Form Content */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '30px' }} data-checkout-grid>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '30px' }}>
         <form onSubmit={handleSubmit}>
           {currentStep === 1 && (
             <>
               <h3 style={{ fontSize: '14px' }}>Delivery Information</h3>
-              <div style={checkoutStyles.formGrid} data-form-grid>
+              <div style={checkoutStyles.formGrid}>
                 <FormField
                   label="Full Name"
                   name="fullName"
@@ -173,7 +171,7 @@ export default function CheckoutForm({
           {currentStep === 3 && (
             <>
               <h3 style={{ fontSize: '14px' }}>Payment (Sandbox)</h3>
-              <div style={checkoutStyles.formGrid} data-form-grid>
+              <div style={checkoutStyles.formGrid}>
                 <FormField
                   label="Card Number"
                   name="cardNumber"
@@ -206,7 +204,7 @@ export default function CheckoutForm({
             </>
           )}
 
-          <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }} data-form-buttons>
+          <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
             {currentStep > 1 && (
               <Button
                 type="button"
@@ -242,7 +240,6 @@ export default function CheckoutForm({
             background: 'var(--beige-200)',
             height: 'fit-content',
           }}
-          data-order-summary
         >
           <h4 style={{ marginTop: 0 }}>Order Summary</h4>
           {orderItems.map((item, idx) => (
@@ -277,76 +274,6 @@ export default function CheckoutForm({
           </div>
         </div>
       </div>
-
-      {/* Responsive Styles */}
-      <style>{`
-        /* TABLET: 768px */
-        @media (max-width: 768px) {
-          [data-checkout-grid] {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
-          }
-          [data-stepper] {
-            gap: 4px !important;
-          }
-          [data-stepper] [data-step-line] {
-            width: 40px !important;
-            margin: 0 6px !important;
-          }
-          [data-form-buttons] {
-            flex-direction: column !important;
-          }
-          [data-form-buttons] button {
-            width: 100% !important;
-            font-size: 12px !important;
-          }
-          [data-order-summary] {
-            height: auto !important;
-          }
-        }
-
-        /* MOBILE: 480px */
-        @media (max-width: 480px) {
-          [data-form-grid] {
-            grid-template-columns: 1fr !important;
-            gap: 12px !important;
-          }
-          [data-stepper] {
-            gap: 0 !important;
-            font-size: 10px !important;
-          }
-          [data-stepper] [data-circ] {
-            width: 24px !important;
-            height: 24px !important;
-            font-size: 10px !important;
-          }
-          [data-stepper] [data-stxt] {
-            display: none !important;
-          }
-          [data-stepper] [data-step-line] {
-            width: 24px !important;
-            margin: 0 2px !important;
-          }
-          [data-form-buttons] {
-            flex-direction: column !important;
-          }
-          [data-form-buttons] button {
-            width: 100% !important;
-            font-size: 11px !important;
-            padding: 8px 16px !important;
-          }
-        }
-
-        /* SMALL MOBILE: < 375px */
-        @media (max-width: 374px) {
-          [data-checkout-grid] {
-            gap: 12px !important;
-          }
-          [data-stepper] {
-            margin-bottom: 24px !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }

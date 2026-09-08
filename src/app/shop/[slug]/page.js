@@ -319,7 +319,6 @@ const detailStyles = {
     alignItems: 'center',
     gap: '10px',
     margin: '14px 0',
-    flexWrap: 'wrap',
   },
   price: {
     fontSize: '28px',
@@ -340,7 +339,6 @@ const detailStyles = {
     alignItems: 'center',
     gap: '14px',
     margin: '24px 0',
-    flexWrap: 'wrap',
   },
   tabs: {
     display: 'flex',
@@ -348,7 +346,6 @@ const detailStyles = {
     borderBottom: '1px solid var(--line)',
     margin: '38px 0 18px',
     fontSize: '13px',
-    overflowX: 'auto',
   },
   tab: {
     paddingBottom: '12px',
@@ -419,16 +416,15 @@ export default function ProductPage({ params }) {
         />
 
         {/* Product Grid */}
-        <div style={detailStyles.grid} data-product-detail-grid>
+        <div style={detailStyles.grid}>
           {/* Gallery */}
           <div>
-            <div style={detailStyles.gallery} data-product-gallery>{product.image}</div>
-            <div style={detailStyles.thumbs} data-product-thumbs>
+            <div style={detailStyles.gallery}>{product.image}</div>
+            <div style={detailStyles.thumbs}>
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
                   style={detailStyles.thumb}
-                  data-product-thumb
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = 'var(--green-700)';
                     e.currentTarget.style.transform = 'scale(1.05)';
@@ -445,7 +441,7 @@ export default function ProductPage({ params }) {
           {/* Details */}
           <div>
             <div style={detailStyles.category}>{product.category}</div>
-            <h1 style={detailStyles.title} data-product-title>{product.name}</h1>
+            <h1 style={detailStyles.title}>{product.name}</h1>
             <div style={{ color: 'var(--gold)', fontSize: '14px', margin: '4px 0 12px' }}>
               {'★'.repeat(Math.floor(product.rating))}
               {'☆'.repeat(5 - Math.floor(product.rating))} &nbsp;{product.rating} ({product.reviewCount}{' '}
@@ -453,7 +449,7 @@ export default function ProductPage({ params }) {
             </div>
 
             <div style={detailStyles.priceRow}>
-              <span style={detailStyles.price} data-product-price>Rs. {product.price.toLocaleString()}</span>
+              <span style={detailStyles.price}>Rs. {product.price.toLocaleString()}</span>
               {product.oldPrice && (
                 <span style={{ fontSize: '14px', color: 'var(--charcoal-60)', textDecoration: 'line-through' }}>
                   Rs. {product.oldPrice.toLocaleString()}
@@ -494,7 +490,7 @@ export default function ProductPage({ params }) {
             </div>
 
             {/* Tabs */}
-            <div style={detailStyles.tabs} data-product-tabs>
+            <div style={detailStyles.tabs}>
               {['description', 'ingredients', 'dosage', 'usage'].map((tab) => (
                 <button
                   key={tab}
@@ -503,7 +499,6 @@ export default function ProductPage({ params }) {
                     ...(activeTab === tab ? detailStyles.tabActive : {}),
                   }}
                   onClick={() => setActiveTab(tab)}
-                  data-product-tab
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
@@ -567,85 +562,6 @@ export default function ProductPage({ params }) {
           columns={4}
         />
       </Section>
-
-      {/* Responsive Styles */}
-      <style>{`
-        /* TABLET: 768px */
-        @media (max-width: 768px) {
-          [data-product-detail-grid] {
-            grid-template-columns: 1fr !important;
-            gap: 28px !important;
-          }
-          [data-product-gallery] {
-            height: 340px !important;
-            font-size: 64px !important;
-          }
-          [data-product-title] {
-            font-size: 22px !important;
-          }
-          [data-product-price] {
-            font-size: 22px !important;
-          }
-          [data-product-tabs] {
-            gap: 16px !important;
-          }
-          [data-product-tab] {
-            font-size: 12px !important;
-            padding-bottom: 10px !important;
-          }
-        }
-
-        /* MOBILE: 480px */
-        @media (max-width: 480px) {
-          [data-product-gallery] {
-            height: 280px !important;
-            font-size: 48px !important;
-          }
-          [data-product-title] {
-            font-size: 18px !important;
-            margin: 0 0 4px !important;
-          }
-          [data-product-category] {
-            font-size: 9px !important;
-          }
-          [data-product-price] {
-            font-size: 20px !important;
-          }
-          [data-product-description] {
-            font-size: 12px !important;
-            margin: 0 0 16px !important;
-          }
-          [data-product-tabs] {
-            gap: 12px !important;
-            margin: 24px 0 12px !important;
-          }
-          [data-product-tab] {
-            font-size: 11px !important;
-            padding-bottom: 8px !important;
-          }
-          [data-product-thumbs] {
-            gap: 6px !important;
-          }
-          [data-product-thumb] {
-            width: 48px !important;
-            height: 48px !important;
-          }
-        }
-
-        /* SMALL MOBILE: < 375px */
-        @media (max-width: 374px) {
-          [data-product-gallery] {
-            height: 240px !important;
-            font-size: 40px !important;
-          }
-          [data-product-title] {
-            font-size: 16px !important;
-          }
-          [data-product-price] {
-            font-size: 18px !important;
-          }
-        }
-      `}</style>
     </LayoutWrapper>
   );
 }

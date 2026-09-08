@@ -35,46 +35,12 @@ const shopStyles = {
     marginBottom: '18px',
     fontSize: '12.5px',
     color: 'var(--charcoal-60)',
-    flexWrap: 'wrap',
-    gap: '12px',
   },
   selectMini: {
     border: '1px solid var(--line)',
     borderRadius: '8px',
     padding: '8px 12px',
     fontSize: '12px',
-  },
-  filterBtn: {
-    background: 'none',
-    border: '1px solid var(--line)',
-    borderRadius: '8px',
-    padding: '8px 12px',
-    fontSize: '12px',
-    cursor: 'pointer',
-    color: 'var(--charcoal-60)',
-    display: 'none',
-    transition: 'all 0.2s ease',
-  },
-  filterDrawer: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'rgba(0, 0, 0, 0.5)',
-    display: 'none',
-    zIndex: 200,
-  },
-  filterPanel: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
-    width: '280px',
-    background: '#fff',
-    padding: '20px 16px',
-    overflowY: 'auto',
-    zIndex: 201,
   },
 };
 
@@ -88,7 +54,6 @@ const mockProducts = [
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterOpen, setFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     category: ['All'],
     benefit: [],
@@ -118,150 +83,98 @@ export default function ShopPage() {
     return matchesSearch;
   });
 
-  const FilterContent = () => (
-    <>
-      <FormField
-        type="text"
-        placeholder="Search products…"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: '24px' }}
-      />
-
-      {/* Category Filter */}
-      <div style={shopStyles.filterBlock}>
-        <div style={shopStyles.filterTitle}>Category</div>
-        <div style={shopStyles.filterChipRow}>
-          {['All', 'Supplements', 'Oils', 'Skincare', 'Teas'].map((cat) => (
-            <Chip
-              key={cat}
-              active={selectedFilters.category.includes(cat)}
-              onClick={() => handleFilterToggle('category', cat)}
-            >
-              {cat}
-            </Chip>
-          ))}
-        </div>
-      </div>
-
-      {/* Health Benefit Filter */}
-      <div style={shopStyles.filterBlock}>
-        <div style={shopStyles.filterTitle}>Health Benefit</div>
-        <div style={shopStyles.filterChipRow}>
-          {['Immunity', 'Sleep', 'Skin', 'Digestion'].map((benefit) => (
-            <Chip
-              key={benefit}
-              active={selectedFilters.benefit.includes(benefit)}
-              onClick={() => handleFilterToggle('benefit', benefit)}
-            >
-              {benefit}
-            </Chip>
-          ))}
-        </div>
-      </div>
-
-      {/* Availability Filter */}
-      <div style={shopStyles.filterBlock}>
-        <div style={shopStyles.filterTitle}>Availability</div>
-        <div style={shopStyles.filterChipRow}>
-          {['In Stock', 'Pre-order'].map((avail) => (
-            <Chip
-              key={avail}
-              active={selectedFilters.availability.includes(avail)}
-              onClick={() => handleFilterToggle('availability', avail)}
-            >
-              {avail}
-            </Chip>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-
   return (
-    <>
-      <Section title="All Products">
-        <div style={shopStyles.shopBody}>
-          {/* Filters Sidebar - Desktop */}
-          <div style={{ display: 'block' }}>
-            <FilterContent />
+    <Section title="All Products">
+      <div style={shopStyles.shopBody}>
+        {/* Filters Sidebar */}
+        <div>
+          <FormField
+            type="text"
+            placeholder="Search products…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ marginBottom: '24px' }}
+          />
+
+          {/* Category Filter */}
+          <div style={shopStyles.filterBlock}>
+            <div style={shopStyles.filterTitle}>Category</div>
+            <div style={shopStyles.filterChipRow}>
+              {['All', 'Supplements', 'Oils', 'Skincare', 'Teas'].map((cat) => (
+                <Chip
+                  key={cat}
+                  active={selectedFilters.category.includes(cat)}
+                  onClick={() => handleFilterToggle('category', cat)}
+                >
+                  {cat}
+                </Chip>
+              ))}
+            </div>
           </div>
 
-          {/* Products Area */}
-          <div>
-            <div style={shopStyles.toolbarRow}>
-              <span style={{ flex: '1 0 auto' }}>Showing 1–{filteredProducts.length} of {mockProducts.length}</span>
-              <button
-                style={shopStyles.filterBtn}
-                onClick={() => setFilterOpen(!filterOpen)}
-                aria-label="Toggle filters"
-              >
-                ☰ Filters
-              </button>
-              <select style={shopStyles.selectMini}>
-                <option>Sort: Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Newest</option>
-              </select>
+          {/* Health Benefit Filter */}
+          <div style={shopStyles.filterBlock}>
+            <div style={shopStyles.filterTitle}>Health Benefit</div>
+            <div style={shopStyles.filterChipRow}>
+              {['Immunity', 'Sleep', 'Skin', 'Digestion'].map((benefit) => (
+                <Chip
+                  key={benefit}
+                  active={selectedFilters.benefit.includes(benefit)}
+                  onClick={() => handleFilterToggle('benefit', benefit)}
+                >
+                  {benefit}
+                </Chip>
+              ))}
             </div>
+          </div>
 
-            {filteredProducts.length > 0 ? (
-              <>
-                <ProductGrid products={filteredProducts} columns={4} />
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={3}
-                  onPageChange={setCurrentPage}
-                />
-              </>
-            ) : (
-              <EmptyState
-                icon="🔍"
-                title="No products found"
-                description={searchQuery ? 'Try a different search term' : 'Try adjusting your filters'}
-              />
-            )}
+          {/* Availability Filter */}
+          <div style={shopStyles.filterBlock}>
+            <div style={shopStyles.filterTitle}>Availability</div>
+            <div style={shopStyles.filterChipRow}>
+              {['In Stock', 'Pre-order'].map((avail) => (
+                <Chip
+                  key={avail}
+                  active={selectedFilters.availability.includes(avail)}
+                  onClick={() => handleFilterToggle('availability', avail)}
+                >
+                  {avail}
+                </Chip>
+              ))}
+            </div>
           </div>
         </div>
-      </Section>
 
-      {/* Mobile Filter Drawer */}
-      <div
-        style={{
-          ...shopStyles.filterDrawer,
-          display: filterOpen ? 'block' : 'none',
-        }}
-        onClick={() => setFilterOpen(false)}
-      >
-        <div
-          style={shopStyles.filterPanel}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3 style={{ margin: 0, fontSize: '14px' }}>Filters</h3>
-            <button
-              onClick={() => setFilterOpen(false)}
-              style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer' }}
-            >
-              ✕
-            </button>
+        {/* Products Area */}
+        <div>
+          <div style={shopStyles.toolbarRow}>
+            <span>Showing 1–{filteredProducts.length} of {mockProducts.length} products</span>
+            <select style={shopStyles.selectMini}>
+              <option>Sort: Featured</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Newest</option>
+            </select>
           </div>
-          <FilterContent />
+
+          {filteredProducts.length > 0 ? (
+            <>
+              <ProductGrid products={filteredProducts} columns={4} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={3}
+                onPageChange={setCurrentPage}
+              />
+            </>
+          ) : (
+            <EmptyState
+              icon="🔍"
+              title="No products found"
+              description={searchQuery ? 'Try a different search term' : 'Try adjusting your filters'}
+            />
+          )}
         </div>
       </div>
-
-      {/* Mobile Filter Button Show CSS */}
-      <style>{`
-        @media (max-width: 768px) {
-          [data-filter-btn] {
-            display: inline-block !important;
-          }
-          [data-filter-sidebar] {
-            display: none !important;
-          }
-        }
-      `}</style>
-    </>
+    </Section>
   );
 }

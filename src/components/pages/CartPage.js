@@ -15,13 +15,6 @@ const cartStyles = {
     fontSize: '16px',
     fontWeight: 600,
   },
-  buttonRow: {
-    display: 'flex',
-    gap: '12px',
-    justifyContent: 'flex-end',
-    marginTop: '24px',
-    flexWrap: 'wrap',
-  },
 };
 
 const mockCartItems = [
@@ -83,7 +76,7 @@ export default function CartPage() {
 
   return (
     <Section title="Shopping Cart">
-      <div style={cartStyles.grid} data-cart-grid>
+      <div style={cartStyles.grid}>
         {/* Cart Items */}
         <div>
           <h2 style={cartStyles.heading}>Your Cart ({items.length} items)</h2>
@@ -107,7 +100,7 @@ export default function CartPage() {
         />
       </div>
 
-      <div style={cartStyles.buttonRow} data-cart-buttons>
+      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
         <Button variant="outline" onClick={() => window.location.href = '/shop'}>
           Continue Shopping
         </Button>
@@ -115,40 +108,6 @@ export default function CartPage() {
           Proceed to Checkout
         </Button>
       </div>
-
-      {/* Responsive Styles */}
-      <style>{`
-        /* TABLET: 768px */
-        @media (max-width: 768px) {
-          [data-cart-grid] {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
-          }
-          [data-cart-buttons] {
-            justify-content: stretch !important;
-            gap: 8px !important;
-          }
-          [data-cart-buttons] button {
-            flex: 1 !important;
-            font-size: 12px !important;
-          }
-        }
-
-        /* MOBILE: 480px */
-        @media (max-width: 480px) {
-          [data-cart-grid] {
-            gap: 16px !important;
-          }
-          [data-cart-buttons] {
-            flex-direction: column !important;
-            justify-content: stretch !important;
-          }
-          [data-cart-buttons] button {
-            width: 100% !important;
-            font-size: 11px !important;
-          }
-        }
-      `}</style>
     </Section>
   );
 }

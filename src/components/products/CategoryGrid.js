@@ -1,7 +1,6 @@
 'use client';
 
 import CategoryCard from './CategoryCard';
-import styles from '@/styles/products.module.css';
 
 export default function CategoryGrid({
   categories = [],

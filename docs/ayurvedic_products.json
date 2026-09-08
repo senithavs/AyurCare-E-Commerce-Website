@@ -1,0 +1,1902 @@
+[
+  {
+    "product_id": "AYU-001",
+    "name": "ත්‍රිඵලා චූර්ණය (100g)",
+    "name_en": "Triphala Churna - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1760.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-001",
+      "image_url": "https://images.example.com/ayurveda/ayu-001.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-002",
+    "name": "ත්‍රිඵලා චූර්ණය (250g)",
+    "name_en": "Triphala Churna - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 910.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-002",
+      "image_url": "https://images.example.com/ayurveda/ayu-002.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-003",
+    "name": "අශ්වගන්ධා කැප්සියුල (100g)",
+    "name_en": "Ashwagandha Capsules - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1660.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-003",
+      "image_url": "https://images.example.com/ayurveda/ayu-003.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-004",
+    "name": "අශ්වගන්ධා කැප්සියුල (250g)",
+    "name_en": "Ashwagandha Capsules - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 930.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-004",
+      "image_url": "https://images.example.com/ayurveda/ayu-004.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-005",
+    "name": "බ්‍රාහ්මී පෙති (100g)",
+    "name_en": "Brahmi Tablets - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1920.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "ස්වාභාවික ශක්තියක් ලබා දෙයි",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-005",
+      "image_url": "https://images.example.com/ayurveda/ayu-005.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-006",
+    "name": "බ්‍රාහ්මී පෙති (250g)",
+    "name_en": "Brahmi Tablets - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1370.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "ආහාර දිරවීමට උපකාරී වේ",
+      "ස්වාභාවික ශක්තියක් ලබා දෙයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-006",
+      "image_url": "https://images.example.com/ayurveda/ayu-006.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-007",
+    "name": "ගොටුකොළ සාරය කැප්සියුල (100g)",
+    "name_en": "Gotukola Extract Capsules - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1150.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට උපකාරී වේ",
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-007",
+      "image_url": "https://images.example.com/ayurveda/ayu-007.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-008",
+    "name": "ගොටුකොළ සාරය කැප්සියුල (250g)",
+    "name_en": "Gotukola Extract Capsules - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 640.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ආතතිය අවම කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-008",
+      "image_url": "https://images.example.com/ayurveda/ayu-008.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-009",
+    "name": "කොහොඹ කැප්සියුල (100g)",
+    "name_en": "Neem Capsules - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 2100.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වාභාවික ශක්තියක් ලබා දෙයි",
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-009",
+      "image_url": "https://images.example.com/ayurveda/ayu-009.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-010",
+    "name": "කොහොඹ කැප්සියුල (250g)",
+    "name_en": "Neem Capsules - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1220.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-010",
+      "image_url": "https://images.example.com/ayurveda/ayu-010.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-011",
+    "name": "කහ (කුර්කුමින්) කැප්සියුල (100g)",
+    "name_en": "Turmeric Curcumin Capsules - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1630.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-011",
+      "image_url": "https://images.example.com/ayurveda/ayu-011.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-012",
+    "name": "කහ (කුර්කුමින්) කැප්සියුල (250g)",
+    "name_en": "Turmeric Curcumin Capsules - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 2030.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "ආහාර දිරවීමට උපකාරී වේ",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-012",
+      "image_url": "https://images.example.com/ayurveda/ayu-012.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-013",
+    "name": "ශතාවරී කුඩු (100g)",
+    "name_en": "Shatavari Powder - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1230.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-013",
+      "image_url": "https://images.example.com/ayurveda/ayu-013.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-014",
+    "name": "ශතාවරී කුඩු (250g)",
+    "name_en": "Shatavari Powder - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1210.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-014",
+      "image_url": "https://images.example.com/ayurveda/ayu-014.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-015",
+    "name": "රසකින්ද කුඩු (100g)",
+    "name_en": "Rasakinda (Guduchi) Powder - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1700.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "ආහාර දිරවීමට උපකාරී වේ",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-015",
+      "image_url": "https://images.example.com/ayurveda/ayu-015.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-016",
+    "name": "රසකින්ද කුඩු (250g)",
+    "name_en": "Rasakinda (Guduchi) Powder - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1400.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ",
+      "ආතතිය අවම කිරීමට උපකාරී වේ",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-016",
+      "image_url": "https://images.example.com/ayurveda/ayu-016.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-017",
+    "name": "නෙල්ලි කුඩු (100g)",
+    "name_en": "Amla (Nelli) Powder - 100g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 1850.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "ආහාර දිරවීමට උපකාරී වේ",
+      "සන්ධි සෞඛ්‍යයට හිතකර වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-017",
+      "image_url": "https://images.example.com/ayurveda/ayu-017.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-018",
+    "name": "නෙල්ලි කුඩු (250g)",
+    "name_en": "Amla (Nelli) Powder - 250g",
+    "category": "Herbal Supplements",
+    "category_si": "ඖෂධීය අතිරේක",
+    "price": 2100.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරයේ විෂ ඉවත් කිරීමට සහාය වේ",
+      "ප්‍රතිශක්තිකරණ පද්ධතිය ශක්තිමත් කරයි",
+      "ආහාර දිරවීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-018",
+      "image_url": "https://images.example.com/ayurveda/ayu-018.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-019",
+    "name": "තල තෙල් (100ml)",
+    "name_en": "Pure Sesame Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1890.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම මෘදු හා පෝෂණය කරයි",
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-019",
+      "image_url": "https://images.example.com/ayurveda/ayu-019.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-020",
+    "name": "තල තෙල් (200ml)",
+    "name_en": "Pure Sesame Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1180.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-020",
+      "image_url": "https://images.example.com/ayurveda/ayu-020.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-021",
+    "name": "ඖෂධමය පොල් තෙල් (100ml)",
+    "name_en": "Herbal Coconut Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2350.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම මෘදු හා පෝෂණය කරයි",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි",
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-021",
+      "image_url": "https://images.example.com/ayurveda/ayu-021.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-022",
+    "name": "ඖෂධමය පොල් තෙල් (200ml)",
+    "name_en": "Herbal Coconut Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1170.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "හිසකෙස් වර්ධනයට උපකාරී වේ",
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-022",
+      "image_url": "https://images.example.com/ayurveda/ayu-022.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-023",
+    "name": "බ්‍රාහ්මී තෙල් (100ml)",
+    "name_en": "Brahmi Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1230.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "සම මෘදු හා පෝෂණය කරයි",
+      "හිසකෙස් වර්ධනයට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-023",
+      "image_url": "https://images.example.com/ayurveda/ayu-023.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-024",
+    "name": "බ්‍රාහ්මී තෙල් (200ml)",
+    "name_en": "Brahmi Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2180.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම මෘදු හා පෝෂණය කරයි",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-024",
+      "image_url": "https://images.example.com/ayurveda/ayu-024.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-025",
+    "name": "කොහොඹ තෙල් (100ml)",
+    "name_en": "Neem Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 650.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "හිසකෙස් වර්ධනයට උපකාරී වේ",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-025",
+      "image_url": "https://images.example.com/ayurveda/ayu-025.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-026",
+    "name": "කොහොඹ තෙල් (200ml)",
+    "name_en": "Neem Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1990.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම මෘදු හා පෝෂණය කරයි",
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-026",
+      "image_url": "https://images.example.com/ayurveda/ayu-026.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-027",
+    "name": "මහනාරායන තෙල් (100ml)",
+    "name_en": "Mahanarayan Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 610.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි",
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-027",
+      "image_url": "https://images.example.com/ayurveda/ayu-027.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-028",
+    "name": "මහනාරායන තෙල් (200ml)",
+    "name_en": "Mahanarayan Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2680.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි",
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-028",
+      "image_url": "https://images.example.com/ayurveda/ayu-028.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-029",
+    "name": "ධන්වන්තරම් තෙල් (100ml)",
+    "name_en": "Dhanwantharam Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1230.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ",
+      "හිසකෙස් වර්ධනයට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-029",
+      "image_url": "https://images.example.com/ayurveda/ayu-029.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-030",
+    "name": "ධන්වන්තරම් තෙල් (200ml)",
+    "name_en": "Dhanwantharam Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1930.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "හිසකෙස් වර්ධනයට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි",
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-030",
+      "image_url": "https://images.example.com/ayurveda/ayu-030.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-031",
+    "name": "කරදපත්ත තෙල් (100ml)",
+    "name_en": "Karapincha (Curry Leaf) Hair Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1580.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ",
+      "හිසකෙස් වර්ධනයට උපකාරී වේ",
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-031",
+      "image_url": "https://images.example.com/ayurveda/ayu-031.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-032",
+    "name": "කරදපත්ත තෙල් (200ml)",
+    "name_en": "Karapincha (Curry Leaf) Hair Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2590.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "නින්ද වැඩි දියුණු කිරීමට උපකාරී වේ",
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-032",
+      "image_url": "https://images.example.com/ayurveda/ayu-032.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-033",
+    "name": "නිල් අවාරිය තෙල් (100ml)",
+    "name_en": "Bhringraj Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2550.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි",
+      "සම මෘදු හා පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-033",
+      "image_url": "https://images.example.com/ayurveda/ayu-033.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-034",
+    "name": "නිල් අවාරිය තෙල් (200ml)",
+    "name_en": "Bhringraj Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 1470.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-034",
+      "image_url": "https://images.example.com/ayurveda/ayu-034.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-035",
+    "name": "සුවඳ කුරුඳු මසාජ් තෙල් (100ml)",
+    "name_en": "Cinnamon Massage Oil - 100ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2230.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "රුධිර සංසරණය වැඩි දියුණු කරයි",
+      "සම මෘදු හා පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-035",
+      "image_url": "https://images.example.com/ayurveda/ayu-035.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-036",
+    "name": "සුවඳ කුරුඳු මසාජ් තෙල් (200ml)",
+    "name_en": "Cinnamon Massage Oil - 200ml",
+    "category": "Ayurvedic Oils",
+    "category_si": "ආයුර්වේද තෙල්",
+    "price": 2720.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීර මාංශ පේශි සැහැල්ලු කරයි",
+      "හිසේ රුදාව අවම කිරීමට උපකාරී වේ",
+      "හිසකෙස් වර්ධනයට උපකාරී වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-036",
+      "image_url": "https://images.example.com/ayurveda/ayu-036.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-037",
+    "name": "සඳුන් මුහුණු ආලේපය (100g)",
+    "name_en": "Sandalwood Face Pack - 100g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1880.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "සියලුම සම වර්ග සඳහා සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-037",
+      "image_url": "https://images.example.com/ayurveda/ayu-037.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-038",
+    "name": "කහ මුහුණු ක්‍රීම් (50g)",
+    "name_en": "Turmeric Face Cream - 50g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 530.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා සුදුසුයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-038",
+      "image_url": "https://images.example.com/ayurveda/ayu-038.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-039",
+    "name": "කෝමාරිකා ජෙල් (150ml)",
+    "name_en": "Aloe Vera Gel - 150ml",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 780.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "සම තෙතමනය කරයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-039",
+      "image_url": "https://images.example.com/ayurveda/ayu-039.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-040",
+    "name": "කොහොඹ මුහුණු සෝදනය (100ml)",
+    "name_en": "Neem Face Wash - 100ml",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1640.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී",
+      "සියලුම සම වර්ග සඳහා සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-040",
+      "image_url": "https://images.example.com/ayurveda/ayu-040.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-041",
+    "name": "රෝස ජලය (ටෝනර්) (200ml)",
+    "name_en": "Rose Water Toner - 200ml",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 2840.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි",
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී"
+    ],
+    "product_image": {
+      "image_id": "IMG-041",
+      "image_url": "https://images.example.com/ayurveda/ayu-041.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-042",
+    "name": "මුල්තානි මැටි කුඩු (200g)",
+    "name_en": "Multani Mitti (Fuller's Earth) - 200g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1280.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා සුදුසුයි",
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි",
+      "සම තෙතමනය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-042",
+      "image_url": "https://images.example.com/ayurveda/ayu-042.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-043",
+    "name": "කුංකුමාදි මුහුණු තෙල් (30ml)",
+    "name_en": "Kumkumadi Face Oil - 30ml",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 2230.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා සුදුසුයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී"
+    ],
+    "product_image": {
+      "image_id": "IMG-043",
+      "image_url": "https://images.example.com/ayurveda/ayu-043.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-044",
+    "name": "මංජිෂ්ඨා ක්‍රීම් (50g)",
+    "name_en": "Manjistha Cream - 50g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 750.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම තෙතමනය කරයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-044",
+      "image_url": "https://images.example.com/ayurveda/ayu-044.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-045",
+    "name": "කහ-ඇලෝවෙරා මුහුණු මාස්ක් (100g)",
+    "name_en": "Turmeric-Aloe Face Mask - 100g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1280.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "සියලුම සම වර්ග සඳහා සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-045",
+      "image_url": "https://images.example.com/ayurveda/ayu-045.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-046",
+    "name": "කහ සබන් (100g)",
+    "name_en": "Turmeric Herbal Soap - 100g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1250.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-046",
+      "image_url": "https://images.example.com/ayurveda/ayu-046.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-047",
+    "name": "සඳුන් තෙල් සෙරුම් (30ml)",
+    "name_en": "Sandalwood Face Serum - 30ml",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 2750.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා සුදුසුයි",
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී",
+      "සමේ දීප්තිය වැඩි කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-047",
+      "image_url": "https://images.example.com/ayurveda/ayu-047.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-048",
+    "name": "කොහොඹ ස්ක්‍රබ් (100g)",
+    "name_en": "Neem Face Scrub - 100g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 880.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "සියලුම සම වර්ග සඳහා සුදුසුයි",
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-048",
+      "image_url": "https://images.example.com/ayurveda/ayu-048.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-049",
+    "name": "කේසර ක්‍රීම් (50g)",
+    "name_en": "Saffron Brightening Cream - 50g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 2490.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-049",
+      "image_url": "https://images.example.com/ayurveda/ayu-049.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-050",
+    "name": "එළුමිච්චම් ක්‍රීම් (50g)",
+    "name_en": "Lemon Brightening Cream - 50g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 2050.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි",
+      "සම තෙතමනය කරයි",
+      "සියලුම සම වර්ග සඳහා සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-050",
+      "image_url": "https://images.example.com/ayurveda/ayu-050.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-051",
+    "name": "ස්වභාවික සන්ස්ක්‍රීන් SPF30 (50g)",
+    "name_en": "Herbal Sunscreen SPF30 - 50g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1670.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා සුදුසුයි",
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී",
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-051",
+      "image_url": "https://images.example.com/ayurveda/ayu-051.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-052",
+    "name": "පැපොල් මුහුණු මාස්ක් (100g)",
+    "name_en": "Papaya Face Mask - 100g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1130.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි",
+      "සමේ දීප්තිය වැඩි කරයි",
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී"
+    ],
+    "product_image": {
+      "image_id": "IMG-052",
+      "image_url": "https://images.example.com/ayurveda/ayu-052.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-053",
+    "name": "කහ-සඳුන් උබ්ටන් කුඩු (100g)",
+    "name_en": "Turmeric-Sandalwood Ubtan Powder - 100g",
+    "category": "Natural Skincare",
+    "category_si": "ස්වභාවික සම සත්කාරය",
+    "price": 1780.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වභාවික අමුද්‍රව්‍යවලින් සාදන ලදී",
+      "සමේ වයස්ගත වීම මන්දගාමී කරයි",
+      "කුරුලෑ හා පැල්ලම් අඩු කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-053",
+      "image_url": "https://images.example.com/ayurveda/ayu-053.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-054",
+    "name": "ලංකා කොළ තේ (100g)",
+    "name_en": "Ceylon Green Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 410.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට සහාය වේ",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-054",
+      "image_url": "https://images.example.com/ayurveda/ayu-054.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-055",
+    "name": "ඉඟුරු තේ (50 bags)",
+    "name_en": "Ginger Tea - 50 bags",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 960.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ",
+      "ආතතිය අවම කර මනස සන්සුන් කරයි",
+      "ආහාර දිරවීමට සහාය වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-055",
+      "image_url": "https://images.example.com/ayurveda/ayu-055.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-056",
+    "name": "තුලසි තේ (50 bags)",
+    "name_en": "Tulsi (Holy Basil) Tea - 50 bags",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 930.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "රසායනික රහිත, 100% කාබනික",
+      "ආහාර දිරවීමට සහාය වේ",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-056",
+      "image_url": "https://images.example.com/ayurveda/ayu-056.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-057",
+    "name": "කුරුඳු තේ (50 bags)",
+    "name_en": "Cinnamon Tea - 50 bags",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 780.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "රසායනික රහිත, 100% කාබනික",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "ශරීරය සිසිල් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-057",
+      "image_url": "https://images.example.com/ayurveda/ayu-057.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-058",
+    "name": "එතිරාළු තේ (50 bags)",
+    "name_en": "Hibiscus Tea - 50 bags",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 620.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "ශරීරය සිසිල් කරයි",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-058",
+      "image_url": "https://images.example.com/ayurveda/ayu-058.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-059",
+    "name": "මුරුංගා තේ (50 bags)",
+    "name_en": "Moringa Tea - 50 bags",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 620.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "ශරීරය සිසිල් කරයි",
+      "ආතතිය අවම කර මනස සන්සුන් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-059",
+      "image_url": "https://images.example.com/ayurveda/ayu-059.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-060",
+    "name": "සේර තේ (50 bags)",
+    "name_en": "Lemongrass Tea - 50 bags",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 670.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට සහාය වේ",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "ආතතිය අවම කර මනස සන්සුන් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-060",
+      "image_url": "https://images.example.com/ayurveda/ayu-060.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-061",
+    "name": "රණවරා තේ (100g)",
+    "name_en": "Ranawara Herbal Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 990.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට සහාය වේ",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-061",
+      "image_url": "https://images.example.com/ayurveda/ayu-061.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-062",
+    "name": "බෙලිමල් තේ (100g)",
+    "name_en": "Beli Mal (Bael Flower) Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 870.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරය සිසිල් කරයි",
+      "ආහාර දිරවීමට සහාය වේ",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-062",
+      "image_url": "https://images.example.com/ayurveda/ayu-062.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-063",
+    "name": "නෙල්ලි තේ (100g)",
+    "name_en": "Amla (Nelli) Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 730.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ආතතිය අවම කර මනස සන්සුන් කරයි",
+      "රසායනික රහිත, 100% කාබනික",
+      "ශරීරය සිසිල් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-063",
+      "image_url": "https://images.example.com/ayurveda/ayu-063.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-064",
+    "name": "හතාවාරිය තේ (100g)",
+    "name_en": "Hathawariya Root Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 980.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "රසායනික රහිත, 100% කාබනික",
+      "ආහාර දිරවීමට සහාය වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-064",
+      "image_url": "https://images.example.com/ayurveda/ayu-064.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-065",
+    "name": "කොත්තමල්ලි තේ (100g)",
+    "name_en": "Coriander Seed Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 1030.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරය සිසිල් කරයි",
+      "ආහාර දිරවීමට සහාය වේ",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-065",
+      "image_url": "https://images.example.com/ayurveda/ayu-065.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-066",
+    "name": "වේනිවැල්ගැට තේ (100g)",
+    "name_en": "Venivelgeta Herbal Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 620.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට සහාය වේ",
+      "රසායනික රහිත, 100% කාබනික",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-066",
+      "image_url": "https://images.example.com/ayurveda/ayu-066.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-067",
+    "name": "ඉරමුසු තේ (100g)",
+    "name_en": "Iramusu (Sarsaparilla) Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 630.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ",
+      "ශරීරය සිසිල් කරයි",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-067",
+      "image_url": "https://images.example.com/ayurveda/ayu-067.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-068",
+    "name": "පොල්පල තේ (100g)",
+    "name_en": "Polpala Herbal Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 1050.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරය සිසිල් කරයි",
+      "රසායනික රහිත, 100% කාබනික",
+      "ආතතිය අවම කර මනස සන්සුන් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-068",
+      "image_url": "https://images.example.com/ayurveda/ayu-068.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-069",
+    "name": "ගම්මිරිස් තේ (100g)",
+    "name_en": "Black Pepper Herbal Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 610.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට සහාය වේ",
+      "පරිවෘත්තීය ක්‍රියාවලිය වේගවත් කරයි",
+      "ආතතිය අවම කර මනස සන්සුන් කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-069",
+      "image_url": "https://images.example.com/ayurveda/ayu-069.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-070",
+    "name": "දෙහි කොළ තේ (100g)",
+    "name_en": "Lime Leaf Tea - 100g",
+    "category": "Organic Teas",
+    "category_si": "කාබනික තේ",
+    "price": 1200.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ආහාර දිරවීමට සහාය වේ",
+      "ශරීරය සිසිල් කරයි",
+      "ප්‍රතිඔක්සිකාරක වලින් පොහොසත් වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-070",
+      "image_url": "https://images.example.com/ayurveda/ayu-070.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-071",
+    "name": "ඖෂධ සම්පූ (200ml)",
+    "name_en": "Ayurvedic Herbal Shampoo - 200ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 840.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි",
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-071",
+      "image_url": "https://images.example.com/ayurveda/ayu-071.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-072",
+    "name": "කොහොඹ සබන් (100g)",
+    "name_en": "Neem Soap - 100g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 320.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා මෘදු වේ",
+      "දිනපතා භාවිතයට සුදුසුයි",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-072",
+      "image_url": "https://images.example.com/ayurveda/ayu-072.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-073",
+    "name": "ආයුර්වේද දන්තාලේපනය (100g)",
+    "name_en": "Ayurvedic Toothpaste - 100g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 1490.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සියලුම සම වර්ග සඳහා මෘදු වේ",
+      "දිනපතා භාවිතයට සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-073",
+      "image_url": "https://images.example.com/ayurveda/ayu-073.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-074",
+    "name": "ඖෂධ කෙස් තෙල් (100ml)",
+    "name_en": "Herbal Hair Oil - 100ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 930.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "දිනපතා භාවිතයට සුදුසුයි",
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-074",
+      "image_url": "https://images.example.com/ayurveda/ayu-074.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-075",
+    "name": "සඳුන් සබන් (100g)",
+    "name_en": "Sandalwood Soap - 100g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 810.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-075",
+      "image_url": "https://images.example.com/ayurveda/ayu-075.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-076",
+    "name": "ඇලෝවෙරා සබන් (100g)",
+    "name_en": "Aloe Vera Soap - 100g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 620.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා මෘදු වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි",
+      "දිනපතා භාවිතයට සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-076",
+      "image_url": "https://images.example.com/ayurveda/ayu-076.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-077",
+    "name": "ඖෂධ ඩියෝඩ්‍රන්ට් (50g)",
+    "name_en": "Herbal Deodorant - 50g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 1140.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-077",
+      "image_url": "https://images.example.com/ayurveda/ayu-077.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-078",
+    "name": "ආයුර්වේද තැල්කම් කුඩු (100g)",
+    "name_en": "Ayurvedic Talcum Powder - 100g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 810.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "දිනපතා භාවිතයට සුදුසුයි",
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-078",
+      "image_url": "https://images.example.com/ayurveda/ayu-078.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-079",
+    "name": "ඖෂධ මුඛ සෝදනය (200ml)",
+    "name_en": "Herbal Mouthwash - 200ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 1260.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "රසායනික හා පැරබන් රහිත වේ",
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "සියලුම සම වර්ග සඳහා මෘදු වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-079",
+      "image_url": "https://images.example.com/ayurveda/ayu-079.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-080",
+    "name": "කොහොඹ අත් සෝදනය (200ml)",
+    "name_en": "Neem Hand Wash - 200ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 770.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සියලුම සම වර්ග සඳහා මෘදු වේ",
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-080",
+      "image_url": "https://images.example.com/ayurveda/ayu-080.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-081",
+    "name": "ඖෂධ ශරීර ලෝෂන් (200ml)",
+    "name_en": "Herbal Body Lotion - 200ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 870.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි",
+      "රසායනික හා පැරබන් රහිත වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-081",
+      "image_url": "https://images.example.com/ayurveda/ayu-081.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-082",
+    "name": "කහ ශරීර ස්ක්‍රබ් (200g)",
+    "name_en": "Turmeric Body Scrub - 200g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 1340.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම ආරක්ෂා කර පෝෂණය කරයි",
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "දිනපතා භාවිතයට සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-082",
+      "image_url": "https://images.example.com/ayurveda/ayu-082.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-083",
+    "name": "ඖෂධ කෙස් කොන්දිශනර් (200ml)",
+    "name_en": "Herbal Hair Conditioner - 200ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 540.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ස්වාභාවික සුවඳකින් යුක්ත වේ",
+      "සියලුම සම වර්ග සඳහා මෘදු වේ",
+      "සම ආරක්ෂා කර පෝෂණය කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-083",
+      "image_url": "https://images.example.com/ayurveda/ayu-083.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-084",
+    "name": "සුවඳ මසාජ් තෙල් (100ml)",
+    "name_en": "Aromatic Wellness Massage Oil - 100ml",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 840.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම ආරක්ෂා කර පෝෂණය කරයි",
+      "රසායනික හා පැරබන් රහිත වේ",
+      "සියලුම සම වර්ග සඳහා මෘදු වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-084",
+      "image_url": "https://images.example.com/ayurveda/ayu-084.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-085",
+    "name": "ඖෂධ පා ක්‍රීම් (50g)",
+    "name_en": "Herbal Foot Cream - 50g",
+    "category": "Personal Care",
+    "category_si": "පුද්ගලික සත්කාරය",
+    "price": 940.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම ආරක්ෂා කර පෝෂණය කරයි",
+      "දිනපතා භාවිතයට සුදුසුයි",
+      "සියලුම සම වර්ග සඳහා මෘදු වේ"
+    ],
+    "product_image": {
+      "image_id": "IMG-085",
+      "image_url": "https://images.example.com/ayurveda/ayu-085.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-086",
+    "name": "පංචකර්ම කට්ටලය (1 kit)",
+    "name_en": "Panchakarma Wellness Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 7220.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්",
+      "ශරීරය හා මනස සමබර කරයි",
+      "තෑගි දීමට ද සුදුසුයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-086",
+      "image_url": "https://images.example.com/ayurveda/ayu-086.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-087",
+    "name": "ප්‍රතිශක්තිකරණ කට්ටලය (1 kit)",
+    "name_en": "Immunity Booster Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 6760.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "තෑගි දීමට ද සුදුසුයි",
+      "නිවසේදීම භාවිතා කළ හැක",
+      "ශරීරය හා මනස සමබර කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-087",
+      "image_url": "https://images.example.com/ayurveda/ayu-087.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-088",
+    "name": "ආතති නිවාරණ කට්ටලය (1 kit)",
+    "name_en": "Stress Relief Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 6030.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි",
+      "තෑගි දීමට ද සුදුසුයි",
+      "ශරීරය හා මනස සමබර කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-088",
+      "image_url": "https://images.example.com/ayurveda/ayu-088.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-089",
+    "name": "ආහාර ජීර්ණ රැකවරණ කට්ටලය (1 kit)",
+    "name_en": "Digestive Care Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 9450.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි",
+      "තෑගි දීමට ද සුදුසුයි",
+      "ශරීරය හා මනස සමබර කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-089",
+      "image_url": "https://images.example.com/ayurveda/ayu-089.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-090",
+    "name": "සම රැකවරණ කට්ටලය (1 kit)",
+    "name_en": "Skin Care Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 5840.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි",
+      "නිවසේදීම භාවිතා කළ හැක",
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්"
+    ],
+    "product_image": {
+      "image_id": "IMG-090",
+      "image_url": "https://images.example.com/ayurveda/ayu-090.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-091",
+    "name": "කෙස් රැකවරණ කට්ටලය (1 kit)",
+    "name_en": "Hair Care Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 5940.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරය හා මනස සමබර කරයි",
+      "නිවසේදීම භාවිතා කළ හැක",
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-091",
+      "image_url": "https://images.example.com/ayurveda/ayu-091.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-092",
+    "name": "ශරීර විෂ නිශ්කාශන කට්ටලය (1 kit)",
+    "name_en": "Detox Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 7160.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "තෑගි දීමට ද සුදුසුයි",
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්",
+      "නිවසේදීම භාවිතා කළ හැක"
+    ],
+    "product_image": {
+      "image_id": "IMG-092",
+      "image_url": "https://images.example.com/ayurveda/ayu-092.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-093",
+    "name": "නින්ද සුවතා කට්ටලය (1 kit)",
+    "name_en": "Sleep Wellness Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 4850.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "තෑගි දීමට ද සුදුසුයි",
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි",
+      "නිවසේදීම භාවිතා කළ හැක"
+    ],
+    "product_image": {
+      "image_id": "IMG-093",
+      "image_url": "https://images.example.com/ayurveda/ayu-093.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-094",
+    "name": "සන්ධි රැකවරණ කට්ටලය (1 kit)",
+    "name_en": "Joint Care Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 6120.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "නිවසේදීම භාවිතා කළ හැක",
+      "ශරීරය හා මනස සමබර කරයි",
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-094",
+      "image_url": "https://images.example.com/ayurveda/ayu-094.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-095",
+    "name": "කාන්තා සුවතා කට්ටලය (1 kit)",
+    "name_en": "Women's Wellness Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 3890.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි",
+      "තෑගි දීමට ද සුදුසුයි",
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්"
+    ],
+    "product_image": {
+      "image_id": "IMG-095",
+      "image_url": "https://images.example.com/ayurveda/ayu-095.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-096",
+    "name": "පිරිමි සුවතා කට්ටලය (1 kit)",
+    "name_en": "Men's Wellness Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 9200.0,
+    "currency": "LKR",
+    "availability": "Out of Stock",
+    "product_benefits": [
+      "නිවසේදීම භාවිතා කළ හැක",
+      "විශේෂඥ මගපෙන්වීම් සහිතව සපයයි",
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්"
+    ],
+    "product_image": {
+      "image_id": "IMG-096",
+      "image_url": "https://images.example.com/ayurveda/ayu-096.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-097",
+    "name": "ගර්භනී මාතා රැකවරණ කට්ටලය (1 kit)",
+    "name_en": "Prenatal Care Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 9110.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්",
+      "තෑගි දීමට ද සුදුසුයි",
+      "ශරීරය හා මනස සමබර කරයි"
+    ],
+    "product_image": {
+      "image_id": "IMG-097",
+      "image_url": "https://images.example.com/ayurveda/ayu-097.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-098",
+    "name": "බාල රැකවරණ කට්ටලය (1 kit)",
+    "name_en": "Baby Care Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 6390.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්",
+      "ශරීරය හා මනස සමබර කරයි",
+      "නිවසේදීම භාවිතා කළ හැක"
+    ],
+    "product_image": {
+      "image_id": "IMG-098",
+      "image_url": "https://images.example.com/ayurveda/ayu-098.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-099",
+    "name": "හෘද සෞඛ්‍ය කට්ටලය (1 kit)",
+    "name_en": "Heart Health Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 7660.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "ශරීරය හා මනස සමබර කරයි",
+      "තෑගි දීමට ද සුදුසුයි",
+      "නිවසේදීම භාවිතා කළ හැක"
+    ],
+    "product_image": {
+      "image_id": "IMG-099",
+      "image_url": "https://images.example.com/ayurveda/ayu-099.jpg"
+    }
+  },
+  {
+    "product_id": "AYU-100",
+    "name": "යෝගා හා භාවනා කට්ටලය (1 kit)",
+    "name_en": "Yoga & Meditation Wellness Kit - 1 kit",
+    "category": "Wellness Kits",
+    "category_si": "සුවතා කට්ටල",
+    "price": 4500.0,
+    "currency": "LKR",
+    "availability": "In Stock",
+    "product_benefits": [
+      "සම්පූර්ණ ආයුර්වේද සත්කාර අත්දැකීමක්",
+      "තෑගි දීමට ද සුදුසුයි",
+      "නිවසේදීම භාවිතා කළ හැක"
+    ],
+    "product_image": {
+      "image_id": "IMG-100",
+      "image_url": "https://images.example.com/ayurveda/ayu-100.jpg"
+    }
+  }
+]

@@ -1,7 +1,6 @@
 'use client';
 
 import ProductCard from './ProductCard';
-import styles from '@/styles/products.module.css';
 
 const gridStyles = {
   grid4: {
