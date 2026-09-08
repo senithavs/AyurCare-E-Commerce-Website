@@ -7,6 +7,7 @@ import {
   FeatureGrid,
   PromoCard,
 } from '@/components/products';
+import { getFeaturedProducts } from '@/lib/productsData';
 
 const mockCategories = [
   { id: 1, icon: '🌱', name: 'Herbal Supplements' },
@@ -17,56 +18,7 @@ const mockCategories = [
   { id: 6, icon: '🕉️', name: 'Wellness Kits' },
 ];
 
-const mockProducts = [
-  {
-    id: 1,
-    image: '🌿',
-    category: 'Supplements',
-    name: 'Ashwagandha Capsules',
-    rating: 4.3,
-    reviewCount: 128,
-    price: 1450,
-    oldPrice: 1700,
-    discount: '-15%',
-    inStock: true,
-    slug: 'ashwagandha-capsules',
-  },
-  {
-    id: 2,
-    image: '🧴',
-    category: 'Oils',
-    name: 'Bhringraj Hair Oil',
-    rating: 5,
-    reviewCount: 94,
-    price: 980,
-    inStock: true,
-    slug: 'bhringraj-hair-oil',
-  },
-  {
-    id: 3,
-    image: '🍵',
-    category: 'Teas',
-    name: 'Chamomile Wellness Tea',
-    rating: 4,
-    reviewCount: 61,
-    price: 650,
-    inStock: true,
-    slug: 'chamomile-wellness-tea',
-  },
-  {
-    id: 4,
-    image: '✨',
-    category: 'Skincare',
-    name: 'Neem & Turmeric Face Wash',
-    rating: 5,
-    reviewCount: 210,
-    price: 890,
-    oldPrice: 990,
-    discount: '-10%',
-    inStock: true,
-    slug: 'neem-turmeric-face-wash',
-  },
-];
+const mockProducts = getFeaturedProducts(8);
 
 const mockFeatures = [
   {

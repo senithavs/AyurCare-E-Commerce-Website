@@ -1,6 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import ProductCard from './ProductCard';
+import { useCart } from '@/lib/CartContext';
+import { Toast } from '@/components/utility';
 
 const gridStyles = {
   grid4: {
@@ -23,10 +26,12 @@ const gridStyles = {
 export default function ProductGrid({
   products = [],
   columns = 4,
-  onAddToCart,
-  onWishlistToggle,
   className = '',
 }) {
+  const [wishlist, setWishlist] = useState(new Set());
+  const [toast, setToast] = useState(null);
+  const { addToCart } = useCart();
+
   const columnMap = {
     4: gridStyles.grid4,
     3: gridStyles.grid3,
@@ -35,16 +40,38 @@ export default function ProductGrid({
 
   const gridStyle = columnMap[columns] || gridStyles.grid4;
 
+  const handleAddToCart = (productId) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product, 1);
+      setToast(`${product.name} added to cart!`);
+    }
+  };
+
+  const handleWishlistToggle = (productId) => {
+    const newWishlist = new Set(wishlist);
+    if (newWishlist.has(productId)) {
+      newWishlist.delete(productId);
+    } else {
+      newWishlist.add(productId);
+    }
+    setWishlist(newWishlist);
+  };
+
   return (
-    <div style={gridStyle} className={className}>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          {...product}
-          onAddToCart={onAddToCart}
-          onWishlistToggle={onWishlistToggle}
-        />
-      ))}
-    </div>
+    <>
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
+      <div style={gridStyle} className={className}>
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            {...product}
+            onAddToCart={handleAddToCart}
+            onWishlistToggle={handleWishlistToggle}
+            isWishlisted={wishlist.has(product.id)}
+          />
+        ))}
+      </div>
+    </>
   );
 }

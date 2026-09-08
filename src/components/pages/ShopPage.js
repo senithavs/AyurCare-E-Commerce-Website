@@ -5,6 +5,7 @@ import { Section } from '@/components/layout';
 import { ProductGrid, CategoryGrid } from '@/components/products';
 import { Chip, FormField, Pagination } from '@/components/ui';
 import { EmptyState } from '@/components/utility';
+import { getAllProducts, getCategories } from '@/lib/productsData';
 
 const shopStyles = {
   shopBody: {
@@ -44,23 +45,22 @@ const shopStyles = {
   },
 };
 
-const mockProducts = [
-  { id: 1, image: '🌿', category: 'Supplements', name: 'Triphala Tablets', rating: 4, reviewCount: 80, price: 720, slug: 'triphala-tablets' },
-  { id: 2, image: '🧴', category: 'Oils', name: 'Sesame Body Oil', rating: 5, reviewCount: 45, price: 640, slug: 'sesame-body-oil' },
-  { id: 3, image: '🍵', category: 'Teas', name: 'Tulsi Green Tea', rating: 4, reviewCount: 60, price: 590, slug: 'tulsi-green-tea' },
-  { id: 4, image: '✨', category: 'Skincare', name: 'Sandalwood Face Pack', rating: 5, reviewCount: 120, price: 850, slug: 'sandalwood-face-pack' },
-];
+const PRODUCTS_PER_PAGE = 12;
+const mockProducts = getAllProducts();
 
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('featured');
   const [selectedFilters, setSelectedFilters] = useState({
-    category: ['All'],
-    benefit: [],
+    category: [],
     availability: ['In Stock'],
   });
 
+  const categories = getCategories();
+
   const handleFilterToggle = (filterType, value) => {
+    setCurrentPage(1); // Reset to first page when filters change
     setSelectedFilters((prev) => {
       const current = prev[filterType] || [];
       if (current.includes(value)) {
@@ -80,8 +80,44 @@ export default function ShopPage() {
   // Filter products based on search and filters
   const filteredProducts = mockProducts.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
+    const matchesCategory =
+      selectedFilters.category.length === 0 || selectedFilters.category.includes(product.category);
+    const matchesAvailability =
+      selectedFilters.availability.length === 0 ||
+      (selectedFilters.availability.includes('In Stock') && product.inStock) ||
+      (selectedFilters.availability.includes('Pre-order') && !product.inStock);
+
+    return matchesSearch && matchesCategory && matchesAvailability;
   });
+
+  // Sort products based on selected sort option
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'rating':
+        return b.rating - a.rating;
+      case 'newest':
+        // Newer products have higher IDs (based on product_id)
+        return b.id.localeCompare(a.id);
+      case 'featured':
+      default:
+        // Featured: sort by rating and review count
+        return b.rating - a.rating || b.reviewCount - a.reviewCount;
+    }
+  });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const endIndex = startIndex + PRODUCTS_PER_PAGE;
+  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+
+  // Format product count display
+  const displayStart = sortedProducts.length > 0 ? startIndex + 1 : 0;
+  const displayEnd = Math.min(endIndex, sortedProducts.length);
 
   return (
     <Section title="All Products">
@@ -100,29 +136,13 @@ export default function ShopPage() {
           <div style={shopStyles.filterBlock}>
             <div style={shopStyles.filterTitle}>Category</div>
             <div style={shopStyles.filterChipRow}>
-              {['All', 'Supplements', 'Oils', 'Skincare', 'Teas'].map((cat) => (
+              {categories.map((cat) => (
                 <Chip
                   key={cat}
                   active={selectedFilters.category.includes(cat)}
                   onClick={() => handleFilterToggle('category', cat)}
                 >
                   {cat}
-                </Chip>
-              ))}
-            </div>
-          </div>
-
-          {/* Health Benefit Filter */}
-          <div style={shopStyles.filterBlock}>
-            <div style={shopStyles.filterTitle}>Health Benefit</div>
-            <div style={shopStyles.filterChipRow}>
-              {['Immunity', 'Sleep', 'Skin', 'Digestion'].map((benefit) => (
-                <Chip
-                  key={benefit}
-                  active={selectedFilters.benefit.includes(benefit)}
-                  onClick={() => handleFilterToggle('benefit', benefit)}
-                >
-                  {benefit}
                 </Chip>
               ))}
             </div>
@@ -148,23 +168,33 @@ export default function ShopPage() {
         {/* Products Area */}
         <div>
           <div style={shopStyles.toolbarRow}>
-            <span>Showing 1–{filteredProducts.length} of {mockProducts.length} products</span>
-            <select style={shopStyles.selectMini}>
-              <option>Sort: Featured</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Newest</option>
+            <span>Showing {displayStart}–{displayEnd} of {sortedProducts.length} products</span>
+            <select 
+              style={shopStyles.selectMini}
+              value={sortBy}
+              onChange={(e) => {
+                setSortBy(e.target.value);
+                setCurrentPage(1); // Reset to page 1 when sorting changes
+              }}
+            >
+              <option value="featured">Sort: Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">Newest</option>
             </select>
           </div>
 
-          {filteredProducts.length > 0 ? (
+          {paginatedProducts.length > 0 ? (
             <>
-              <ProductGrid products={filteredProducts} columns={4} />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={3}
-                onPageChange={setCurrentPage}
-              />
+              <ProductGrid products={paginatedProducts} columns={4} />
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              )}
             </>
           ) : (
             <EmptyState
