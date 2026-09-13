@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ProductCard from './ProductCard';
 import { useCart } from '@/lib/CartContext';
+import { useWishlist } from '@/lib/WishlistContext';
 import { Toast } from '@/components/utility';
 
 const gridStyles = {
@@ -28,9 +29,9 @@ export default function ProductGrid({
   columns = 4,
   className = '',
 }) {
-  const [wishlist, setWishlist] = useState(new Set());
   const [toast, setToast] = useState(null);
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   const columnMap = {
     4: gridStyles.grid4,
@@ -49,13 +50,14 @@ export default function ProductGrid({
   };
 
   const handleWishlistToggle = (productId) => {
-    const newWishlist = new Set(wishlist);
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId);
-    } else {
-      newWishlist.add(productId);
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      const isAdded = toggleWishlist(product);
+      const message = isAdded 
+        ? `${product.name} added to wishlist!`
+        : `${product.name} removed from wishlist`;
+      setToast(message);
     }
-    setWishlist(newWishlist);
   };
 
   return (
@@ -68,7 +70,7 @@ export default function ProductGrid({
             {...product}
             onAddToCart={handleAddToCart}
             onWishlistToggle={handleWishlistToggle}
-            isWishlisted={wishlist.has(product.id)}
+            isWishlisted={isInWishlist(product.id)}
           />
         ))}
       </div>

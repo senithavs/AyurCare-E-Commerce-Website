@@ -7,6 +7,7 @@ import styles from '@/styles/layout.module.css';
 
 export default function Header({
   cartCount = 0,
+  wishlistCount = 0,
   onAccountClick,
   searchQuery = '',
   onSearchChange,
@@ -15,6 +16,10 @@ export default function Header({
 
   const handleCartClick = () => {
     router.push('/cart');
+  };
+
+  const handleWishlistClick = () => {
+    router.push('/wishlist');
   };
 
   return (
@@ -60,8 +65,14 @@ export default function Header({
         />
 
         <div className={styles.navActions}>
-          <span role="button" aria-label="Wishlist" style={{ cursor: 'pointer' }}>
+          <span
+            role="button"
+            aria-label="Wishlist"
+            onClick={handleWishlistClick}
+            style={{ cursor: 'pointer', position: 'relative' }}
+          >
             <img src='/wishlist.png' style={{ width: '24px', height: '24px' }} />
+            {wishlistCount > 0 && <span className={styles.badgeCount}>{wishlistCount}</span>}
           </span>
           <span
             role="button"
