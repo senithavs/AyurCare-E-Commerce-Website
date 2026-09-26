@@ -47,22 +47,6 @@ export default function Header({
       </nav>
 
       <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {/* Search Bar */}
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange?.(e.target.value)}
-          style={{
-            border: '1px solid var(--line)',
-            borderRadius: '8px',
-            padding: '8px 12px',
-            fontSize: '13px',
-            width: '180px',
-            fontFamily: 'inherit',
-            color: 'var(--charcoal)',
-          }}
-        />
 
         <div className={styles.navActions}>
           <span
@@ -84,7 +68,7 @@ export default function Header({
             {cartCount > 0 && <span className={styles.badgeCount}>{cartCount}</span>}
           </span>
           <Button variant="outline" size="sm" onClick={onAccountClick}>
-            Account
+            Sign in
           </Button>
         </div>
       </div>

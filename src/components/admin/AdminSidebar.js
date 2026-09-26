@@ -1,0 +1,109 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import styles from '@/styles/layout.module.css';
+
+const sidebarStyles = {
+  nav: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  link: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '12px 16px',
+    fontSize: '13px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    textDecoration: 'none',
+    color: 'rgba(255, 255, 255, 0.7)',
+  },
+  linkActive: {
+    background: 'rgba(170, 229, 184, 0.15)',
+    color: '#fff',
+    fontWeight: 600,
+  },
+  icon: {
+    fontSize: '16px',
+  },
+  section: {
+    padding: '12px 0',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  sectionTitle: {
+    fontSize: '11px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+    color: 'rgba(161, 146, 146, 0.5)',
+    padding: '8px 16px',
+    marginTop: '8px',
+  },
+};
+
+const menuItems = [
+  {
+    section: 'Main',
+    items: [
+      { icon: '📊', label: 'Dashboard', href: '/admin' },
+    ],
+  },
+  {
+    section: 'Management',
+    items: [
+      { icon: '📦', label: 'Products', href: '/admin/products' },
+      { icon: '📋', label: 'Orders', href: '/admin/orders' },
+      { icon: '📈', label: 'Stock', href: '/admin/stock' },
+      { icon: '📊', label: 'Sales Analytics', href: '/admin/analytics' }
+    ],
+  },
+];
+
+export default function AdminSidebar() {
+  const pathname = usePathname();
+
+  return (
+    <aside style={{ padding: '20px 0' }}>
+      <nav style={sidebarStyles.nav}>
+        {menuItems.map((section) => (
+          <div key={section.section} style={sidebarStyles.section}>
+            <div style={sidebarStyles.sectionTitle}>{section.section}</div>
+            {section.items.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  style={{
+                    ...sidebarStyles.link,
+                    ...(isActive ? sidebarStyles.linkActive : {}),
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                      e.currentTarget.style.color = '#dfdf1c';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
+                    }
+                  }}
+                >
+                  <span style={sidebarStyles.icon}>{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        ))}
+      </nav>
+    </aside>
+  );
+}

@@ -1,19 +1,16 @@
 'use client';
 
-import { Suspense } from 'react';
 import { AdminProvider } from '@/lib/AdminContext';
 import AdminLayout from '@/components/admin/AdminLayout';
-import AdminDashboard from '@/components/admin/AdminDashboard';
+import AdminOrders from '@/components/admin/AdminOrders';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 
-export default function AdminPage() {
+export default function AdminOrdersPage() {
   return (
     <AdminProtectedRoute>
       <AdminProvider>
-        <AdminLayout title="Dashboard">
-          <Suspense fallback={<div>Loading...</div>}>
-            <AdminDashboard />
-          </Suspense>
+        <AdminLayout title="Orders Management">
+          <AdminOrders />
         </AdminLayout>
       </AdminProvider>
     </AdminProtectedRoute>
