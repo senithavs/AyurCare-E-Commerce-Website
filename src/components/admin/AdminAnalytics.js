@@ -1,6 +1,7 @@
 'use client';
 
 import { useAdmin } from '@/lib/AdminContext';
+import '@/styles/admin-animations.css';
 
 const analyticsStyles = {
   grid: {
@@ -100,11 +101,11 @@ export default function AdminAnalytics() {
   const maxSales = Math.max(...monthlySalesData.map((d) => d.sales));
 
   return (
-    <div>
+    <div className="admin-page-enter">
       {/* Key Metrics */}
       <div style={analyticsStyles.grid}>
         {/* Revenue Card */}
-        <div style={analyticsStyles.card}>
+        <div style={analyticsStyles.card} className="admin-section-card">
           <div style={analyticsStyles.cardTitle}>💰 Revenue Analytics</div>
           <div style={analyticsStyles.metric}>
             <span style={analyticsStyles.metricLabel}>Total Revenue</span>
@@ -121,7 +122,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Orders Card */}
-        <div style={analyticsStyles.card}>
+        <div style={analyticsStyles.card} className="admin-section-card">
           <div style={analyticsStyles.cardTitle}>📋 Order Analytics</div>
           <div style={analyticsStyles.metric}>
             <span style={analyticsStyles.metricLabel}>Total Orders</span>
@@ -138,7 +139,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Inventory Card */}
-        <div style={analyticsStyles.card}>
+        <div style={analyticsStyles.card} className="admin-section-card">
           <div style={analyticsStyles.cardTitle}>📦 Inventory Status</div>
           <div style={analyticsStyles.metric}>
             <span style={analyticsStyles.metricLabel}>Total Products</span>
@@ -159,7 +160,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Top Products Card */}
-        <div style={analyticsStyles.card}>
+        <div style={analyticsStyles.card} className="admin-section-card">
           <div style={analyticsStyles.cardTitle}>⭐ Top Products by Rating</div>
           {analytics.topProducts.slice(0, 3).map((product, idx) => (
             <div key={idx} style={analyticsStyles.metric}>
@@ -171,12 +172,12 @@ export default function AdminAnalytics() {
       </div>
 
       {/* Order Status Distribution */}
-      <div style={analyticsStyles.card}>
+      <div style={analyticsStyles.card} className="admin-section-card">
         <div style={analyticsStyles.cardTitle}>📊 Order Status Distribution</div>
         {Object.entries(analytics.ordersByStatus).map(([status, count]) => {
           const percentage = (count / analytics.totalOrders) * 100 || 0;
           return (
-            <div key={status} style={analyticsStyles.chartBar}>
+            <div key={status} style={analyticsStyles.chartBar} className="admin-chart-bar">
               <span style={analyticsStyles.barLabel}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
               </span>
@@ -205,12 +206,12 @@ export default function AdminAnalytics() {
       </div>
 
       {/* Monthly Sales Chart */}
-      <div style={analyticsStyles.card}>
+      <div style={analyticsStyles.card} className="admin-section-card">
         <div style={analyticsStyles.cardTitle}>📈 Monthly Sales Trend</div>
         {monthlySalesData.map((data) => {
           const percentage = (data.sales / maxSales) * 100;
           return (
-            <div key={data.month} style={analyticsStyles.chartBar}>
+            <div key={data.month} style={analyticsStyles.chartBar} className="admin-chart-bar">
               <span style={analyticsStyles.barLabel}>{data.month}</span>
               <div style={analyticsStyles.barContainer}>
                 <div
@@ -229,7 +230,7 @@ export default function AdminAnalytics() {
       </div>
 
       {/* Product Categories */}
-      <div style={analyticsStyles.card}>
+      <div style={analyticsStyles.card} className="admin-section-card">
         <div style={analyticsStyles.cardTitle}>🏷️ Products by Category</div>
         {Object.entries(topCategory).map(([category, count]) => (
           <div key={category} style={analyticsStyles.metric}>

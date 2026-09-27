@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui';
+import '@/styles/admin-animations.css';
 
 const dashboardStyles = {
   grid: {
@@ -117,10 +118,10 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div>
+    <div className="admin-page-enter">
       {/* KPI Cards */}
       <div style={dashboardStyles.grid}>
-        <div style={dashboardStyles.card}>
+        <div style={dashboardStyles.card} className="admin-kpi-card">
           <div style={dashboardStyles.cardIcon}>📦</div>
           <div style={dashboardStyles.cardTitle}>Total Products</div>
           <div style={dashboardStyles.cardValue}>{analytics.totalProducts}</div>
@@ -129,7 +130,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <div style={dashboardStyles.card}>
+        <div style={dashboardStyles.card} className="admin-kpi-card">
           <div style={dashboardStyles.cardIcon}>📋</div>
           <div style={dashboardStyles.cardTitle}>Total Orders</div>
           <div style={dashboardStyles.cardValue}>{analytics.totalOrders}</div>
@@ -138,7 +139,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <div style={dashboardStyles.card}>
+        <div style={dashboardStyles.card} className="admin-kpi-card">
           <div style={dashboardStyles.cardIcon}>💰</div>
           <div style={dashboardStyles.cardTitle}>Total Revenue</div>
           <div style={dashboardStyles.cardValue}>Rs. {(analytics.totalRevenue / 100000).toFixed(1)}L</div>
@@ -147,7 +148,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <div style={dashboardStyles.card}>
+        <div style={dashboardStyles.card} className="admin-kpi-card">
           <div style={dashboardStyles.cardIcon}>⚠️</div>
           <div style={dashboardStyles.cardTitle}>Low Stock</div>
           <div style={dashboardStyles.cardValue}>{analytics.lowStockProducts}</div>
@@ -158,7 +159,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Recent Orders */}
-      <div style={dashboardStyles.section}>
+      <div style={dashboardStyles.section} className="admin-section-card">
         <div style={dashboardStyles.sectionTitle}>
           <span>Recent Orders</span>
           <Link href="/admin/orders" style={{ textDecoration: 'none' }}>
@@ -166,7 +167,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <table style={dashboardStyles.table}>
+        <table style={dashboardStyles.table} className="admin-table">
           <thead>
             <tr>
               <th style={dashboardStyles.th}>Order ID</th>
@@ -197,7 +198,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Order Status Overview */}
-      <div style={dashboardStyles.section}>
+      <div style={dashboardStyles.section} className="admin-section-card">
         <div style={dashboardStyles.sectionTitle}>Order Status Overview</div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>

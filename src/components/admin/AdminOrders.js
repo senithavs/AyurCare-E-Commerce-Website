@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button } from '@/components/ui';
+import '@/styles/admin-animations.css';
 
 const ordersStyles = {
   filterBar: {
@@ -62,10 +63,16 @@ const ordersStyles = {
 export default function AdminOrders() {
   const { orders, updateOrderStatus } = useAdmin();
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredOrders = selectedStatus === 'all' 
+  const filteredOrders = (selectedStatus === 'all' 
     ? orders 
-    : orders.filter((o) => o.status === selectedStatus);
+    : orders.filter((o) => o.status === selectedStatus))
+    .filter((order) =>
+      order.id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -85,14 +92,43 @@ export default function AdminOrders() {
   const statuses = ['pending', 'processing', 'shipped', 'delivered'];
 
   return (
-    <div>
+    <div className="admin-page-enter">
+      {/* Search Bar */}
+      <div style={{ marginBottom: '24px' }}>
+        <input
+          type="text"
+          placeholder="Search by Order ID, Customer Name, or Email..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            width: '50%',
+            padding: '12px 14px',
+            border: '1px solid var(--line)',
+            borderRadius: '8px',
+            fontSize: '13px',
+            fontFamily: 'inherit',
+            transition: 'all 0.3s ease',
+            outline: 'none',
+          }}
+          onFocus={(e) => {
+            e.target.style.boxShadow = '0 0 0 3px rgba(106, 168, 79, 0.1)';
+            e.target.style.borderColor = 'var(--green-700)';
+          }}
+          onBlur={(e) => {
+            e.target.style.boxShadow = 'none';
+            e.target.style.borderColor = 'var(--line)';
+          }}
+        />
+      </div>
+
       {/* Filter Bar */}
-      <div style={ordersStyles.filterBar}>
+      <div style={ordersStyles.filterBar} className="admin-filter-bar">
         <button
           style={{
             ...ordersStyles.filterBtn,
             ...(selectedStatus === 'all' ? ordersStyles.filterBtnActive : {}),
           }}
+          className="admin-filter-btn"
           onClick={() => setSelectedStatus('all')}
         >
           All Orders ({orders.length})
@@ -106,6 +142,7 @@ export default function AdminOrders() {
                 ...ordersStyles.filterBtn,
                 ...(selectedStatus === status ? ordersStyles.filterBtnActive : {}),
               }}
+              className="admin-filter-btn"
               onClick={() => setSelectedStatus(status)}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)} ({count})
@@ -115,70 +152,90 @@ export default function AdminOrders() {
       </div>
 
       {/* Orders Table */}
-      <div style={{ background: 'var(--cream)', borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }}>
-        <table style={ordersStyles.table}>
-          <thead>
-            <tr style={{ background: '#f9f9f9' }}>
-              <th style={ordersStyles.th}>Order ID</th>
-              <th style={ordersStyles.th}>Customer</th>
-              <th style={ordersStyles.th}>Email</th>
-              <th style={ordersStyles.th}>Total</th>
-              <th style={ordersStyles.th}>Items</th>
-              <th style={ordersStyles.th}>Status</th>
-              <th style={ordersStyles.th}>Date</th>
-              <th style={ordersStyles.th}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map((order) => (
-              <tr key={order.id}>
-                <td style={ordersStyles.td}>{order.id}</td>
-                <td style={ordersStyles.td}>{order.customerName}</td>
-                <td style={ordersStyles.td}>{order.email}</td>
-                <td style={ordersStyles.td}>Rs. {order.total.toLocaleString()}</td>
-                <td style={ordersStyles.td}>{order.quantity}</td>
-                <td style={ordersStyles.td}>
-                  <select
-                    value={order.status}
-                    onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                    style={{
-                      ...ordersStyles.statusBadge,
-                      ...getStatusColor(order.status),
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                    }}
-                  >
-                    {statuses.map((s) => (
-                      <option key={s} value={s}>
-                        {s.charAt(0).toUpperCase() + s.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td style={ordersStyles.td}>
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </td>
-                <td style={ordersStyles.td}>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => alert(`Order details:\n${JSON.stringify(order.items, null, 2)}`)}
-                  >
-                    View
-                  </Button>
-                </td>
+      <div style={{ background: 'var(--cream)', borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }} className="admin-section-card">
+        {filteredOrders.length === 0 ? (
+          <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--charcoal)' }}>
+            <div style={{ fontSize: '14px', marginBottom: '8px' }}>
+              {searchQuery ? `No orders found matching "${searchQuery}"` : 'No orders found for the selected status.'}
+            </div>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--green-700)',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  textDecoration: 'underline',
+                  marginTop: '8px',
+                }}
+              >
+                Clear search
+              </button>
+            )}
+          </div>
+        ) : (
+          <table style={ordersStyles.table} className="admin-table">
+            <thead>
+              <tr style={{ background: '#f9f9f9' }}>
+                <th style={ordersStyles.th}>Order ID</th>
+                <th style={ordersStyles.th}>Customer</th>
+                <th style={ordersStyles.th}>Email</th>
+                <th style={ordersStyles.th}>Total</th>
+                <th style={ordersStyles.th}>Items</th>
+                <th style={ordersStyles.th}>Status</th>
+                <th style={ordersStyles.th}>Date</th>
+                <th style={ordersStyles.th}>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order) => (
+                <tr key={order.id}>
+                  <td style={ordersStyles.td}>
+                    <span style={{ fontWeight: 600, color: 'var(--green-700)' }}>{order.id}</span>
+                  </td>
+                  <td style={ordersStyles.td}>{order.customerName}</td>
+                  <td style={ordersStyles.td}>{order.email}</td>
+                  <td style={ordersStyles.td}>Rs. {order.total.toLocaleString()}</td>
+                  <td style={ordersStyles.td}>{order.quantity}</td>
+                  <td style={ordersStyles.td}>
+                    <select
+                      value={order.status}
+                      onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                      style={{
+                        ...ordersStyles.statusBadge,
+                        ...getStatusColor(order.status),
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {statuses.map((s) => (
+                        <option key={s} value={s}>
+                          {s.charAt(0).toUpperCase() + s.slice(1)}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td style={ordersStyles.td}>
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </td>
+                  <td style={ordersStyles.td}>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => alert(`Order details:\n${JSON.stringify(order.items, null, 2)}`)}
+                    >
+                      View
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
-
-      {filteredOrders.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--charcoal-60)' }}>
-          No orders found for the selected status.
-        </div>
-      )}
     </div>
   );
 }

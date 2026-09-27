@@ -8,15 +8,7 @@ import {
   PromoCard,
 } from '@/components/products';
 import { getFeaturedProducts } from '@/lib/productsData';
-
-const mockCategories = [
-  { id: 1, icon: '🌱', name: 'Herbal Supplements' },
-  { id: 2, icon: '🧴', name: 'Ayurvedic Oils' },
-  { id: 3, icon: '✨', name: 'Natural Skincare' },
-  { id: 4, icon: '🍵', name: 'Organic Teas' },
-  { id: 5, icon: '🧼', name: 'Personal Care' },
-  { id: 6, icon: '🕉️', name: 'Wellness Kits' },
-];
+import { useAdmin } from '@/lib/AdminContext';
 
 const mockProducts = getFeaturedProducts(8);
 
@@ -44,6 +36,9 @@ const mockFeatures = [
 ];
 
 export default function HomePage() {
+  const { categories } = useAdmin();
+  const displayCategories = categories && categories.length > 0 ? categories : getDefaultCategories();
+
   return (
     <div>
       {/* Hero Section */}
@@ -58,8 +53,8 @@ export default function HomePage() {
       />
 
       {/* Categories Section */}
-      <Section title="Shop by Category" subtitle="6 collections">
-        <CategoryGrid categories={mockCategories} />
+      <Section title="Shop by Category" subtitle={`${displayCategories.length} collections`}>
+        <CategoryGrid categories={displayCategories} />
       </Section>
 
       {/* Featured Products */}
@@ -82,4 +77,16 @@ export default function HomePage() {
       </Section>
     </div>
   );
+}
+
+// Default categories fallback
+function getDefaultCategories() {
+  return [
+    { id: 1, icon: '🌱', name: 'Herbal Supplements' },
+    { id: 2, icon: '🧴', name: 'Ayurvedic Oils' },
+    { id: 3, icon: '✨', name: 'Natural Skincare' },
+    { id: 4, icon: '🍵', name: 'Organic Teas' },
+    { id: 5, icon: '🧼', name: 'Personal Care' },
+    { id: 6, icon: '🕉️', name: 'Wellness Kits' },
+  ];
 }

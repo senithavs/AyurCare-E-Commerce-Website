@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAdmin } from '@/lib/AdminContext';
 import { Button, FormField } from '@/components/ui';
+import '@/styles/admin-animations.css';
 
 const stockStyles = {
   filterBar: {
@@ -11,10 +12,14 @@ const stockStyles = {
   searchInput: {
     width: '100%',
     maxWidth: '300px',
-    padding: '8px 12px',
+    padding: '12px 14px',
     border: '1px solid var(--line)',
     borderRadius: '8px',
     fontSize: '13px',
+    fontFamily: 'inherit',
+    transition: 'all 0.3s ease',
+    outline: 'none',
+    animation: 'slideUp 0.6s ease-out 0.1s backwards',
   },
   table: {
     width: '100%',
@@ -42,6 +47,7 @@ const stockStyles = {
     borderRadius: '6px',
     fontSize: '13px',
     textAlign: 'center',
+    transition: 'all 0.2s ease',
   },
   statusBadge: {
     display: 'inline-block',
@@ -49,6 +55,14 @@ const stockStyles = {
     borderRadius: '4px',
     fontSize: '11px',
     fontWeight: 600,
+    transition: 'all 0.3s ease',
+  },
+  summaryCard: {
+    background: '#fff',
+    padding: '16px',
+    borderRadius: '8px',
+    border: '1px solid var(--line)',
+    animation: 'slideUp 0.6s ease-out backwards',
   },
 };
 
@@ -91,18 +105,18 @@ export default function AdminStock() {
   const outOfStockCount = products.filter((p) => p.stockCount === 0).length;
 
   return (
-    <div>
+    <div className="admin-page-enter">
       {/* Summary Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
-        <div style={{ background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid var(--line)' }}>
+        <div style={{ ...stockStyles.summaryCard, animationDelay: '0.1s' }} className="admin-kpi-card">
           <div style={{ fontSize: '12px', color: 'var(--charcoal-60)', marginBottom: '4px' }}>Total Products</div>
           <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--green-900)' }}>{products.length}</div>
         </div>
-        <div style={{ background: '#FBE9CF', padding: '16px', borderRadius: '8px', border: '1px solid #E5D4B2' }}>
+        <div style={{ background: '#FBE9CF', padding: '16px', borderRadius: '8px', border: '1px solid #E5D4B2', animation: 'slideUp 0.6s ease-out 0.2s backwards' }} className="admin-kpi-card">
           <div style={{ fontSize: '12px', color: '#8A5A0E', marginBottom: '4px' }}>Low Stock</div>
           <div style={{ fontSize: '24px', fontWeight: 700, color: '#8A5A0E' }}>{lowStockCount}</div>
         </div>
-        <div style={{ background: '#F5DCDC', padding: '16px', borderRadius: '8px', border: '1px solid #E5BDBD' }}>
+        <div style={{ background: '#F5DCDC', padding: '16px', borderRadius: '8px', border: '1px solid #E5BDBD', animation: 'slideUp 0.6s ease-out 0.3s backwards' }} className="admin-kpi-card">
           <div style={{ fontSize: '12px', color: 'var(--danger)', marginBottom: '4px' }}>Out of Stock</div>
           <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--danger)' }}>{outOfStockCount}</div>
         </div>
@@ -116,12 +130,20 @@ export default function AdminStock() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={stockStyles.searchInput}
+          onFocus={(e) => {
+            e.target.style.boxShadow = '0 0 0 3px rgba(106, 168, 79, 0.1)';
+            e.target.style.borderColor = 'var(--green-700)';
+          }}
+          onBlur={(e) => {
+            e.target.style.boxShadow = 'none';
+            e.target.style.borderColor = 'var(--line)';
+          }}
         />
       </div>
 
       {/* Stock Table */}
-      <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }}>
-        <table style={stockStyles.table}>
+      <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }} className="admin-section-card">
+        <table style={stockStyles.table} className="admin-table">
           <thead>
             <tr style={{ background: '#f9f9f9' }}>
               <th style={stockStyles.th}>Product Name</th>
@@ -134,13 +156,13 @@ export default function AdminStock() {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => {
+            {filteredProducts.map((product, index) => {
               const stockStatus = getStockStatus(product.stockCount);
               const tempQty = tempUpdates[product.id];
               const displayQty = tempQty !== undefined ? tempQty : product.stockCount;
 
               return (
-                <tr key={product.id}>
+                <tr key={product.id} style={{ animation: `fadeIn 0.5s ease-out ${index * 0.05}s backwards` }}>
                   <td style={stockStyles.td}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span>{product.image}</span>
@@ -170,6 +192,14 @@ export default function AdminStock() {
                       onChange={(e) => handleStockChange(product.id, e.target.value)}
                       style={stockStyles.qtyInput}
                       min="0"
+                      onFocus={(e) => {
+                        e.target.style.boxShadow = '0 0 0 2px rgba(106, 168, 79, 0.1)';
+                        e.target.style.borderColor = 'var(--green-700)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.boxShadow = 'none';
+                        e.target.style.borderColor = 'var(--line)';
+                      }}
                     />
                   </td>
                   <td style={stockStyles.td}>

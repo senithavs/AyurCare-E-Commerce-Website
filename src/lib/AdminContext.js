@@ -8,12 +8,14 @@ const AdminContext = createContext();
 export function AdminProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Initialize with sample data on mount
   useEffect(() => {
     const savedProducts = localStorage.getItem('admin_products');
     const savedOrders = localStorage.getItem('admin_orders');
+    const savedCategories = localStorage.getItem('admin_categories');
 
     if (savedProducts) {
       try {
@@ -37,6 +39,17 @@ export function AdminProvider({ children }) {
       setOrders(generateSampleOrders());
     }
 
+    if (savedCategories) {
+      try {
+        setCategories(JSON.parse(savedCategories));
+      } catch (e) {
+        console.error('Failed to parse categories:', e);
+        setCategories(getDefaultCategories());
+      }
+    } else {
+      setCategories(getDefaultCategories());
+    }
+
     setIsHydrated(true);
   }, []);
 
@@ -45,8 +58,9 @@ export function AdminProvider({ children }) {
     if (isHydrated) {
       localStorage.setItem('admin_products', JSON.stringify(products));
       localStorage.setItem('admin_orders', JSON.stringify(orders));
+      localStorage.setItem('admin_categories', JSON.stringify(categories));
     }
-  }, [products, orders, isHydrated]);
+  }, [products, orders, categories, isHydrated]);
 
   // Add new product
   const addProduct = (product) => {
@@ -97,6 +111,22 @@ export function AdminProvider({ children }) {
     );
   };
 
+  // Add new category
+  const addCategory = (category) => {
+    const newCategory = {
+      ...category,
+      id: `CAT-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+    };
+    setCategories((prev) => [newCategory, ...prev]);
+    return newCategory;
+  };
+
+  // Delete category
+  const deleteCategory = (categoryId) => {
+    setCategories((prev) => prev.filter((c) => c.id !== categoryId));
+  };
+
   // Calculate analytics
   const calculateAnalytics = () => {
     const totalProducts = products.length;
@@ -132,12 +162,15 @@ export function AdminProvider({ children }) {
       value={{
         products,
         orders,
+        categories,
         addProduct,
         updateProduct,
         deleteProduct,
         updateStock,
         addOrder,
         updateOrderStatus,
+        addCategory,
+        deleteCategory,
         calculateAnalytics,
         isHydrated,
       }}
@@ -182,4 +215,16 @@ function generateSampleOrders() {
   }
 
   return orders;
+}
+
+// Default categories
+function getDefaultCategories() {
+  return [
+    { id: 'CAT-1', icon: '🌱', name: 'Herbal Supplements', image: '', createdAt: new Date().toISOString() },
+    { id: 'CAT-2', icon: '🧴', name: 'Ayurvedic Oils', image: '', createdAt: new Date().toISOString() },
+    { id: 'CAT-3', icon: '✨', name: 'Natural Skincare', image: '', createdAt: new Date().toISOString() },
+    { id: 'CAT-4', icon: '🍵', name: 'Organic Teas', image: '', createdAt: new Date().toISOString() },
+    { id: 'CAT-5', icon: '🧼', name: 'Personal Care', image: '', createdAt: new Date().toISOString() },
+    { id: 'CAT-6', icon: '🕉️', name: 'Wellness Kits', image: '', createdAt: new Date().toISOString() },
+  ];
 }

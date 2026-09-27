@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from '@/styles/layout.module.css';
+import '@/styles/admin-animations.css';
 
 const sidebarStyles = {
   nav: {
@@ -79,6 +80,7 @@ export default function AdminSidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  className="admin-sidebar-link"
                   style={{
                     ...sidebarStyles.link,
                     ...(isActive ? sidebarStyles.linkActive : {}),
