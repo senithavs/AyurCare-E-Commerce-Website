@@ -4,3 +4,8 @@ export { default as CartPage } from './CartPage';
 export { default as ProductDetailPage } from './ProductDetailPage';
 export { default as AccountPage } from './AccountPage';
 export { default as WishlistPage } from './WishlistPage';
+export { default as SignUpPage } from './SignUpPage';
+export { default as SignInPage } from './SignInPage';
+export { default as ProfilePage } from './ProfilePage';
+export { default as OrdersPage } from './OrdersPage';
+export { default as SettingsPage } from './SettingsPage';
