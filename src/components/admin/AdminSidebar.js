@@ -57,6 +57,7 @@ const menuItems = [
   {
     section: 'Management',
     items: [
+      { icon: '👥', label: 'Users', href: '/admin/users' },
       { icon: '📦', label: 'Products', href: '/admin/products' },
       { icon: '📋', label: 'Orders', href: '/admin/orders' },
       { icon: '📈', label: 'Stock', href: '/admin/stock' },

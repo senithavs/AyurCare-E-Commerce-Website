@@ -33,7 +33,8 @@ export default function Header({
   const handleSignOut = () => {
     signOut();
     setShowProfileMenu(false);
-    router.push('/');
+    // Refresh the page after sign out
+    window.location.href = '/';
   };
 
   const handleProfileClick = () => {

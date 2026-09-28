@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { Button } from '@/components/ui';
+import ProfileSidebar from '@/components/layout/ProfileSidebar';
 import '@/styles/admin-animations.css';
 
 const settingsStyles = {
@@ -159,7 +160,7 @@ const settingsStyles = {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { user, isAuthenticated, changePassword, signOut } = useAuth();
+  const { user, isAuthenticated, changePassword, signOut, isLoading } = useAuth();
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -174,10 +175,11 @@ export default function SettingsPage() {
   const [isChanging, setIsChanging] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Wait for auth to load before checking
+    if (!isLoading && !isAuthenticated) {
       router.push('/signin');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -236,7 +238,8 @@ export default function SettingsPage() {
       localStorage.removeItem('rememberMe');
       
       signOut();
-      router.push('/');
+      // Refresh the page after sign out
+      window.location.href = '/';
     }
   };
 
@@ -244,7 +247,7 @@ export default function SettingsPage() {
     return null;
   }
 
-  return (
+  const pageContent = (
     <div style={settingsStyles.container}>
       <div style={settingsStyles.header}>
         <h1 style={settingsStyles.title}>Settings</h1>
@@ -435,12 +438,12 @@ export default function SettingsPage() {
           </Button>
         </div>
       </div>
-
-      <div style={{ maxWidth: '800px', margin: '40px auto 0' }}>
-        <Link href="/" style={{ color: 'var(--green-700)', textDecoration: 'none', fontWeight: 600 }}>
-          ← Back to Home
-        </Link>
-      </div>
     </div>
+  );
+
+  return (
+    <ProfileSidebar currentPage="settings">
+      {pageContent}
+    </ProfileSidebar>
   );
 }

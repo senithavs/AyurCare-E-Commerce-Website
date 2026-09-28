@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
+import ProfileSidebar from '@/components/layout/ProfileSidebar';
 import '@/styles/admin-animations.css';
 
 const ordersStyles = {
@@ -136,19 +137,20 @@ const ordersStyles = {
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Wait for auth to load before checking
+    if (!isLoading && !isAuthenticated) {
       router.push('/signin');
-    } else {
+    } else if (!isLoading && isAuthenticated) {
       // Load orders from localStorage
       const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
       setOrders(storedOrders);
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   const getStatusStyle = (status) => {
     switch (status) {
@@ -173,7 +175,7 @@ export default function OrdersPage() {
     return null;
   }
 
-  return (
+  const pageContent = (
     <div style={ordersStyles.container}>
       <div style={ordersStyles.header}>
         <h1 style={ordersStyles.title}>My Orders</h1>
@@ -258,12 +260,12 @@ export default function OrdersPage() {
           ))}
         </div>
       )}
-
-      <div style={{ maxWidth: '1000px', margin: '40px auto 0' }}>
-        <Link href="/" style={{ color: 'var(--green-700)', textDecoration: 'none', fontWeight: 600 }}>
-          ← Back to Home
-        </Link>
-      </div>
     </div>
+  );
+
+  return (
+    <ProfileSidebar currentPage="orders">
+      {pageContent}
+    </ProfileSidebar>
   );
 }

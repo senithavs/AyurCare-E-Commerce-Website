@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { Button } from '@/components/ui';
+import ProfileSidebar from '@/components/layout/ProfileSidebar';
 import '@/styles/admin-animations.css';
 
 const profileStyles = {
@@ -165,7 +166,7 @@ const profileStyles = {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, isAuthenticated, updateProfile } = useAuth();
+  const { user, isAuthenticated, updateProfile, isLoading } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -178,10 +179,11 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Wait for auth to load before checking
+    if (!isLoading && !isAuthenticated) {
       router.push('/signin');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -216,7 +218,7 @@ export default function ProfilePage() {
     return null;
   }
 
-  return (
+  const pageContent = (
     <div style={profileStyles.container}>
       <div style={profileStyles.header}>
         <h1 style={profileStyles.title}>My Profile</h1>
@@ -414,12 +416,12 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-
-      <div style={{ maxWidth: '800px', margin: '40px auto 0' }}>
-        <Link href="/" style={{ color: 'var(--green-700)', textDecoration: 'none', fontWeight: 600 }}>
-          ← Back to Home
-        </Link>
-      </div>
     </div>
+  );
+
+  return (
+    <ProfileSidebar currentPage="profile">
+      {pageContent}
+    </ProfileSidebar>
   );
 }
