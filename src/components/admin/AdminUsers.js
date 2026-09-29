@@ -364,7 +364,6 @@ export default function AdminUsers() {
       {/* Search Bar */}
       <div style={usersStyles.controls}>
         <div style={usersStyles.searchBox}>
-          <span style={usersStyles.searchIcon}>🔍</span>
           <input
             type="text"
             placeholder="Search by name, email, or username..."

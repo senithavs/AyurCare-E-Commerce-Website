@@ -68,11 +68,10 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { login, isAdminLoggedIn } = useAdminAuth();
   const [formData, setFormData] = useState({
-    email: 'admin@ayurcare.com',
-    password: 'admin123',
-    name: 'Admin',
+    email: '',
+    password: '',
   });
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   // If already logged in, redirect to dashboard
@@ -82,28 +81,48 @@ export default function AdminLoginPage() {
     }
   }, [isAdminLoggedIn, router]);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation - min 6 characters
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setErrors({});
     setIsLoading(true);
 
+    if (!validateForm()) {
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Simple validation
-      if (!formData.email || !formData.password || !formData.name) {
-        setError('Please fill in all fields');
-        setIsLoading(false);
-        return;
-      }
-
-      // Demo authentication - in production, verify against backend
-      login(formData.email, formData.password, formData.name);
-
+      // Validate against stored admins
+      login(formData.email, formData.password);
       // Redirect to dashboard
       setTimeout(() => {
         router.push('/admin');
       }, 100);
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setErrors({
+        submit: err.message || 'Invalid email or password.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -137,14 +156,14 @@ export default function AdminLoginPage() {
         <p style={loginStyles.subtitle}>Sign in to your account</p>
 
         <div style={loginStyles.demoNote}>
-          📝 Demo Credentials:
+          📝 Main Admin Credentials:
           <br />
           Email: admin@ayurcare.com
           <br />
-          Password: admin123
+          Password: Se@admin@123
         </div>
 
-        {error && (
+        {errors.submit && (
           <div
             style={{
               background: '#FEE2E2',
@@ -156,21 +175,11 @@ export default function AdminLoginPage() {
               fontSize: '13px',
             }}
           >
-            {error}
+            {errors.submit}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div style={loginStyles.formGroup}>
-            <FormField
-              label="Full Name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-
           <div style={loginStyles.formGroup}>
             <FormField
               label="Email Address"
@@ -180,6 +189,11 @@ export default function AdminLoginPage() {
               placeholder="admin@ayurcare.com"
               required
             />
+            {errors.email && (
+              <div style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px' }}>
+                {errors.email}
+              </div>
+            )}
           </div>
 
           <div style={loginStyles.formGroup}>
@@ -191,6 +205,11 @@ export default function AdminLoginPage() {
               placeholder="Enter password"
               required
             />
+            {errors.password && (
+              <div style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px' }}>
+                {errors.password}
+              </div>
+            )}
           </div>
 
           <div style={loginStyles.submitBtn}>

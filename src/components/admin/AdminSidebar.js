@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAdminAuth } from '@/lib/AdminAuthContext';
 import styles from '@/styles/layout.module.css';
 import '@/styles/admin-animations.css';
 
@@ -47,27 +48,39 @@ const sidebarStyles = {
   },
 };
 
-const menuItems = [
-  {
-    section: 'Main',
-    items: [
-      { icon: '📊', label: 'Dashboard', href: '/admin' },
-    ],
-  },
-  {
-    section: 'Management',
-    items: [
-      { icon: '👥', label: 'Users', href: '/admin/users' },
-      { icon: '📦', label: 'Products', href: '/admin/products' },
-      { icon: '📋', label: 'Orders', href: '/admin/orders' },
-      { icon: '📈', label: 'Stock', href: '/admin/stock' },
-      { icon: '📊', label: 'Sales Analytics', href: '/admin/analytics' }
-    ],
-  },
-];
+const getMenuItems = (isSuperAdmin) => {
+  const mainItems = [
+    { icon: '📊', label: 'Dashboard', href: '/admin' },
+  ];
+
+  // Only show Admin Management to super admin
+  if (isSuperAdmin) {
+    mainItems.push({ icon: '🔐', label: 'Admin Management', href: '/admin/management' });
+  }
+
+  return [
+    {
+      section: 'Main',
+      items: mainItems,
+    },
+    {
+      section: 'Management',
+      items: [
+        { icon: '👥', label: 'Users', href: '/admin/users' },
+        { icon: '📦', label: 'Products', href: '/admin/products' },
+        { icon: '📋', label: 'Orders', href: '/admin/orders' },
+        { icon: '📈', label: 'Stock', href: '/admin/stock' },
+        { icon: '📊', label: 'Sales Analytics', href: '/admin/analytics' }
+      ],
+    },
+  ];
+};
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const { admin, isHydrated } = useAdminAuth();
+  const isSuperAdmin = admin?.role === 'super_admin';
+  const menuItems = getMenuItems(isSuperAdmin);
 
   return (
     <aside style={{ padding: '20px 0' }}>
