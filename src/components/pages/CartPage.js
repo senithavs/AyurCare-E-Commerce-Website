@@ -224,9 +224,11 @@ export default function CartPage() {
               <span>Rs. {Math.round(total).toLocaleString()}</span>
             </div>
 
-            <Button variant="primary" block>
-              Proceed to Checkout
-            </Button>
+            <Link href="/checkout" style={{ textDecoration: 'none' }}>
+              <Button variant="primary" block>
+                Proceed to Checkout
+              </Button>
+            </Link>
 
             <Link href="/shop" style={{ textDecoration: 'none' }}>
               <Button variant="ghost" block>
