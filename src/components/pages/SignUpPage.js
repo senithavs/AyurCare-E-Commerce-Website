@@ -206,27 +206,28 @@ export default function SignUpPage() {
     // Submit form
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Call sign up API
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
 
-      // Save to localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const userExists = users.some((u) => u.email === formData.email || u.username === formData.username);
+      const data = await response.json();
 
-      if (userExists) {
-        setErrors({ submit: 'Email or username already registered' });
+      if (!response.ok) {
+        setErrors({ submit: data.error || 'Failed to create account' });
         setIsSubmitting(false);
         return;
       }
 
-      users.push({
-        ...formData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-      });
-
-      localStorage.setItem('users', JSON.stringify(users));
-      localStorage.setItem('currentUser', JSON.stringify({ email: formData.email, username: formData.username }));
+      // Save to localStorage session
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
 
       setSubmitSuccess(true);
       setFormData({

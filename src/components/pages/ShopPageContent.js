@@ -6,7 +6,6 @@ import { Section } from '@/components/layout';
 import { ProductGrid, CategoryGrid } from '@/components/products';
 import { Chip, FormField, Pagination } from '@/components/ui';
 import { EmptyState } from '@/components/utility';
-import { getAllProducts, getCategories } from '@/lib/productsData';
 
 const shopStyles = {
   shopBody: {
@@ -47,7 +46,6 @@ const shopStyles = {
 };
 
 const PRODUCTS_PER_PAGE = 12;
-const mockProducts = getAllProducts();
 
 export default function ShopPageContent() {
   const searchParams = useSearchParams();
@@ -58,8 +56,53 @@ export default function ShopPageContent() {
     category: [],
     availability: ['In Stock'],
   });
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const categories = getCategories();
+  // Fetch products from database on mount
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/products');
+        
+        if (!response.ok) {
+          const text = await response.text();
+          console.error('API error response:', text);
+          throw new Error(`API error: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Invalid content type:', contentType);
+          console.error('Response text:', text.substring(0, 500));
+          throw new Error(`Invalid content type: ${contentType}`);
+        }
+        
+        const data = await response.json();
+
+        if (data.success && Array.isArray(data.products)) {
+          setProducts(data.products);
+
+          // Extract unique categories from products
+          const uniqueCategories = [...new Set(data.products.map((p) => p.category))];
+          setCategories(uniqueCategories.sort());
+        } else {
+          console.error('Invalid API response structure:', data);
+          setProducts([]);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Auto-filter by category if passed in URL
   useEffect(() => {
@@ -92,8 +135,10 @@ export default function ShopPageContent() {
   };
 
   // Filter products based on search and filters
-  const filteredProducts = mockProducts.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.name_en.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory =
       selectedFilters.category.length === 0 || selectedFilters.category.includes(product.category);
     const matchesAvailability =
@@ -210,6 +255,10 @@ export default function ShopPageContent() {
                 />
               )}
             </>
+          ) : isLoading ? (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ color: 'var(--charcoal-60)' }}>Loading products...</p>
+            </div>
           ) : (
             <EmptyState
               icon="🔍"

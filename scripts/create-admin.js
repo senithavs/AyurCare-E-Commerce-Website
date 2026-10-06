@@ -5,6 +5,7 @@
  */
 
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 // MongoDB URI
 const MONGODB_URI = 'mongodb+srv://admin:123@cluster0.lwyh57h.mongodb.net/?appName=Cluster0';
@@ -81,11 +82,12 @@ async function createAdmin() {
       process.exit(0);
     }
 
-    // Create admin user
+    // Create admin user with hashed password
+    const hashedPassword = await bcrypt.hash('admin123', 10);
     const adminUser = new User({
       username: 'admin',
       email: 'admin@ayurcare.com',
-      password: 'admin123',
+      password: hashedPassword,
       name: 'Admin User',
       phone: '+94 70 000 0000',
       address: 'Colombo, Sri Lanka',

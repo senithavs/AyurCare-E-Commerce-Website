@@ -34,39 +34,25 @@ export function AuthProvider({ children }) {
     try {
       setIsLoading(true);
 
-      // Check if user already exists
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const userExists = users.some(
-        (u) => u.email === userData.email || u.username === userData.username
-      );
+      // Call sign up API
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
 
-      if (userExists) {
-        throw new Error('Email or username already registered');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Sign up failed');
       }
 
-      // Create new user
-      const newUser = {
-        ...userData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-      };
-
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-
-      // Log in the user
-      const loggedInUser = {
-        id: newUser.id,
-        email: newUser.email,
-        username: newUser.username,
-        name: newUser.name,
-      };
-
-      localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
-      setUser(loggedInUser);
+      // Save user to localStorage session
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
+      setUser(data.user);
       setIsAuthenticated(true);
 
-      return { success: true, user: loggedInUser };
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -79,34 +65,30 @@ export function AuthProvider({ children }) {
     try {
       setIsLoading(true);
 
-      // Find user by email and password
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const foundUser = users.find(
-        (u) => u.email === email && u.password === password
-      );
+      // Call sign in API
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-      if (!foundUser) {
-        throw new Error('Invalid email or password');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Sign in failed');
       }
 
-      // Create user session
-      const loggedInUser = {
-        id: foundUser.id,
-        email: foundUser.email,
-        username: foundUser.username,
-        name: foundUser.name,
-      };
-
-      localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+      // Save user to localStorage session
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
 
       if (rememberMe) {
         localStorage.setItem('rememberMe', 'true');
       }
 
-      setUser(loggedInUser);
+      setUser(data.user);
       setIsAuthenticated(true);
 
-      return { success: true, user: loggedInUser };
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -136,23 +118,27 @@ export function AuthProvider({ children }) {
         throw new Error('No user logged in');
       }
 
-      // Update in users list
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const userIndex = users.findIndex((u) => u.id === user.id);
+      // Call update profile API
+      const response = await fetch('/api/auth/profile', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': user.id,
+        },
+        body: JSON.stringify(updates),
+      });
 
-      if (userIndex === -1) {
-        throw new Error('User not found');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Update failed');
       }
 
-      users[userIndex] = { ...users[userIndex], ...updates };
-      localStorage.setItem('users', JSON.stringify(users));
+      // Update localStorage
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
+      setUser(data.user);
 
-      // Update current session
-      const updatedUser = { ...user, ...updates };
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      return { success: true, user: updatedUser };
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -169,20 +155,23 @@ export function AuthProvider({ children }) {
         throw new Error('No user logged in');
       }
 
-      // Verify current password
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const foundUser = users.find((u) => u.id === user.id);
+      // Call change password API
+      const response = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': user.id,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
 
-      if (!foundUser || foundUser.password !== currentPassword) {
-        throw new Error('Current password is incorrect');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Password change failed');
       }
 
-      // Update password
-      const userIndex = users.findIndex((u) => u.id === user.id);
-      users[userIndex].password = newPassword;
-      localStorage.setItem('users', JSON.stringify(users));
-
-      return { success: true, message: 'Password changed successfully' };
+      return { success: true, message: data.message };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -195,19 +184,20 @@ export function AuthProvider({ children }) {
     try {
       setIsLoading(true);
 
-      // Find user by email
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const userIndex = users.findIndex((u) => u.email === email);
+      // Find user by email and update password
+      const response = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, newPassword }),
+      });
 
-      if (userIndex === -1) {
-        throw new Error('No account found with this email');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Password reset failed');
       }
 
-      // Update password
-      users[userIndex].password = newPassword;
-      localStorage.setItem('users', JSON.stringify(users));
-
-      return { success: true, message: 'Password reset successfully' };
+      return { success: true, message: data.message };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -215,11 +205,18 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Get user by ID
-  const getUserById = (userId) => {
+  // Get user by ID (from database)
+  const getUserById = async (userId) => {
     try {
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      return users.find((u) => u.id === userId) || null;
+      const response = await fetch('/api/auth/profile', {
+        headers: { 'x-user-id': userId },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.user;
+      }
+      return null;
     } catch (error) {
       console.error('Failed to get user:', error);
       return null;
@@ -227,20 +224,38 @@ export function AuthProvider({ children }) {
   };
 
   // Check if email exists
-  const emailExists = (email) => {
+  const emailExists = async (email) => {
     try {
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      return users.some((u) => u.email === email);
+      const response = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.exists;
+      }
+      return false;
     } catch (error) {
       return false;
     }
   };
 
   // Check if username exists
-  const usernameExists = (username) => {
+  const usernameExists = async (username) => {
     try {
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      return users.some((u) => u.username === username);
+      const response = await fetch('/api/auth/check-username', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.exists;
+      }
+      return false;
     } catch (error) {
       return false;
     }

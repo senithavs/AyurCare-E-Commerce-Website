@@ -194,9 +194,19 @@ export async function POST(request) {
     // ========================================
 
     try {
-      await Order.findOneAndUpdate(
-        { orderId: order_id },
-        {
+      const order = await Order.findOne({ orderId: order_id });
+
+      if (order) {
+        // Add progress timeline entry
+        order.progressTimeline.push({
+          status: paymentStatus,
+          description: `Payment ${paymentStatus}`,
+          timestamp: new Date(),
+          notes: `PayHere payment notification received - Payment ID: ${payment_id}`,
+        });
+
+        // Update order fields
+        Object.assign(order, {
           paymentStatus,
           status: paymentStatus === 'completed' ? 'paid' : 'pending',
           paymentId: payment_id,
@@ -206,15 +216,16 @@ export async function POST(request) {
           ...(paymentStatus === 'failed' && { failedAt: new Date() }),
           ...(paymentStatus === 'cancelled' && { cancelledAt: new Date() }),
           ...(paymentStatus === 'completed' && { paidAt: new Date() }),
-        },
-        { new: true }
-      );
+        });
 
-      console.log('Order status updated in database:', {
-        order_id,
-        status: paymentStatus,
-        payment_id,
-      });
+        await order.save();
+
+        console.log('Order status and progress updated in database:', {
+          order_id,
+          status: paymentStatus,
+          payment_id,
+        });
+      }
     } catch (err) {
       console.error('Failed to update order in database:', err);
       // Still return 200 to acknowledge receipt

@@ -1,11 +1,9 @@
 'use client';
-
-import { useState, use } from 'react';
+import { useState, use, useEffect } from 'react';
 import Link from 'next/link';
 import { LayoutWrapper, Section } from '@/components/layout';
 import { Button, Badge, Breadcrumb, QtyBox, Avatar } from '@/components/ui';
 import { ProductGrid } from '@/components/products';
-import { getProductBySlug, getAllProducts, getMockReviews } from '@/lib/productsData';
 
 const detailStyles = {
   grid: {
@@ -152,11 +150,80 @@ const detailStyles = {
 
 export default function ProductPage({ params }) {
   const { slug } = use(params);
-  const product = getProductBySlug(slug);
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [activeTab, setActiveTab] = useState('description');
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const mockReviews = getMockReviews(product?.id || 'unknown', 5);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        // Fetch product by ID or product_id
+        const response = await fetch(`/api/products/${slug}`);
+        
+        if (!response.ok) {
+          const text = await response.text();
+          console.error('API error response:', text);
+          throw new Error(`API error: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Invalid content type:', contentType);
+          console.error('Response text:', text.substring(0, 500));
+          throw new Error(`Invalid content type: ${contentType}`);
+        }
+        
+        const data = await response.json();
+
+        if (data.success && data.product) {
+          const fetchedProduct = data.product;
+          setProduct(fetchedProduct);
+
+          // Fetch related products from same category
+          const relatedResponse = await fetch(
+            `/api/products?category=${encodeURIComponent(fetchedProduct.category)}&limit=4`
+          );
+          
+          if (!relatedResponse.ok) {
+            console.error('Failed to fetch related products');
+            return;
+          }
+          
+          const relatedData = await relatedResponse.json();
+
+          if (relatedData.success && Array.isArray(relatedData.products)) {
+            const filtered = relatedData.products.filter((p) => p._id !== fetchedProduct._id);
+            setRelatedProducts(filtered.slice(0, 4));
+          }
+        } else {
+          console.error('Invalid API response:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error.message || error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <LayoutWrapper>
+        <Section>
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <p style={{ color: 'var(--charcoal-60)' }}>Loading product...</p>
+          </div>
+        </Section>
+      </LayoutWrapper>
+    );
+  }
 
   if (!product) {
     return (
@@ -177,11 +244,20 @@ export default function ProductPage({ params }) {
     );
   }
 
-  // Get related products (same category)
-  const allProducts = getAllProducts();
-  const relatedProducts = allProducts
-    .filter((p) => p.category === product.category && p.slug !== product.slug)
-    .slice(0, 4);
+  const mockReviews = [
+    {
+      author: 'Priya K.',
+      rating: 5,
+      comment: 'Excellent product. Highly recommended!',
+      date: '2 weeks ago',
+    },
+    {
+      author: 'Ruwan D.',
+      rating: 4,
+      comment: 'Good quality and value for money.',
+      date: '1 month ago',
+    },
+  ];
 
   return (
     <LayoutWrapper>
@@ -195,12 +271,11 @@ export default function ProductPage({ params }) {
             { label: product.name },
           ]}
         />
-
         {/* Product Grid */}
         <div style={detailStyles.grid}>
           {/* Gallery */}
           <div>
-            <div style={detailStyles.gallery}>{product.image}</div>
+            <div style={detailStyles.gallery}>🌿</div>
             <div style={detailStyles.thumbs}>
               {[1, 2, 3, 4].map((i) => (
                 <div
@@ -218,29 +293,19 @@ export default function ProductPage({ params }) {
               ))}
             </div>
           </div>
-
           {/* Details */}
           <div>
             <div style={detailStyles.category}>{product.category}</div>
             <h1 style={detailStyles.title}>{product.name}</h1>
             <div style={{ color: 'var(--gold)', fontSize: '14px', margin: '4px 0 12px' }}>
-              {'★'.repeat(Math.floor(product.rating))}
-              {'☆'.repeat(5 - Math.floor(product.rating))} &nbsp;{product.rating.toFixed(1)} ({product.reviewCount}{' '}
-              reviews)
+              {'★'.repeat(Math.floor(product.rating || 4.5))}
+              {'☆'.repeat(5 - Math.floor(product.rating || 4.5))} &nbsp;{(product.rating || 4.5).toFixed(1)} (
+              {product.reviewCount || 0} reviews)
             </div>
-
             <div style={detailStyles.priceRow}>
-              <span style={detailStyles.price}>Rs. {product.price.toLocaleString()}</span>
-              {product.oldPrice && (
-                <>
-                  <span style={detailStyles.oldPrice}>Rs. {product.oldPrice.toLocaleString()}</span>
-                  {product.discount && <Badge>{product.discount}</Badge>}
-                </>
-              )}
+              <span style={detailStyles.price}>₹ {product.price.toLocaleString()}</span>
             </div>
-
-            <p style={detailStyles.description}>{product.description}</p>
-
+            <p style={detailStyles.description}>{product.name_en || product.name}</p>
             {product.inStock ? (
               <div style={detailStyles.badge}>✓ In Stock</div>
             ) : (
@@ -248,15 +313,13 @@ export default function ProductPage({ params }) {
                 Out of Stock
               </div>
             )}
-
             <div style={detailStyles.qtyRow}>
               <span style={{ fontSize: '13px', fontWeight: 500 }}>Quantity:</span>
               <QtyBox value={quantity} onChange={setQuantity} />
               <span style={{ fontSize: '12px', color: 'var(--charcoal-60)' }}>
-                {product.inStock ? `${product.stockCount} available` : 'Currently unavailable'}
+                {product.inStock ? `${product.stock_quantity || 100} available` : 'Currently unavailable'}
               </span>
             </div>
-
             <div style={detailStyles.buttonRow}>
               <Button variant="primary" disabled={!product.inStock}>
                 Add to Cart
@@ -272,10 +335,9 @@ export default function ProductPage({ params }) {
                 {isWishlisted ? '♥' : '♡'}
               </span>
             </div>
-
             {/* Tabs */}
             <div style={detailStyles.tabs}>
-              {['description', 'ingredients', 'dosage', 'usage'].map((tab) => (
+              {['benefits', 'details'].map((tab) => (
                 <button
                   key={tab}
                   style={{
@@ -288,28 +350,31 @@ export default function ProductPage({ params }) {
                 </button>
               ))}
             </div>
-
             {/* Tab Content */}
             <div style={{ fontSize: '13px', color: 'var(--charcoal-60)', lineHeight: 1.8, marginTop: '16px' }}>
-              {activeTab === 'description' && <p>{product.longDescription}</p>}
-              {activeTab === 'ingredients' && (
+              {activeTab === 'benefits' && (
                 <ul style={{ paddingLeft: '20px' }}>
-                  {product.ingredients.map((ingredient, idx) => (
+                  {(product.product_benefits || []).map((benefit, idx) => (
                     <li key={idx} style={{ marginBottom: '8px' }}>
-                      {ingredient}
+                      {benefit}
                     </li>
                   ))}
                 </ul>
               )}
-              {activeTab === 'dosage' && <p>{product.dosage}</p>}
-              {activeTab === 'usage' && <p>{product.usage}</p>}
+              {activeTab === 'details' && (
+                <div>
+                  <p><strong>Product ID:</strong> {product.product_id}</p>
+                  <p><strong>Category:</strong> {product.category}</p>
+                  <p><strong>Availability:</strong> {product.availability}</p>
+                  <p><strong>Stock:</strong> {product.stock_quantity} units</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </Section>
-
       {/* Reviews Section */}
-      <Section title="Customer Reviews" subtitle={`${product.reviewCount} verified reviews`}>
+      <Section title="Customer Reviews" subtitle={`${product.reviewCount || 0} verified reviews`}>
         {mockReviews.map((review, idx) => (
           <div key={idx} style={detailStyles.reviewRow}>
             <Avatar size="sm" initials={review.author.charAt(0)} />
@@ -327,7 +392,6 @@ export default function ProductPage({ params }) {
           </div>
         ))}
       </Section>
-
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <Section title="Related Products" subtitle={`More from ${product.category}`} style={detailStyles.relatedProducts}>

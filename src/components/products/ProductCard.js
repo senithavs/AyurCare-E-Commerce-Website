@@ -87,6 +87,7 @@ const productCardStyles = {
 
 export default function ProductCard({
   id,
+  product_id,
   image = '🌿',
   category = 'Supplements',
   name = 'Product Name',
@@ -111,8 +112,11 @@ export default function ProductCard({
     }
   };
 
+  // Use product_id for database products, fallback to slug for mock data
+  const productSlug = product_id || id || slug || 'product';
+
   return (
-    <Link href={`/shop/${slug}`} style={{ textDecoration: 'none' }}>
+    <Link href={`/shop/${productSlug}`} style={{ textDecoration: 'none' }}>
       <div
         style={productCardStyles.card}
         onMouseEnter={(e) => handleCardHover(e, true)}

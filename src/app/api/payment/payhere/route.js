@@ -184,6 +184,7 @@ export async function POST(request) {
     try {
       const newOrder = new Order({
         orderId,
+        userId: checkoutData.userId, // Store user ID if provided
         items: verifiedCartItems,
         subtotal,
         tax,
@@ -200,10 +201,22 @@ export async function POST(request) {
         },
         status: 'pending',
         paymentStatus: 'pending',
+        // Add initial progress timeline entry
+        progressTimeline: [
+          {
+            status: 'pending',
+            description: 'Order received and awaiting payment',
+            timestamp: new Date(),
+            notes: 'Order created',
+          },
+        ],
       });
 
       const savedOrder = await newOrder.save();
-      console.log('Order saved to database:', savedOrder._id);
+      console.log('Order saved to database:', {
+        orderId: savedOrder.orderId,
+        userId: savedOrder.userId,
+      });
     } catch (err) {
       console.error('Failed to store order in database:', err);
       // Continue anyway - payment can still be processed
