@@ -9,11 +9,25 @@ import '@/styles/admin-animations.css';
 const signUpStyles = {
   container: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #1a3a2e 0%, #2d5a4a 50%, #1a3a2e 100%)',
+    backgroundImage: 'url(/reg.jpeg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     padding: '20px',
+  },
+  containerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0, 0, 0, 0.5)',
+    backdropFilter: 'blur(3px)',
+    zIndex: 1,
   },
   formCard: {
     background: '#fff',
@@ -23,6 +37,8 @@ const signUpStyles = {
     width: '100%',
     boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
     animation: 'scaleUp 0.5s ease-out',
+    position: 'relative',
+    zIndex: 10,
   },
   formGrid: {
     display: 'grid',
@@ -263,6 +279,7 @@ export default function SignUpPage() {
 
   return (
     <div style={signUpStyles.container}>
+      <div style={signUpStyles.containerOverlay}></div>
       <div style={signUpStyles.formCard}>
         <div style={signUpStyles.header}>
           <h1 style={signUpStyles.title}>Create Account</h1>

@@ -170,6 +170,7 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -177,6 +178,40 @@ export default function ProfilePage() {
     phone: '',
     address: '',
   });
+
+  // Fetch user profile from database on component mount
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user?.id) {
+        try {
+          const response = await fetch('/api/auth/profile', {
+            headers: { 'x-user-id': user.id },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const fetchedUser = data.user;
+            
+            setFormData({
+              name: fetchedUser.name || '',
+              email: fetchedUser.email || '',
+              username: fetchedUser.username || '',
+              phone: fetchedUser.phone || '',
+              address: fetchedUser.address || '',
+            });
+          }
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+        } finally {
+          setProfileLoading(false);
+        }
+      }
+    };
+
+    if (!isLoading && isAuthenticated && user?.id) {
+      fetchUserProfile();
+    }
+  }, [user?.id, isAuthenticated, isLoading]);
 
   useEffect(() => {
     // Wait for auth to load before checking
@@ -218,6 +253,20 @@ export default function ProfilePage() {
     return null;
   }
 
+  if (profileLoading) {
+    return (
+      <ProfileSidebar currentPage="profile">
+        <div style={profileStyles.container}>
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <p style={{ color: 'var(--charcoal-60)', fontSize: '16px' }}>
+              Loading profile data...
+            </p>
+          </div>
+        </div>
+      </ProfileSidebar>
+    );
+  }
+
   const pageContent = (
     <div style={profileStyles.container}>
       <div style={profileStyles.header}>
@@ -244,11 +293,11 @@ export default function ProfilePage() {
           <div style={profileStyles.card}>
             <div style={profileStyles.profileHeader}>
               <div style={profileStyles.avatar}>
-                {user.name?.charAt(0).toUpperCase() || 'U'}
+                {formData.name?.charAt(0).toUpperCase() || 'U'}
               </div>
               <div style={profileStyles.profileInfo}>
-                <div style={profileStyles.infoName}>{user.name}</div>
-                <div style={profileStyles.infoSubtext}>{user.email}</div>
+                <div style={profileStyles.infoName}>{formData.name}</div>
+                <div style={profileStyles.infoSubtext}>{formData.email}</div>
                 <div style={profileStyles.infoSubtext}>
                   Member since {new Date(user.createdAt || Date.now()).toLocaleDateString()}
                 </div>
@@ -258,11 +307,11 @@ export default function ProfilePage() {
             <div style={profileStyles.infoRow}>
               <div style={profileStyles.infoField}>
                 <div style={profileStyles.infoLabel}>Username</div>
-                <div style={profileStyles.infoValue}>{user.username}</div>
+                <div style={profileStyles.infoValue}>{formData.username}</div>
               </div>
               <div style={profileStyles.infoField}>
                 <div style={profileStyles.infoLabel}>Email</div>
-                <div style={profileStyles.infoValue}>{user.email}</div>
+                <div style={profileStyles.infoValue}>{formData.email}</div>
               </div>
             </div>
 
