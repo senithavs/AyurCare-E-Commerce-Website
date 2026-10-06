@@ -140,17 +140,35 @@ export default function OrdersPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
+  const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
     // Wait for auth to load before checking
     if (!isLoading && !isAuthenticated) {
       router.push('/signin');
     } else if (!isLoading && isAuthenticated) {
-      // Load orders from localStorage
-      const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-      setOrders(storedOrders);
+      // Fetch orders from database
+      fetchOrders();
     }
   }, [isAuthenticated, isLoading, router]);
+
+  const fetchOrders = async () => {
+    try {
+      setPageLoading(true);
+      const response = await fetch('/api/orders');
+      const data = await response.json();
+      
+      if (data.success && Array.isArray(data.orders)) {
+        setOrders(data.orders);
+      } else {
+        console.error('Failed to fetch orders:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setPageLoading(false);
+    }
+  };
 
   const getStatusStyle = (status) => {
     switch (status) {
@@ -182,7 +200,13 @@ export default function OrdersPage() {
         <p style={ordersStyles.subtitle}>Track and manage your orders</p>
       </div>
 
-      {orders.length === 0 ? (
+      {pageLoading ? (
+        <div style={ordersStyles.card}>
+          <div style={ordersStyles.emptyState}>
+            <p style={{ color: 'var(--charcoal-60)' }}>Loading your orders...</p>
+          </div>
+        </div>
+      ) : orders.length === 0 ? (
         <div style={ordersStyles.card}>
           <div style={ordersStyles.emptyState}>
             <div style={ordersStyles.emptyIcon}>📦</div>
@@ -208,7 +232,7 @@ export default function OrdersPage() {
         <div style={ordersStyles.card}>
           {orders.map((order, index) => (
             <div
-              key={order.id}
+              key={order._id || order.orderId}
               style={{
                 ...ordersStyles.orderItem,
                 ...(expandedOrder === index ? ordersStyles.orderItemHover : {}),
@@ -218,7 +242,7 @@ export default function OrdersPage() {
               <div style={ordersStyles.orderHeader}>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Order ID</div>
-                  <div style={ordersStyles.orderValue}>#{order.id}</div>
+                  <div style={ordersStyles.orderValue}>#{order.orderId}</div>
                 </div>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Date</div>
@@ -228,7 +252,7 @@ export default function OrdersPage() {
                 </div>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Amount</div>
-                  <div style={ordersStyles.orderValue}>₹{order.amount}</div>
+                  <div style={ordersStyles.orderValue}>Rs. {order.amount}</div>
                 </div>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Status</div>

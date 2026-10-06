@@ -62,11 +62,11 @@ const animationStyles = `
   @keyframes slideDownFade {
     from {
       opacity: 0;
-      transform: translateY(-50);
+      transform: translateX(-50px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
   }
 

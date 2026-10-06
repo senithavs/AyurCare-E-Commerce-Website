@@ -154,7 +154,7 @@ export default function ProductDetailPage() {
           {/* Details */}
           <div>
             <div style={detailStyles.category}>{mockProduct.category}</div>
-            <h1 style={detailStyles.title}>{mockProduct.name}</h1>
+            <h1 style={detailStyles.title}>{mockProduct.name_en || mockProduct.name}</h1>
             <div style={{ color: 'var(--gold)', fontSize: '14px', margin: '4px 0' }}>
               ★★★★☆ &nbsp;{mockProduct.rating} ({mockProduct.reviewCount} reviews)
             </div>

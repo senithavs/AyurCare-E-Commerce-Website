@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { LayoutWrapper, Section } from '@/components/layout';
@@ -104,7 +104,19 @@ const successStyles = {
   },
 };
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessPage() {
+  return (
+    <LayoutWrapper>
+      <Section>
+        <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px', fontSize: '16px', color: 'var(--charcoal-60)' }}>Loading...</div>}>
+          <PaymentSuccessContent />
+        </Suspense>
+      </Section>
+    </LayoutWrapper>
+  );
+}
+
+function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('order_id');
   const { clearCart } = useCart();
@@ -291,3 +303,5 @@ export default function PaymentSuccessPage() {
     </LayoutWrapper>
   );
 }
+
+export default PaymentSuccessPage;

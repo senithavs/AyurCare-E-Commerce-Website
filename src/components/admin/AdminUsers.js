@@ -51,15 +51,6 @@ const usersStyles = {
     outline: 'none',
     boxSizing: 'border-box',
   },
-  searchIcon: {
-    position: 'absolute',
-    left: '12px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'var(--charcoal-60)',
-    fontSize: '16px',
-    pointerEvents: 'none',
-  },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
@@ -124,22 +115,6 @@ const usersStyles = {
     color: 'var(--charcoal-60)',
     marginTop: '2px',
   },
-  statusBadge: {
-    display: 'inline-block',
-    padding: '6px 12px',
-    borderRadius: '20px',
-    fontSize: '12px',
-    fontWeight: 600,
-    width: 'fit-content',
-  },
-  statusActive: {
-    background: 'rgba(34, 197, 94, 0.1)',
-    color: '#166534',
-  },
-  statusInactive: {
-    background: 'rgba(156, 163, 175, 0.1)',
-    color: '#4b5563',
-  },
   actions: {
     display: 'flex',
     gap: '8px',
@@ -153,7 +128,7 @@ const usersStyles = {
     cursor: 'pointer',
     transition: 'all 0.2s ease',
   },
-  editButton: {
+  viewButton: {
     background: 'rgba(59, 130, 246, 0.1)',
     color: '#1e40af',
   },
@@ -249,6 +224,8 @@ const usersStyles = {
     transition: 'all 0.3s ease',
     outline: 'none',
     boxSizing: 'border-box',
+    background: '#f5f5f5',
+    cursor: 'not-allowed',
   },
   modalActions: {
     display: 'flex',
@@ -260,104 +237,160 @@ const usersStyles = {
     borderTopStyle: 'solid',
     borderTopColor: 'var(--line)',
   },
+  alert: {
+    padding: '12px 16px',
+    borderRadius: '8px',
+    marginBottom: '24px',
+    fontSize: '13px',
+    fontWeight: 500,
+  },
+  alertSuccess: {
+    background: 'rgba(34, 197, 94, 0.1)',
+    color: '#166534',
+    border: '1px solid #16a34a',
+  },
+  alertError: {
+    background: 'rgba(220, 38, 38, 0.1)',
+    color: '#991b1b',
+    border: '1px solid #dc2626',
+  },
 };
 
 export default function AdminUsers() {
-  const [users, setUsers] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-  const [editFormData, setEditFormData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  // Load users from localStorage
   useEffect(() => {
-    loadUsers();
+    fetchCustomers();
   }, []);
 
-  const loadUsers = () => {
+  const fetchCustomers = async () => {
     try {
-      const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      setUsers(storedUsers);
-    } catch (error) {
-      console.error('Failed to load users:', error);
-    }
-  };
+      setIsLoading(true);
+      setError('');
 
-  const filteredUsers = users.filter(user =>
-    user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.username?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      const response = await fetch('/api/users');
+      const data = await response.json();
 
-  const handleEditClick = (user) => {
-    setEditingUser(user);
-    setEditFormData({ ...user });
-    setShowEditModal(true);
-  };
-
-  const handleDeleteClick = (userId) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
-      const updatedUsers = users.filter(u => u.id !== userId);
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-      setUsers(updatedUsers);
-    }
-  };
-
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleEditSubmit = async () => {
-    setIsLoading(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const updatedUsers = users.map(u =>
-        u.id === editingUser.id ? { ...u, ...editFormData } : u
-      );
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-      setUsers(updatedUsers);
-      setShowEditModal(false);
-      setEditingUser(null);
+      if (data.success && Array.isArray(data.users)) {
+        setCustomers(data.users);
+      } else {
+        setError(data.error || 'Failed to load customers');
+      }
+    } catch (err) {
+      console.error('Error fetching customers:', err);
+      setError('Failed to load customers from database');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const activeUsersCount = users.filter(u => u.id).length;
-  const totalUsersCount = users.length;
-  const newUsersCount = users.filter(u => {
-    const createdDate = new Date(u.createdAt);
+  const filteredCustomers = customers.filter(customer =>
+    customer.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    customer.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    customer.username?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleViewClick = (customer) => {
+    setSelectedCustomer(customer);
+    setShowModal(true);
+  };
+
+  const handleDeleteClick = async (customerId) => {
+    if (window.confirm('Are you sure you want to delete this customer? This action cannot be undone.')) {
+      try {
+        const response = await fetch(`/api/users?id=${customerId}`, {
+          method: 'DELETE',
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setCustomers((prev) => prev.filter((c) => c._id !== customerId));
+          setSuccess('Customer deleted successfully');
+          setTimeout(() => setSuccess(''), 3000);
+        } else {
+          setError(data.error || 'Failed to delete customer');
+        }
+      } catch (err) {
+        console.error('Error deleting customer:', err);
+        setError('Failed to delete customer');
+      }
+    }
+  };
+
+  const totalCustomers = customers.length;
+  const activeCustomers = customers.filter((c) => c.isActive !== false).length;
+  const newlyRegistered = customers.filter((c) => {
+    const registrationDate = new Date(c.createdAt);
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-    return createdDate > sevenDaysAgo;
+    return registrationDate > sevenDaysAgo;
   }).length;
 
   return (
     <div style={usersStyles.container}>
+      {/* Error Alert */}
+      {error && (
+        <div style={{ ...usersStyles.alert, ...usersStyles.alertError }}>
+          <span>{error}</span>
+          <button
+            onClick={() => setError('')}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '18px',
+              float: 'right',
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      {/* Success Alert */}
+      {success && (
+        <div style={{ ...usersStyles.alert, ...usersStyles.alertSuccess }}>
+          <span>{success}</span>
+          <button
+            onClick={() => setSuccess('')}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '18px',
+              float: 'right',
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div style={usersStyles.header}>
-        <h1 style={usersStyles.title}>👥 User Management</h1>
-        <p style={usersStyles.subtitle}>Manage system users and their accounts</p>
+        <h1 style={usersStyles.title}>👥 Customer Management</h1>
+        <p style={usersStyles.subtitle}>View and manage customer accounts</p>
       </div>
 
       {/* Stats */}
       <div style={usersStyles.stats}>
         <div style={{ ...usersStyles.statCard, animationDelay: '0s' }}>
-          <div style={usersStyles.statValue}>{totalUsersCount}</div>
-          <div style={usersStyles.statLabel}>Total Users</div>
+          <div style={usersStyles.statValue}>{totalCustomers}</div>
+          <div style={usersStyles.statLabel}>Total Customers</div>
         </div>
         <div style={{ ...usersStyles.statCard, animationDelay: '0.05s' }}>
-          <div style={usersStyles.statValue}>{activeUsersCount}</div>
-          <div style={usersStyles.statLabel}>Active Users</div>
+          <div style={usersStyles.statValue}>{activeCustomers}</div>
+          <div style={usersStyles.statLabel}>Active</div>
         </div>
         <div style={{ ...usersStyles.statCard, animationDelay: '0.1s' }}>
-          <div style={usersStyles.statValue}>{newUsersCount}</div>
-          <div style={usersStyles.statLabel}>New (7 days)</div>
+          <div style={usersStyles.statValue}>{newlyRegistered}</div>
+          <div style={usersStyles.statLabel}>Newly Registered</div>
         </div>
       </div>
 
@@ -382,32 +415,36 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Users Table */}
-      {filteredUsers.length === 0 ? (
+      {/* Customers Table */}
+      {isLoading ? (
+        <div style={usersStyles.emptyState}>
+          <div style={{ fontSize: '16px', color: 'var(--charcoal-60)' }}>Loading customers...</div>
+        </div>
+      ) : filteredCustomers.length === 0 ? (
         <div style={usersStyles.emptyState}>
           <div style={usersStyles.emptyIcon}>👤</div>
-          <div style={usersStyles.emptyTitle}>No users found</div>
+          <div style={usersStyles.emptyTitle}>No customers found</div>
           <p>
             {searchQuery
               ? 'Try adjusting your search criteria'
-              : 'No users in the system yet'}
+              : 'No customers registered yet'}
           </p>
         </div>
       ) : (
         <table style={usersStyles.table}>
           <thead style={usersStyles.tableHeader}>
             <tr>
-              <th style={usersStyles.headerCell}>User</th>
+              <th style={usersStyles.headerCell}>Customer</th>
               <th style={usersStyles.headerCell}>Email</th>
-              <th style={usersStyles.headerCell}>Username</th>
+              <th style={usersStyles.headerCell}>Phone</th>
               <th style={usersStyles.headerCell}>Joined</th>
               <th style={usersStyles.headerCell}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user, index) => (
+            {filteredCustomers.map((customer, index) => (
               <tr
-                key={user.id}
+                key={customer._id}
                 style={{ ...usersStyles.tableRow, animationDelay: `${index * 0.05}s` }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = usersStyles.tableRowHover.background;
@@ -419,30 +456,30 @@ export default function AdminUsers() {
                 <td style={usersStyles.tableCell}>
                   <div style={usersStyles.userInfo}>
                     <div style={usersStyles.avatar}>
-                      {user.name?.charAt(0).toUpperCase() || 'U'}
+                      {customer.name?.charAt(0).toUpperCase() || 'C'}
                     </div>
                     <div style={usersStyles.userDetails}>
-                      <div style={usersStyles.userName}>{user.name}</div>
-                      <div style={usersStyles.userEmail}>{user.email}</div>
+                      <div style={usersStyles.userName}>{customer.name}</div>
+                      <div style={usersStyles.userEmail}>@{customer.username}</div>
                     </div>
                   </div>
                 </td>
-                <td style={usersStyles.tableCell}>{user.email}</td>
-                <td style={usersStyles.tableCell}>{user.username}</td>
+                <td style={usersStyles.tableCell}>{customer.email}</td>
+                <td style={usersStyles.tableCell}>{customer.phone || '-'}</td>
                 <td style={usersStyles.tableCell}>
-                  {new Date(user.createdAt).toLocaleDateString()}
+                  {new Date(customer.createdAt).toLocaleDateString()}
                 </td>
                 <td style={usersStyles.tableCell}>
                   <div style={usersStyles.actions}>
                     <button
-                      style={{ ...usersStyles.actionButton, ...usersStyles.editButton }}
-                      onClick={() => handleEditClick(user)}
+                      style={{ ...usersStyles.actionButton, ...usersStyles.viewButton }}
+                      onClick={() => handleViewClick(customer)}
                     >
-                      Edit
+                      View
                     </button>
                     <button
                       style={{ ...usersStyles.actionButton, ...usersStyles.deleteButton }}
-                      onClick={() => handleDeleteClick(user.id)}
+                      onClick={() => handleDeleteClick(customer._id)}
                     >
                       Delete
                     </button>
@@ -454,78 +491,95 @@ export default function AdminUsers() {
         </table>
       )}
 
-      {/* Edit Modal */}
-      {showEditModal && editingUser && (
-        <div style={usersStyles.modal} onClick={() => setShowEditModal(false)}>
+      {/* View Details Modal - Read Only */}
+      {showModal && selectedCustomer && (
+        <div style={usersStyles.modal} onClick={() => setShowModal(false)}>
           <div
             style={usersStyles.modalContent}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={usersStyles.modalHeader}>Edit User</div>
+            <div style={usersStyles.modalHeader}>Customer Details</div>
 
             <div style={usersStyles.formGroup}>
-              <label style={usersStyles.label}>Full Name (Read-only)</label>
+              <label style={usersStyles.label}>Full Name</label>
               <input
                 type="text"
-                value={editFormData.name || ''}
+                value={selectedCustomer.name || ''}
                 disabled
-                style={{ ...usersStyles.input, background: '#f5f5f5', cursor: 'not-allowed' }}
+                style={usersStyles.input}
               />
             </div>
 
             <div style={usersStyles.formGroup}>
-              <label style={usersStyles.label}>Username (Read-only)</label>
-              <input
-                type="text"
-                value={editFormData.username || ''}
-                disabled
-                style={{ ...usersStyles.input, background: '#f5f5f5', cursor: 'not-allowed' }}
-              />
-            </div>
-
-            <div style={usersStyles.formGroup}>
-              <label style={usersStyles.label}>Email (Read-only)</label>
+              <label style={usersStyles.label}>Email</label>
               <input
                 type="email"
-                value={editFormData.email || ''}
+                value={selectedCustomer.email || ''}
                 disabled
-                style={{ ...usersStyles.input, background: '#f5f5f5', cursor: 'not-allowed' }}
+                style={usersStyles.input}
               />
             </div>
 
             <div style={usersStyles.formGroup}>
-              <label style={usersStyles.label}>Phone (Read-only)</label>
-              <input
-                type="tel"
-                value={editFormData.phone || ''}
-                disabled
-                style={{ ...usersStyles.input, background: '#f5f5f5', cursor: 'not-allowed' }}
-              />
-            </div>
-
-            <div style={usersStyles.formGroup}>
-              <label style={usersStyles.label}>Address (Read-only)</label>
+              <label style={usersStyles.label}>Username</label>
               <input
                 type="text"
-                value={editFormData.address || ''}
+                value={selectedCustomer.username || ''}
                 disabled
-                style={{ ...usersStyles.input, background: '#f5f5f5', cursor: 'not-allowed' }}
+                style={usersStyles.input}
+              />
+            </div>
+
+            <div style={usersStyles.formGroup}>
+              <label style={usersStyles.label}>Phone</label>
+              <input
+                type="tel"
+                value={selectedCustomer.phone || '-'}
+                disabled
+                style={usersStyles.input}
+              />
+            </div>
+
+            <div style={usersStyles.formGroup}>
+              <label style={usersStyles.label}>Address</label>
+              <input
+                type="text"
+                value={selectedCustomer.address || '-'}
+                disabled
+                style={usersStyles.input}
+              />
+            </div>
+
+            <div style={usersStyles.formGroup}>
+              <label style={usersStyles.label}>Member Since</label>
+              <input
+                type="text"
+                value={new Date(selectedCustomer.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+                disabled
+                style={usersStyles.input}
+              />
+            </div>
+
+            <div style={usersStyles.formGroup}>
+              <label style={usersStyles.label}>Status</label>
+              <input
+                type="text"
+                value={selectedCustomer.isActive !== false ? 'Active' : 'Inactive'}
+                disabled
+                style={usersStyles.input}
               />
             </div>
 
             <div style={usersStyles.modalActions}>
               <Button
-                variant="outline"
-                onClick={() => setShowEditModal(false)}
-              >
-                Cancel
-              </Button>
-              <Button
                 variant="primary"
-                onClick={handleEditSubmit}
-                disabled={isLoading}
+                onClick={() => setShowModal(false)}
               >
-                {isLoading ? 'Saving...' : 'Save Changes'}
+                Close
               </Button>
             </div>
           </div>

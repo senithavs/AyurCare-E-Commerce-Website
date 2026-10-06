@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { useAdmin } from '@/lib/AdminContext';
+import { useState, useRef, useEffect } from 'react';
 import { Button, FormField } from '@/components/ui';
 import '@/styles/admin-animations.css';
 
@@ -37,8 +36,8 @@ const productsStyles = {
     background: '#fff',
     borderRadius: '12px',
     padding: '24px',
-    maxWidth: '500px',
-    width: '90%',
+    maxWidth: '900px',
+    width: '95%',
     maxHeight: '90vh',
     overflowY: 'auto',
   },
@@ -46,10 +45,19 @@ const productsStyles = {
     fontSize: '18px',
     fontWeight: 600,
     color: 'var(--green-900)',
+    marginBottom: '24px',
+  },
+  formGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '16px',
     marginBottom: '16px',
   },
+  formGridFull: {
+    gridColumn: '1 / -1',
+  },
   formGroup: {
-    marginBottom: '16px',
+    marginBottom: '0px',
   },
   imagePreview: {
     width: '100%',
@@ -136,156 +144,224 @@ const productsStyles = {
     color: 'var(--green-700)',
     borderBottomColor: 'var(--green-700)',
   },
-  categoryGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-    gap: '16px',
-    marginBottom: '24px',
-  },
-  categoryCard: {
-    background: '#fff',
-    border: '1px solid var(--line)',
+  alert: {
+    padding: '12px 16px',
     borderRadius: '8px',
-    padding: '16px',
-    textAlign: 'center',
-    position: 'relative',
-  },
-  categoryImage: {
-    width: '100%',
-    height: '100px',
-    objectFit: 'cover',
-    borderRadius: '6px',
-    marginBottom: '8px',
-  },
-  categoryIcon: {
-    fontSize: '32px',
-    marginBottom: '8px',
-    display: 'block',
-  },
-  categoryName: {
-    fontSize: '13px',
-    fontWeight: 600,
-    color: 'var(--green-900)',
-    marginBottom: '8px',
-  },
-  deleteIconBtn: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    background: 'var(--danger)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '50%',
-    width: '28px',
-    height: '28px',
-    cursor: 'pointer',
-    fontSize: '16px',
+    marginBottom: '16px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.2s ease',
+    justifyContent: 'space-between',
+    fontSize: '14px',
+    fontWeight: 500,
+  },
+  alertSuccess: {
+    background: 'rgba(106, 168, 79, 0.1)',
+    color: 'var(--green-700)',
+    border: '1px solid var(--green-700)',
+  },
+  alertError: {
+    background: 'rgba(255, 67, 67, 0.1)',
+    color: 'var(--danger)',
+    border: '1px solid var(--danger)',
   },
 };
 
 export default function AdminProducts() {
-  const { products, categories, addProduct, deleteProduct, addCategory, deleteCategory } = useAdmin();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('products');
-  const [productImage, setProductImage] = useState('');
-  const [categoryImage, setCategoryImage] = useState('');
-  const productFileInputRef = useRef(null);
-  const categoryFileInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [editingProduct, setEditingProduct] = useState(null);
+  const fileInputRef = useRef(null);
   
   const [formData, setFormData] = useState({
+    product_id: '',
     name: '',
-    category: categories.length > 0 ? categories[0].name : 'Herbal Supplements',
+    name_en: '',
+    category: '',
     price: '',
-    stockCount: '',
-    description: '',
-  });
-  
-  const [categoryFormData, setCategoryFormData] = useState({
-    name: '',
-    icon: '🌿',
+    stock_quantity: '',
+    product_benefits: '',
+    availability: 'In Stock',
   });
 
-  // Filter products by ID/name
+  // Fetch products and categories from database on mount
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/products');
+      const data = await response.json();
+      
+      if (data.success && Array.isArray(data.products)) {
+        setProducts(data.products);
+      }
+    } catch (err) {
+      console.error('Failed to fetch products:', err);
+      setError('Failed to load products from database');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/categories');
+      const data = await response.json();
+      
+      if (data.success && Array.isArray(data.categories)) {
+        setCategories(data.categories);
+      }
+    } catch (err) {
+      console.error('Failed to fetch categories:', err);
+    }
+  };
+
+  const handleOpenModal = () => {
+    resetForm();
+    fetchCategories(); // Refresh categories when opening modal
+    setShowModal(true);
+  };
+
+  // Filter products by search
   const filteredProducts = products.filter((product) =>
-    product.id.toString().includes(searchQuery.toLowerCase()) ||
+    product.product_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleAddProduct = () => {
-    if (!formData.name || !formData.price || !formData.stockCount) {
-      alert('Please fill all required fields');
-      return;
-    }
-
-    addProduct({
-      name: formData.name,
-      category: formData.category,
-      price: parseFloat(formData.price),
-      stockCount: parseInt(formData.stockCount),
-      description: formData.description,
-      image: productImage || '🌿',
-      rating: 4.5,
-      reviewCount: 0,
-      inStock: true,
-      slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
-    });
-
+  const resetForm = () => {
     setFormData({
+      product_id: '',
       name: '',
-      category: categories.length > 0 ? categories[0].name : 'Herbal Supplements',
+      name_en: '',
+      category: '',
       price: '',
-      stockCount: '',
-      description: '',
+      stock_quantity: '',
+      product_benefits: '',
+      availability: 'In Stock',
     });
-    setProductImage('');
-    setShowModal(false);
+    setEditingProduct(null);
   };
 
-  const handleAddCategory = () => {
-    if (!categoryFormData.name) {
-      alert('Please enter category name');
+  const handleAddProduct = async () => {
+    setError('');
+    setSuccess('');
+
+    if (!formData.product_id || !formData.name || !formData.category || !formData.price) {
+      setError('Please fill all required fields');
       return;
     }
 
-    addCategory({
-      name: categoryFormData.name,
-      icon: categoryFormData.icon,
-      image: categoryImage,
-    });
+    try {
+      setIsLoading(true);
+      
+      if (editingProduct) {
+        // Update product
+        const response = await fetch('/api/products/update', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: editingProduct._id,
+            ...formData,
+            price: parseFloat(formData.price),
+            stock_quantity: parseInt(formData.stock_quantity) || 0,
+            product_benefits: formData.product_benefits
+              .split('\n')
+              .filter((b) => b.trim()),
+          }),
+        });
 
-    setCategoryFormData({
-      name: '',
-      icon: '🌿',
-    });
-    setCategoryImage('');
-    setShowCategoryModal(false);
-  };
+        const data = await response.json();
+        if (!response.ok) {
+          setError(data.error || 'Failed to update product');
+          return;
+        }
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCategoryImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+        setSuccess('Product updated successfully!');
+      } else {
+        // Create new product
+        const response = await fetch('/api/products/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...formData,
+            price: parseFloat(formData.price),
+            stock_quantity: parseInt(formData.stock_quantity) || 0,
+            product_benefits: formData.product_benefits
+              .split('\n')
+              .filter((b) => b.trim()),
+          }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          setError(data.error || 'Failed to create product');
+          return;
+        }
+
+        setSuccess('Product created successfully!');
+      }
+
+      // Refresh products list
+      fetchProducts();
+      resetForm();
+      setShowModal(false);
+
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError(err.message || 'Failed to save product');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleProductImageUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProductImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const handleEditProduct = (product) => {
+    setEditingProduct(product);
+    setFormData({
+      product_id: product.product_id,
+      name: product.name,
+      name_en: product.name_en || '',
+      category: product.category,
+      price: product.price.toString(),
+      stock_quantity: (product.stock_quantity || 0).toString(),
+      product_benefits: (product.product_benefits || []).join('\n'),
+      availability: product.availability || 'In Stock',
+    });
+    fetchCategories(); // Refresh categories when opening edit modal
+    setShowModal(true);
+    setError('');
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/products/delete?id=${productId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.error || 'Failed to delete product');
+        return;
+      }
+
+      setSuccess('Product deleted successfully!');
+      fetchProducts();
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError(err.message || 'Failed to delete product');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -319,351 +395,243 @@ export default function AdminProducts() {
           />
         </div>
         <div style={productsStyles.buttonGroup}>
-          <Button variant="primary" size="sm" onClick={() => setShowCategoryModal(true)}>
-            + Add Category
-          </Button>
-          <Button variant="primary" size="sm" onClick={() => setShowModal(true)}>
+          <Button variant="primary" size="sm" onClick={handleOpenModal}>
             + Add Product
           </Button>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div style={productsStyles.tabs}>
-        <button
-          style={{
-            ...productsStyles.tabBtn,
-            ...(activeTab === 'products' ? productsStyles.tabBtnActive : {}),
-          }}
-          onClick={() => setActiveTab('products')}
-        >
-          Products ({products.length})
-        </button>
-        <button
-          style={{
-            ...productsStyles.tabBtn,
-            ...(activeTab === 'categories' ? productsStyles.tabBtnActive : {}),
-          }}
-          onClick={() => setActiveTab('categories')}
-        >
-          Categories ({categories.length})
-        </button>
-      </div>
+      {error && (
+        <div style={{ ...productsStyles.alert, ...productsStyles.alertError }}>
+          <span>{error}</span>
+          <button onClick={() => setError('')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px' }}>×</button>
+        </div>
+      )}
+
+      {success && (
+        <div style={{ ...productsStyles.alert, ...productsStyles.alertSuccess }}>
+          <span>{success}</span>
+          <button onClick={() => setSuccess('')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px' }}>×</button>
+        </div>
+      )}
 
       {/* Products Tab */}
-      {activeTab === 'products' && (
-        <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }} className="admin-section-card">
-          {filteredProducts.length === 0 ? (
-            <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--charcoal)' }}>
-              <div style={{ fontSize: '14px', marginBottom: '8px' }}>
-                {searchQuery ? `No products found matching "${searchQuery}"` : 'No products available'}
+      <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }} className="admin-section-card">
+        {isLoading ? (
+          <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--charcoal)' }}>
+            <p>Loading products...</p>
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--charcoal)' }}>
+            <div style={{ fontSize: '14px', marginBottom: '8px' }}>
+              {searchQuery ? `No products found matching "${searchQuery}"` : 'No products available'}
+            </div>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--green-700)',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  textDecoration: 'underline',
+                  marginTop: '8px',
+                }}
+              >
+                Clear search
+              </button>
+            )}
+          </div>
+        ) : (
+          <table style={productsStyles.table} className="admin-table">
+            <thead>
+              <tr style={{ background: '#f9f9f9' }}>
+                <th style={productsStyles.th}>Product ID</th>
+                <th style={productsStyles.th}>Name</th>
+                <th style={productsStyles.th}>Category</th>
+                <th style={productsStyles.th}>Price</th>
+                <th style={productsStyles.th}>Stock</th>
+                <th style={productsStyles.th}>Status</th>
+                <th style={productsStyles.th}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProducts.map((product) => (
+                <tr key={product._id}>
+                  <td style={productsStyles.td}>
+                    <span style={{ fontWeight: 600, color: 'var(--green-700)' }}>{product.product_id}</span>
+                  </td>
+                  <td style={productsStyles.td}>{product.name_en || product.name}</td>
+                  <td style={productsStyles.td}>{product.category}</td>
+                  <td style={productsStyles.td}>Rs. {product.price.toLocaleString()}</td>
+                  <td style={productsStyles.td}>
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      background: product.stock_quantity > 20 ? 'var(--sage-100)' : product.stock_quantity > 10 ? '#FBE9CF' : '#F5DCDC',
+                      color: product.stock_quantity > 20 ? 'var(--green-700)' : product.stock_quantity > 10 ? '#8A5A0E' : 'var(--danger)',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                    }}>
+                      {product.stock_quantity}
+                    </span>
+                  </td>
+                  <td style={productsStyles.td}>
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      background: product.inStock ? 'var(--sage-100)' : '#F5DCDC',
+                      color: product.inStock ? 'var(--green-700)' : 'var(--danger)',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                    }}>
+                      {product.availability || (product.inStock ? 'In Stock' : 'Out of Stock')}
+                    </span>
+                  </td>
+                  <td style={productsStyles.td}>
+                    <div style={productsStyles.actions}>
+                      <button
+                        style={{...productsStyles.actionBtn, borderColor: 'var(--green-700)', color: 'var(--green-700)'}}
+                        onClick={() => handleEditProduct(product)}
+                        disabled={isLoading}
+                      >
+                        ✎ Edit
+                      </button>
+                      <button
+                        style={{...productsStyles.actionBtn, ...productsStyles.deleteBtn}}
+                        onClick={() => handleDeleteProduct(product._id)}
+                        disabled={isLoading}
+                      >
+                        🗑 Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Add/Edit Product Modal */}
+      {showModal && (
+        <div style={productsStyles.modal} className="admin-modal-overlay" onClick={() => { setShowModal(false); resetForm(); }}>
+          <div style={productsStyles.modalContent} className="admin-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div style={productsStyles.modalTitle}>{editingProduct ? 'Edit Product Details' : 'Add New Product'}</div>
+
+            <div style={productsStyles.formGrid}>
+              <div style={productsStyles.formGroup}>
+                <FormField
+                  label="Product ID"
+                  placeholder="e.g., AYU-001"
+                  value={formData.product_id}
+                  onChange={(e) => setFormData({ ...formData, product_id: e.target.value })}
+                  disabled={editingProduct ? true : false}
+                />
               </div>
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
+
+              <div style={productsStyles.formGroup}>
+                <FormField
+                  label="Product Name (English)"
+                  placeholder="e.g., Ashwagandha"
+                  value={formData.name_en}
+                  onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
+                />
+              </div>
+
+              <div style={productsStyles.formGroup}>
+                <FormField
+                  label="Product Name (Sinhala)"
+                  placeholder="e.g., අශ්වගන්ධා"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+
+              <div style={productsStyles.formGroup}>
+                <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--green-900)', display: 'block', marginBottom: '6px' }}>
+                  Category
+                </label>
+                <select
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   style={{
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--green-700)',
-                    cursor: 'pointer',
+                    width: '100%',
+                    padding: '11px 14px',
+                    border: '1px solid var(--line)',
+                    borderRadius: '8px',
                     fontSize: '13px',
-                    textDecoration: 'underline',
-                    marginTop: '8px',
+                    fontFamily: 'inherit',
                   }}
                 >
-                  Clear search
-                </button>
-              )}
-            </div>
-          ) : (
-            <table style={productsStyles.table} className="admin-table">
-              <thead>
-                <tr style={{ background: '#f9f9f9' }}>
-                  <th style={productsStyles.th}>ID</th>
-                  <th style={productsStyles.th}>Name</th>
-                  <th style={productsStyles.th}>Category</th>
-                  <th style={productsStyles.th}>Price</th>
-                  <th style={productsStyles.th}>Stock</th>
-                  <th style={productsStyles.th}>Status</th>
-                  <th style={productsStyles.th}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((product) => (
-                  <tr key={product.id}>
-                    <td style={productsStyles.td}>
-                      <span style={{ fontWeight: 600, color: 'var(--green-700)' }}>#{product.id}</span>
-                    </td>
-                    <td style={productsStyles.td}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>{product.image}</span>
-                        <span>{product.name}</span>
-                      </div>
-                    </td>
-                    <td style={productsStyles.td}>{product.category}</td>
-                    <td style={productsStyles.td}>Rs. {product.price.toLocaleString()}</td>
-                    <td style={productsStyles.td}>
-                      <span style={{
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        background: product.stockCount > 20 ? 'var(--sage-100)' : product.stockCount > 10 ? '#FBE9CF' : '#F5DCDC',
-                        color: product.stockCount > 20 ? 'var(--green-700)' : product.stockCount > 10 ? '#8A5A0E' : 'var(--danger)',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                      }}>
-                        {product.stockCount}
-                      </span>
-                    </td>
-                    <td style={productsStyles.td}>
-                      <span style={{
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        background: product.inStock ? 'var(--sage-100)' : '#F5DCDC',
-                        color: product.inStock ? 'var(--green-700)' : 'var(--danger)',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                      }}>
-                        {product.inStock ? 'In Stock' : 'Out of Stock'}
-                      </span>
-                    </td>
-                    <td style={productsStyles.td}>
-                      <div style={productsStyles.actions}>
-                        <button
-                          style={{...productsStyles.actionBtn, borderColor: 'var(--green-700)', color: 'var(--green-700)'}}
-                          onClick={() => alert('Edit functionality - Update stock and details')}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          style={{...productsStyles.actionBtn, ...productsStyles.deleteBtn}}
-                          onClick={() => {
-                            if (confirm('Are you sure you want to delete this product?')) {
-                              deleteProduct(product.id);
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      )}
+                  <option value="">Select a category</option>
+                  {categories.map((cat) => (
+                    <option key={cat._id} value={cat.name}>
+                      {cat.icon} {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-      {/* Categories Tab */}
-      {activeTab === 'categories' && (
-        <div>
-          {categories.length === 0 ? (
-            <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--charcoal)', background: '#fff', borderRadius: '12px', border: '1px solid var(--line)' }}>
-              <div style={{ fontSize: '14px' }}>
-                No categories available. Add your first category using the "Add Category" button.
+              <div style={productsStyles.formGroup}>
+                <FormField
+                  label="Price (Rs.)"
+                  type="number"
+                  placeholder="1000"
+                  value={formData.price}
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                />
+              </div>
+
+              <div style={productsStyles.formGroup}>
+                <FormField
+                  label="Stock Quantity"
+                  type="number"
+                  placeholder="50"
+                  value={formData.stock_quantity}
+                  onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
+                />
+              </div>
+
+              <div style={productsStyles.formGroup}>
+                <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--green-900)', display: 'block', marginBottom: '6px' }}>
+                  Availability
+                </label>
+                <select
+                  value={formData.availability}
+                  onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '11px 14px',
+                    border: '1px solid var(--line)',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  <option value="In Stock">In Stock</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                  <option value="Pre-order">Pre-order</option>
+                </select>
+              </div>
+
+              <div style={{ ...productsStyles.formGroup, ...productsStyles.formGridFull }}>
+                <FormField
+                  label="Product Benefits (one per line)"
+                  type="textarea"
+                  placeholder="Boosts immunity&#10;Improves digestion&#10;Reduces stress"
+                  value={formData.product_benefits}
+                  onChange={(e) => setFormData({ ...formData, product_benefits: e.target.value })}
+                />
               </div>
             </div>
-          ) : (
-            <div style={productsStyles.categoryGrid}>
-              {categories.map((category) => (
-                <div key={category.id} style={productsStyles.categoryCard} className="admin-section-card">
-                  <button
-                    style={productsStyles.deleteIconBtn}
-                    onClick={() => {
-                      if (confirm(`Are you sure you want to delete "${category.name}" category?`)) {
-                        deleteCategory(category.id);
-                      }
-                    }}
-                    title="Delete category"
-                  >
-                    ×
-                  </button>
-                  
-                  {category.image ? (
-                    <img src={category.image} alt={category.name} style={productsStyles.categoryImage} />
-                  ) : (
-                    <div style={{ ...productsStyles.categoryImage, background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span style={productsStyles.categoryIcon}>{category.icon}</span>
-                    </div>
-                  )}
-                  
-                  <div style={productsStyles.categoryName}>{category.name}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--charcoal-60)' }}>
-                    {category.icon} {category.id}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Add Product Modal */}
-      {showModal && (
-        <div style={productsStyles.modal} className="admin-modal-overlay" onClick={() => setShowModal(false)}>
-          <div style={productsStyles.modalContent} className="admin-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div style={productsStyles.modalTitle}>Add New Product</div>
-
-            {productImage && (
-              <img src={productImage} alt="Product Preview" style={productsStyles.imagePreview} />
-            )}
-
-            <div style={productsStyles.formGroup}>
-              <button
-                onClick={() => productFileInputRef.current?.click()}
-                style={productsStyles.uploadButton}
-                onMouseEnter={(e) => e.target.style.background = 'rgba(106, 168, 79, 0.05)'}
-                onMouseLeave={(e) => e.target.style.background = 'var(--cream)'}
-              >
-                📁 {productImage ? 'Change Product Image' : 'Upload Product Image'}
-              </button>
-              <input
-                ref={productFileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleProductImageUpload}
-                style={productsStyles.fileInput}
-              />
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <FormField
-                label="Product Name"
-                placeholder="e.g., Ashwagandha Capsules"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--green-900)', display: 'block', marginBottom: '6px' }}>
-                Category
-              </label>
-              <select
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '11px 14px',
-                  border: '1px solid var(--line)',
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  fontFamily: 'inherit',
-                }}
-              >
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.name}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <FormField
-                label="Price (Rs.)"
-                type="number"
-                placeholder="1000"
-                value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-              />
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <FormField
-                label="Stock Quantity"
-                type="number"
-                placeholder="50"
-                value={formData.stockCount}
-                onChange={(e) => setFormData({ ...formData, stockCount: e.target.value })}
-              />
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <FormField
-                label="Description"
-                type="textarea"
-                placeholder="Product description..."
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              />
-            </div>
 
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-              <Button variant="primary" block onClick={handleAddProduct}>
-                Add Product
+              <Button variant="primary" block onClick={handleAddProduct} disabled={isLoading}>
+                {isLoading ? 'Saving...' : editingProduct ? 'Update Product' : 'Add Product'}
               </Button>
-              <Button variant="outline" block onClick={() => setShowModal(false)}>
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Add Category Modal */}
-      {showCategoryModal && (
-        <div style={productsStyles.modal} className="admin-modal-overlay" onClick={() => setShowCategoryModal(false)}>
-          <div style={productsStyles.modalContent} className="admin-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div style={productsStyles.modalTitle}>Add New Category</div>
-
-            {categoryImage && (
-              <img src={categoryImage} alt="Preview" style={productsStyles.imagePreview} />
-            )}
-
-            <div style={productsStyles.formGroup}>
-              <button
-                onClick={() => categoryFileInputRef.current?.click()}
-                style={productsStyles.uploadButton}
-                onMouseEnter={(e) => e.target.style.background = 'rgba(106, 168, 79, 0.05)'}
-                onMouseLeave={(e) => e.target.style.background = 'var(--cream)'}
-              >
-                📁 {categoryImage ? 'Change Image' : 'Upload Category Image'}
-              </button>
-              <input
-                ref={categoryFileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                style={productsStyles.fileInput}
-              />
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <FormField
-                label="Category Name"
-                placeholder="e.g., Herbal Supplements"
-                value={categoryFormData.name}
-                onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
-              />
-            </div>
-
-            <div style={productsStyles.formGroup}>
-              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--green-900)', display: 'block', marginBottom: '6px' }}>
-                Icon Emoji
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., 🌿"
-                maxLength="2"
-                value={categoryFormData.icon}
-                onChange={(e) => setCategoryFormData({ ...categoryFormData, icon: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '11px 14px',
-                  border: '1px solid var(--line)',
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  fontFamily: 'inherit',
-                }}
-              />
-            </div>
-
-            <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-              <Button variant="primary" block onClick={handleAddCategory}>
-                Add Category
-              </Button>
-              <Button variant="outline" block onClick={() => setShowCategoryModal(false)}>
+              <Button variant="outline" block onClick={() => { setShowModal(false); resetForm(); }} disabled={isLoading}>
                 Cancel
               </Button>
             </div>

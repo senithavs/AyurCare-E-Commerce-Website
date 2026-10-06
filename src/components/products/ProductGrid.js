@@ -45,7 +45,7 @@ export default function ProductGrid({
     const product = products.find((p) => p._id === productId || p.id === productId);
     if (product) {
       addToCart(product, 1);
-      setToast(`${product.name} added to cart!`);
+      setToast(`${product.name_en || product.name} added to cart!`);
     }
   };
 
@@ -54,8 +54,8 @@ export default function ProductGrid({
     if (product) {
       const isAdded = toggleWishlist(product);
       const message = isAdded 
-        ? `${product.name} added to wishlist!`
-        : `${product.name} removed from wishlist`;
+        ? `${product.name_en || product.name} added to wishlist!`
+        : `${product.name_en || product.name} removed from wishlist`;
       setToast(message);
     }
   };

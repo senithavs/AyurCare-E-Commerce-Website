@@ -91,6 +91,7 @@ export default function ProductCard({
   image = '🌿',
   category = 'Supplements',
   name = 'Product Name',
+  name_en = 'Product Name',
   rating = 4.5,
   reviewCount = 0,
   price = 0,
@@ -146,7 +147,7 @@ export default function ProductCard({
         {/* Product Info */}
         <div style={productCardStyles.body}>
           <div style={productCardStyles.category}>{category}</div>
-          <div style={productCardStyles.name}>{name}</div>
+          <div style={productCardStyles.name}>{name_en || name}</div>
 
           {/* Rating */}
           <div style={productCardStyles.stars}>

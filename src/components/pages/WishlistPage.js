@@ -95,7 +95,7 @@ export default function WishlistPage() {
 
   const handleAddToCart = (product) => {
     addToCart(product, 1);
-    setToast(`${product.name} added to cart!`);
+    setToast(`${product.name_en || product.name} added to cart!`);
   };
 
   const handleRemove = (productId) => {

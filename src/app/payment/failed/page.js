@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { LayoutWrapper, Section } from '@/components/layout';
@@ -118,6 +118,18 @@ const failedStyles = {
 };
 
 export default function PaymentFailedPage() {
+  return (
+    <LayoutWrapper>
+      <Section>
+        <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px', fontSize: '16px', color: 'var(--charcoal-60)' }}>Loading...</div>}>
+          <PaymentFailedContent />
+        </Suspense>
+      </Section>
+    </LayoutWrapper>
+  );
+}
+
+function PaymentFailedContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('order_id');
   const errorCode = searchParams.get('error_code');

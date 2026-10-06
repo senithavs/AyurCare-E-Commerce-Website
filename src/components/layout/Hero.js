@@ -18,6 +18,7 @@ export default function Hero({
         justifyContent: 'left',
         minHeight: '600px',
         padding: '20px',
+        transform: 'translateY(0)',
         background: `url(${backgroundImage}) center/cover no-repeat`,
         backgroundAttachment: 'fixed',
       }}

@@ -296,14 +296,14 @@ export default function ProductPage({ params }) {
           {/* Details */}
           <div>
             <div style={detailStyles.category}>{product.category}</div>
-            <h1 style={detailStyles.title}>{product.name}</h1>
+            <h1 style={detailStyles.title}>{product.name_en || product.name}</h1>
             <div style={{ color: 'var(--gold)', fontSize: '14px', margin: '4px 0 12px' }}>
               {'★'.repeat(Math.floor(product.rating || 4.5))}
               {'☆'.repeat(5 - Math.floor(product.rating || 4.5))} &nbsp;{(product.rating || 4.5).toFixed(1)} (
               {product.reviewCount || 0} reviews)
             </div>
             <div style={detailStyles.priceRow}>
-              <span style={detailStyles.price}>₹ {product.price.toLocaleString()}</span>
+              <span style={detailStyles.price}>Rs. {product.price.toLocaleString()}</span>
             </div>
             <p style={detailStyles.description}>{product.name_en || product.name}</p>
             {product.inStock ? (
