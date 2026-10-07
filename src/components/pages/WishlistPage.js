@@ -95,10 +95,11 @@ export default function WishlistPage() {
 
   const handleAddToCart = (product) => {
     addToCart(product, 1);
-    setToast(`${product.name_en || product.name} added to cart!`);
+    setToast(`${product.name} added to cart!`);
   };
 
-  const handleRemove = (productId) => {
+  const handleRemove = (product) => {
+    const productId = product._id || product.id || product.product_id;
     removeFromWishlist(productId);
     setToast('Item removed from wishlist');
   };
@@ -132,7 +133,7 @@ export default function WishlistPage() {
           </div>
 
           {wishlistItems.map((item) => (
-            <div key={item.id} style={wishlistStyles.tableRow}>
+            <div key={item._id || item.id || item.product_id} style={wishlistStyles.tableRow}>
               <div style={wishlistStyles.productImage}>{item.image}</div>
               <div style={wishlistStyles.productInfo}>
                 <Link href={`/shop/${item.slug}`} style={{ textDecoration: 'none' }}>
@@ -151,7 +152,7 @@ export default function WishlistPage() {
                 </Button>
                 <button
                   style={wishlistStyles.removeBtn}
-                  onClick={() => handleRemove(item.id)}
+                  onClick={() => handleRemove(item)}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = '#F5DCDC';
                   }}

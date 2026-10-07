@@ -328,7 +328,7 @@ export default function AdminProducts() {
     setFormData({
       product_id: product.product_id,
       name: product.name,
-      name_en: product.name_en || '',
+      name_en: product.name,
       category: product.category,
       price: product.price.toString(),
       stock_quantity: (product.stock_quantity || 0).toString(),
@@ -462,7 +462,7 @@ export default function AdminProducts() {
                   <td style={productsStyles.td}>
                     <span style={{ fontWeight: 600, color: 'var(--green-700)' }}>{product.product_id}</span>
                   </td>
-                  <td style={productsStyles.td}>{product.name_en || product.name}</td>
+                  <td style={productsStyles.td}>{product.name}</td>
                   <td style={productsStyles.td}>{product.category}</td>
                   <td style={productsStyles.td}>Rs. {product.price.toLocaleString()}</td>
                   <td style={productsStyles.td}>

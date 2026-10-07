@@ -137,8 +137,7 @@ export default function ShopPageContent() {
   // Filter products based on search and filters
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.name_en.toLowerCase().includes(searchQuery.toLowerCase());
+      product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory =
       selectedFilters.category.length === 0 || selectedFilters.category.includes(product.category);
     const matchesAvailability =

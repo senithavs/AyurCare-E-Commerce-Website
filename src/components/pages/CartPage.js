@@ -160,8 +160,11 @@ export default function CartPage() {
               <div>Total</div>
             </div>
 
-            {cartItems.map((item) => (
-              <div key={item.id} style={cartStyles.tableRow}>
+            {cartItems.map((item, index) => {
+              // Use product ID with fallback to index for unique key
+              const itemKey = item._id || item.id || item.product_id || `cart-item-${index}`;
+              return (
+              <div key={itemKey} style={cartStyles.tableRow}>
                 <div style={cartStyles.productImage}>{item.image}</div>
                 <div style={cartStyles.productInfo}>
                   <div style={cartStyles.productName}>{item.name}</div>
@@ -171,7 +174,10 @@ export default function CartPage() {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <QtyBox 
                     value={item.quantity} 
-                    onChange={(value) => updateQuantity(item.id, value)}
+                    onChange={(value) => {
+                      const itemId = item._id || item.id || item.product_id;
+                      updateQuantity(itemId, value);
+                    }}
                   />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -180,7 +186,10 @@ export default function CartPage() {
                   </div>
                   <button
                     style={cartStyles.removeBtn}
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => {
+                      const itemId = item._id || item.id || item.product_id;
+                      removeFromCart(itemId);
+                    }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = '#F5DCDC';
                     }}
@@ -193,7 +202,8 @@ export default function CartPage() {
                   </button>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Order Summary */}

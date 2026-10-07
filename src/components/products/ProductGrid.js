@@ -41,21 +41,19 @@ export default function ProductGrid({
 
   const gridStyle = columnMap[columns] || gridStyles.grid4;
 
-  const handleAddToCart = (productId) => {
-    const product = products.find((p) => p._id === productId || p.id === productId);
+  const handleAddToCart = (product) => {
     if (product) {
       addToCart(product, 1);
-      setToast(`${product.name_en || product.name} added to cart!`);
+      setToast(`${product.name} added to cart!`);
     }
   };
 
-  const handleWishlistToggle = (productId) => {
-    const product = products.find((p) => p._id === productId || p.id === productId);
+  const handleWishlistToggle = (product) => {
     if (product) {
       const isAdded = toggleWishlist(product);
       const message = isAdded 
-        ? `${product.name_en || product.name} added to wishlist!`
-        : `${product.name_en || product.name} removed from wishlist`;
+        ? `${product.name} added to wishlist!`
+        : `${product.name} removed from wishlist`;
       setToast(message);
     }
   };
@@ -70,7 +68,7 @@ export default function ProductGrid({
             {...product}
             onAddToCart={handleAddToCart}
             onWishlistToggle={handleWishlistToggle}
-            isWishlisted={isInWishlist(product._id || product.id)}
+            isWishlisted={isInWishlist(product._id || product.id || product.product_id)}
           />
         ))}
       </div>

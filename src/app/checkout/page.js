@@ -115,8 +115,7 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
     phone: '',
     address: '',
@@ -125,17 +124,12 @@ export default function CheckoutPage() {
   // Auto-fill user data on mount
   useEffect(() => {
     if (isAuthenticated && user) {
-      // Extract first and last name from user name
-      const nameParts = user.name ? user.name.split(' ') : ['', ''];
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
       setFormData((prev) => ({
         ...prev,
-        firstName,
-        lastName,
+        fullName: user.name || '',
         email: user.email || '',
-        // phone, address, city remain empty for user to fill
+        phone: user.phone || '',
+        address: user.address || '',
       }));
     }
   }, [user, isAuthenticated]);
@@ -186,22 +180,16 @@ export default function CheckoutPage() {
               <div style={checkoutStyles.formSection}>
                 <h3 style={checkoutStyles.formSectionTitle}>Shipping Information</h3>
                 <div style={checkoutStyles.formGrid}>
-                  <FormField
-                    label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    placeholder="John"
-                    required
-                  />
-                  <FormField
-                    label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder="Doe"
-                    required
-                  />
+                  <div style={checkoutStyles.fullWidth}>
+                    <FormField
+                      label="Full Name"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      placeholder="John Doe"
+                      required
+                    />
+                  </div>
                   <div style={checkoutStyles.fullWidth}>
                     <FormField
                       label="Email Address"

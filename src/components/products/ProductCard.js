@@ -41,6 +41,11 @@ const productCardStyles = {
     boxShadow: '0 2px 6px rgba(0,0,0,.12)',
     cursor: 'pointer',
     zIndex: 10,
+    transition: 'all 0.3s ease',
+  },
+  wishlistDotActive: {
+    background: 'var(--green-200)',
+    color: 'var(--green-700)',
   },
   discountTag: {
     position: 'absolute',
@@ -131,11 +136,15 @@ export default function ProductCard({
             </Badge>
           )}
           <button
-            style={productCardStyles.wishlistDot}
+            style={{
+              ...productCardStyles.wishlistDot,
+              ...(isWishlisted ? productCardStyles.wishlistDotActive : {}),
+            }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              onWishlistToggle?.(id);
+              const product = { id, product_id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug };
+              onWishlistToggle?.(product);
             }}
             aria-label="Toggle wishlist"
           >
@@ -147,7 +156,7 @@ export default function ProductCard({
         {/* Product Info */}
         <div style={productCardStyles.body}>
           <div style={productCardStyles.category}>{category}</div>
-          <div style={productCardStyles.name}>{name_en || name}</div>
+          <div style={productCardStyles.name}>{name}</div>
 
           {/* Rating */}
           <div style={productCardStyles.stars}>
@@ -170,7 +179,8 @@ export default function ProductCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              onAddToCart?.(id);
+              const product = { id, product_id, _id: id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug };
+              onAddToCart?.(product);
             }}
             disabled={!inStock}
           >

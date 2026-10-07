@@ -116,7 +116,7 @@ export default function AdminStock() {
   };
 
   const filteredProducts = products.filter((p) =>
-    (p.name_en || p.name).toLowerCase().includes(searchQuery.toLowerCase())
+    (p.name).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleStockChange = (productId, value) => {
@@ -288,7 +288,7 @@ export default function AdminStock() {
                   <tr key={productId} style={{ animation: `fadeIn 0.5s ease-out ${index * 0.05}s backwards` }}>
                     <td style={stockStyles.td}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>{product.name_en || product.name}</span>
+                        <span>{product.name}</span>
                       </div>
                     </td>
                     <td style={stockStyles.td}>{product.category}</td>

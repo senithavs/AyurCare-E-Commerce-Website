@@ -1,49 +1,93 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
+  const { user, isAuthenticated } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Hydrate from localStorage on mount
+  // Get localStorage key based on user
+  const getCartKey = (userId) => {
+    return userId ? `ayurcare_cart_user_${userId}` : 'ayurcare_cart_guest';
+  };
+
+  // Hydrate from localStorage on mount and when user changes
   useEffect(() => {
-    const savedCart = localStorage.getItem('ayurcare_cart');
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error('Failed to parse cart from localStorage:', e);
+    const loadCart = () => {
+      const cartKey = getCartKey(user?.id);
+      const savedCart = localStorage.getItem(cartKey);
+      
+      if (savedCart) {
+        try {
+          setCartItems(JSON.parse(savedCart));
+        } catch (e) {
+          console.error('Failed to parse cart from localStorage:', e);
+          setCartItems([]);
+        }
+      } else {
+        // If user just signed in and has no cart, try to migrate from guest cart
+        if (user?.id && isAuthenticated) {
+          const guestCart = localStorage.getItem('ayurcare_cart_guest');
+          if (guestCart) {
+            try {
+              const guestItems = JSON.parse(guestCart);
+              setCartItems(guestItems);
+              // Save to user's cart
+              localStorage.setItem(cartKey, JSON.stringify(guestItems));
+              // Optionally clear guest cart
+              localStorage.removeItem('ayurcare_cart_guest');
+            } catch (e) {
+              console.error('Failed to migrate guest cart:', e);
+              setCartItems([]);
+            }
+          }
+        } else {
+          setCartItems([]);
+        }
       }
-    }
-    setIsHydrated(true);
-  }, []);
+      setIsHydrated(true);
+    };
+
+    loadCart();
+  }, [user?.id, isAuthenticated]);
 
   // Save to localStorage whenever cart changes
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('ayurcare_cart', JSON.stringify(cartItems));
+      const cartKey = getCartKey(user?.id);
+      localStorage.setItem(cartKey, JSON.stringify(cartItems));
     }
-  }, [cartItems, isHydrated]);
+  }, [cartItems, isHydrated, user?.id]);
+
+  // Helper to get consistent product ID
+  const getProductId = (product) => {
+    return product._id || product.id || product.product_id;
+  };
 
   const addToCart = (product, quantity = 1) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
+      // Normalize product ID
+      const productId = getProductId(product);
+      const cartProduct = { ...product, id: productId };
+      
+      const existingItem = prev.find((item) => getProductId(item) === productId);
       if (existingItem) {
         return prev.map((item) =>
-          item.id === product.id
+          getProductId(item) === productId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { ...product, quantity }];
+      return [...prev, cartProduct];
     });
   };
 
   const removeFromCart = (productId) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== productId));
+    setCartItems((prev) => prev.filter((item) => getProductId(item) !== productId));
   };
 
   const updateQuantity = (productId, quantity) => {
@@ -52,7 +96,7 @@ export function CartProvider({ children }) {
     } else {
       setCartItems((prev) =>
         prev.map((item) =>
-          item.id === productId ? { ...item, quantity } : item
+          getProductId(item) === productId ? { ...item, quantity } : item
         )
       );
     }

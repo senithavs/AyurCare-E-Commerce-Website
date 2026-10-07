@@ -99,6 +99,12 @@ export function AuthProvider({ children }) {
   // Sign out function
   const signOut = () => {
     try {
+      // Clear user-specific cart and wishlist if they exist
+      if (user?.id) {
+        localStorage.removeItem(`ayurcare_cart_user_${user.id}`);
+        localStorage.removeItem(`ayurcare_wishlist_user_${user.id}`);
+      }
+      
       localStorage.removeItem('currentUser');
       localStorage.removeItem('rememberMe');
       setUser(null);

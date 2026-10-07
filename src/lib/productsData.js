@@ -28,7 +28,7 @@ export function transformProduct(product) {
   return {
     id: product.product_id,
     slug,
-    name: product.name_en || product.name,
+    name: product.name,
     category: product.category,
     price: product.price,
     oldPrice: product.price * 1.15, // Add 15% as original price for discount display
@@ -39,16 +39,18 @@ export function transformProduct(product) {
     stockCount: getDeterministicStockCount(product.product_id, inStock),
     image: '🌿', // Default emoji - can be customized per category
     availability: product.availability,
-    description: `High-quality ${product.name_en || product.name}. ` + 
-                 (product.product_benefits ? product.product_benefits[0] : 'Premium Ayurvedic product'),
-    longDescription: `Premium ${product.name_en || product.name} sourced from authentic Ayurvedic suppliers.
+    description: `High-quality ${product.name}. ` + 
+                 (product.product_benefits && product.product_benefits.length > 0 ? 
+                 `${product.product_benefits[0]}.` :
+                 'Premium Ayurvedic product'),
+    longDescription: `Premium ${product.name} sourced from authentic Ayurvedic suppliers.
 
 Key Benefits:
 ${product.product_benefits ? product.product_benefits.map(b => `• ${b}`).join('\n') : '• Premium quality\n• Authentic ingredients\n• Trusted Ayurvedic formula'}
 
 This traditional Ayurvedic product is carefully formulated to deliver maximum potency and effectiveness.`,
     ingredients: [
-      `${product.name_en || product.name}`,
+      `${product.name}`,
       'Premium natural ingredients',
       'No artificial additives',
       'Traditionally prepared',

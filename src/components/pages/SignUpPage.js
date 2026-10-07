@@ -278,8 +278,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div style={signUpStyles.container}>
-      <div style={signUpStyles.containerOverlay}></div>
+    <div style={signUpStyles.container} className="auth-background-loading">
+      <div style={signUpStyles.containerOverlay} className="auth-background-overlay"></div>
       <div style={signUpStyles.formCard}>
         <div style={signUpStyles.header}>
           <h1 style={signUpStyles.title}>Create Account</h1>

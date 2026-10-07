@@ -48,7 +48,7 @@ export async function POST(request) {
     const newProduct = await Product.create({
       product_id,
       name,
-      name_en: name_en || name,
+      name_en: name || '',
       category,
       price,
       availability: availability || 'In Stock',

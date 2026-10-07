@@ -276,7 +276,7 @@ export default function AdminAnalytics() {
           {metrics.topProducts.length > 0 ? (
             metrics.topProducts.map((product, idx) => (
               <div key={idx} style={analyticsStyles.metric}>
-                <span style={analyticsStyles.metricLabel}>{product.name_en || product.name}</span>
+                <span style={analyticsStyles.metricLabel}>{product.name}</span>
                 <span style={analyticsStyles.metricValue}>{(product.rating || 0).toFixed(1)} ⭐</span>
               </div>
             ))

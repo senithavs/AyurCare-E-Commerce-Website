@@ -282,8 +282,8 @@ export default function SignInPage() {
   };
 
   return (
-    <div style={signInStyles.container}>
-      <div style={signInStyles.containerOverlay}></div>
+    <div style={signInStyles.container} className="auth-background-loading">
+      <div style={signInStyles.containerOverlay} className="auth-background-overlay"></div>
       <div style={signInStyles.formCard}>
         <div style={signInStyles.header}>
           <h1 style={signInStyles.title}>Welcome Back</h1>
