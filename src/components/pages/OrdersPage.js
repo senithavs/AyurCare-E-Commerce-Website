@@ -137,7 +137,7 @@ const ordersStyles = {
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [pageLoading, setPageLoading] = useState(true);
@@ -146,16 +146,18 @@ export default function OrdersPage() {
     // Wait for auth to load before checking
     if (!isLoading && !isAuthenticated) {
       router.push('/signin');
-    } else if (!isLoading && isAuthenticated) {
-      // Fetch orders from database
+    } else if (!isLoading && isAuthenticated && user?.id) {
+      // Fetch orders for this user
       fetchOrders();
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, user?.id]);
 
   const fetchOrders = async () => {
     try {
       setPageLoading(true);
-      const response = await fetch('/api/orders');
+      const response = await fetch('/api/orders/user', {
+        headers: { 'x-user-id': user.id },
+      });
       const data = await response.json();
       
       if (data.success && Array.isArray(data.orders)) {
@@ -242,17 +244,17 @@ export default function OrdersPage() {
               <div style={ordersStyles.orderHeader}>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Order ID</div>
-                  <div style={ordersStyles.orderValue}>#{order.orderId}</div>
+                  <div style={ordersStyles.orderValue}>#{order.orderId || 'N/A'}</div>
                 </div>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Date</div>
                   <div style={ordersStyles.orderValue}>
-                    {new Date(order.date).toLocaleDateString()}
+                    {new Date(order.date || order.createdAt).toLocaleDateString()}
                   </div>
                 </div>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Amount</div>
-                  <div style={ordersStyles.orderValue}>Rs. {order.amount}</div>
+                  <div style={ordersStyles.orderValue}>Rs. {(order.amount || 0).toLocaleString()}</div>
                 </div>
                 <div style={ordersStyles.orderField}>
                   <div style={ordersStyles.orderLabel}>Status</div>
@@ -265,19 +267,31 @@ export default function OrdersPage() {
               {expandedOrder === index && (
                 <div style={ordersStyles.orderDetails}>
                   <div style={ordersStyles.detailField}>
-                    <div style={ordersStyles.detailLabel}>Items</div>
+                    <div style={ordersStyles.detailLabel}>Items Ordered</div>
                     <div style={ordersStyles.detailValue}>{order.items || 1} item(s)</div>
                   </div>
                   <div style={ordersStyles.detailField}>
-                    <div style={ordersStyles.detailLabel}>Tracking</div>
-                    <div style={ordersStyles.detailValue}>{order.tracking || 'N/A'}</div>
+                    <div style={ordersStyles.detailLabel}>Payment Status</div>
+                    <div style={ordersStyles.detailValue}>{order.paymentStatus || 'pending'}</div>
                   </div>
                   <div style={ordersStyles.detailField}>
-                    <div style={ordersStyles.detailLabel}>Expected Delivery</div>
-                    <div style={ordersStyles.detailValue}>
-                      {order.expectedDelivery ? new Date(order.expectedDelivery).toLocaleDateString() : 'TBD'}
-                    </div>
+                    <div style={ordersStyles.detailLabel}>Tracking Number</div>
+                    <div style={ordersStyles.detailValue}>{order.tracking || 'Not available yet'}</div>
                   </div>
+                  {order.shippingAddress && (
+                    <div style={{ ...ordersStyles.detailField, gridColumn: '1 / -1' }}>
+                      <div style={ordersStyles.detailLabel}>Shipping Address</div>
+                      <div style={ordersStyles.detailValue}>{order.shippingAddress}</div>
+                    </div>
+                  )}
+                  {order.expectedDelivery && (
+                    <div style={{ ...ordersStyles.detailField, gridColumn: '1 / -1' }}>
+                      <div style={ordersStyles.detailLabel}>Expected Delivery</div>
+                      <div style={ordersStyles.detailValue}>
+                        {new Date(order.expectedDelivery).toLocaleDateString()}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

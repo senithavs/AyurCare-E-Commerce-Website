@@ -25,27 +25,30 @@ const productCardStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '34px',
+    overflow: 'hidden',
   },
   wishlistDot: {
     position: 'absolute',
     top: '10px',
     right: '10px',
-    width: '28px',
-    height: '28px',
-    borderRadius: '50%',
     background: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '13px',
-    boxShadow: '0 2px 6px rgba(0,0,0,.12)',
+    border: 'none',
+    fontSize: '20px',
     cursor: 'pointer',
     zIndex: 10,
     transition: 'all 0.3s ease',
+    padding: '6px',
+    color: 'var(--charcoal-60)',
+    borderRadius: '50px',
+    width: '32px',
+    height: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 2px 6px rgba(0,0,0,.12)',
   },
   wishlistDotActive: {
-    background: 'var(--green-200)',
-    color: 'var(--green-700)',
+    color: 'var(--danger)',
   },
   discountTag: {
     position: 'absolute',
@@ -91,9 +94,11 @@ const productCardStyles = {
 };
 
 export default function ProductCard({
+  _id,
   id,
   product_id,
   image = '🌿',
+  product_image = null,
   category = 'Supplements',
   name = 'Product Name',
   name_en = 'Product Name',
@@ -107,6 +112,7 @@ export default function ProductCard({
   onWishlistToggle,
   isWishlisted = false,
   slug = 'product',
+  ...otherProps
 }) {
   const handleCardHover = (e, isEnter) => {
     if (isEnter) {
@@ -143,14 +149,31 @@ export default function ProductCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              const product = { id, product_id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug };
+              const product = { _id, id, product_id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
               onWishlistToggle?.(product);
             }}
             aria-label="Toggle wishlist"
           >
             {isWishlisted ? '♥' : '♡'}
           </button>
-          {image}
+          
+          {/* Display actual image if available, otherwise show emoji */}
+          {product_image?.image_url ? (
+            <img
+              src={product_image.image_url}
+              alt={name}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+          ) : (
+            <span>{image}</span>
+          )}
         </div>
 
         {/* Product Info */}
@@ -179,7 +202,7 @@ export default function ProductCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              const product = { id, product_id, _id: id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug };
+              const product = { _id, id, product_id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
               onAddToCart?.(product);
             }}
             disabled={!inStock}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
+import { useWishlist } from '@/lib/WishlistContext';
 import { Button } from '@/components/ui';
 import ProfileSidebar from '@/components/layout/ProfileSidebar';
 import '@/styles/admin-animations.css';
@@ -167,10 +168,12 @@ const profileStyles = {
 export default function ProfilePage() {
   const router = useRouter();
   const { user, isAuthenticated, updateProfile, isLoading } = useAuth();
+  const { wishlistCount } = useWishlist();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
+  const [ordersCount, setOrdersCount] = useState(0);
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -199,6 +202,19 @@ export default function ProfilePage() {
               phone: fetchedUser.phone || '',
               address: fetchedUser.address || '',
             });
+
+            // Fetch orders for this user
+            try {
+              const ordersResponse = await fetch('/api/orders/user', {
+                headers: { 'x-user-id': user.id },
+              });
+              if (ordersResponse.ok) {
+                const ordersData = await ordersResponse.json();
+                setOrdersCount(ordersData.orders?.length || 0);
+              }
+            } catch (error) {
+              console.error('Failed to fetch orders:', error);
+            }
           }
         } catch (error) {
           console.error('Failed to fetch user profile:', error);
@@ -212,13 +228,6 @@ export default function ProfilePage() {
       fetchUserProfile();
     }
   }, [user?.id, isAuthenticated, isLoading]);
-
-  useEffect(() => {
-    // Wait for auth to load before checking
-    if (!isLoading && !isAuthenticated) {
-      router.push('/signin');
-    }
-  }, [isAuthenticated, isLoading, router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -336,20 +345,16 @@ export default function ProfilePage() {
             <h3 style={profileStyles.sectionTitle}>📊 Account Stats</h3>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '24px',
             }}>
               <div style={profileStyles.stat}>
-                <div style={profileStyles.statValue}>0</div>
+                <div style={profileStyles.statValue}>{ordersCount}</div>
                 <div style={profileStyles.statLabel}>Total Orders</div>
               </div>
               <div style={profileStyles.stat}>
-                <div style={profileStyles.statValue}>0</div>
+                <div style={profileStyles.statValue}>{wishlistCount}</div>
                 <div style={profileStyles.statLabel}>Wishlist Items</div>
-              </div>
-              <div style={profileStyles.stat}>
-                <div style={profileStyles.statValue}>0</div>
-                <div style={profileStyles.statLabel}>Total Spent</div>
               </div>
             </div>
           </div>

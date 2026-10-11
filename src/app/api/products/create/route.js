@@ -55,6 +55,7 @@ export async function POST(request) {
       product_benefits: product_benefits || [],
       stock_quantity: stock_quantity || 0,
       inStock: inStock !== undefined ? inStock : true,
+      product_image: body.image_url ? { image_url: body.image_url } : {},
       rating: 4.5,
       reviewCount: 0,
     });

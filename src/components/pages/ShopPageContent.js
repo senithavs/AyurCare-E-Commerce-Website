@@ -12,6 +12,7 @@ const shopStyles = {
     display: 'grid',
     gridTemplateColumns: '230px 1fr',
     gap: '28px',
+    position: 'relative',
   },
   filterBlock: {
     marginBottom: '22px',
@@ -36,12 +37,40 @@ const shopStyles = {
     marginBottom: '18px',
     fontSize: '12.5px',
     color: 'var(--charcoal-60)',
+    gap: '12px',
   },
   selectMini: {
     border: '1px solid var(--line)',
     borderRadius: '8px',
     padding: '8px 12px',
     fontSize: '12px',
+  },
+  filterSidebar: {
+    position: 'sticky',
+    top: 0,
+    height: 'fit-content',
+    maxHeight: '100vh',
+    overflowY: 'auto',
+  },
+  filterToggleButton: {
+    display: 'none',
+    background: 'var(--green-700)',
+    color: '#fff',
+    border: 'none',
+    padding: '10px 16px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: 600,
+    cursor: 'pointer',
+    marginBottom: '16px',
+    width: '100%',
+  },
+  filterPanel: {
+    background: '#fff',
+    borderRadius: '8px',
+    border: '1px solid var(--line)',
+    padding: '16px',
+    marginBottom: '16px',
   },
 };
 
@@ -59,49 +88,82 @@ export default function ShopPageContent() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
 
-  // Fetch products from database on mount
+  // Handle window resize for mobile detection
   useEffect(() => {
-    const fetchProducts = async () => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setFilterOpen(false); // Close filter panel on desktop
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Fetch products and categories from database on mount
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/products');
+
+        // Fetch products
+        const productsResponse = await fetch('/api/products');
         
-        if (!response.ok) {
-          const text = await response.text();
-          console.error('API error response:', text);
-          throw new Error(`API error: ${response.status}`);
+        if (!productsResponse.ok) {
+          const text = await productsResponse.text();
+          console.error('Products API error response:', text);
+          throw new Error(`Products API error: ${productsResponse.status}`);
         }
         
-        const contentType = response.headers.get('content-type');
+        const contentType = productsResponse.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-          const text = await response.text();
+          const text = await productsResponse.text();
           console.error('Invalid content type:', contentType);
           console.error('Response text:', text.substring(0, 500));
           throw new Error(`Invalid content type: ${contentType}`);
         }
         
-        const data = await response.json();
+        const productsData = await productsResponse.json();
 
-        if (data.success && Array.isArray(data.products)) {
-          setProducts(data.products);
-
-          // Extract unique categories from products
-          const uniqueCategories = [...new Set(data.products.map((p) => p.category))];
-          setCategories(uniqueCategories.sort());
+        if (productsData.success && Array.isArray(productsData.products)) {
+          setProducts(productsData.products);
         } else {
-          console.error('Invalid API response structure:', data);
+          console.error('Invalid API response structure:', productsData);
           setProducts([]);
         }
+
+        // Fetch categories from database
+        const categoriesResponse = await fetch('/api/categories');
+        
+        if (!categoriesResponse.ok) {
+          console.error('Categories API error:', categoriesResponse.status);
+          throw new Error(`Categories API error: ${categoriesResponse.status}`);
+        }
+
+        const categoriesData = await categoriesResponse.json();
+
+        if (categoriesData.success && Array.isArray(categoriesData.categories)) {
+          // Extract category names from the categories objects
+          const categoryNames = categoriesData.categories.map((cat) => cat.name);
+          setCategories(categoryNames);
+        } else {
+          console.error('Invalid categories API response:', categoriesData);
+          setCategories([]);
+        }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching data:', error);
         setProducts([]);
+        setCategories([]);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   // Auto-filter by category if passed in URL
@@ -177,56 +239,100 @@ export default function ShopPageContent() {
   const displayStart = sortedProducts.length > 0 ? startIndex + 1 : 0;
   const displayEnd = Math.min(endIndex, sortedProducts.length);
 
+  // Render filter section (category and availability only)
+  const FilterSection = () => (
+    <>
+      {/* Category Filter */}
+      <div style={shopStyles.filterBlock}>
+        <div style={shopStyles.filterTitle}>Category</div>
+        <div style={shopStyles.filterChipRow}>
+          {categories.map((cat) => (
+            <Chip
+              key={cat}
+              active={selectedFilters.category.includes(cat)}
+              onClick={() => handleFilterToggle('category', cat)}
+            >
+              {cat}
+            </Chip>
+          ))}
+        </div>
+      </div>
+
+      {/* Availability Filter */}
+      <div style={shopStyles.filterBlock}>
+        <div style={shopStyles.filterTitle}>Availability</div>
+        <div style={shopStyles.filterChipRow}>
+          {['In Stock', 'Pre-order'].map((avail) => (
+            <Chip
+              key={avail}
+              active={selectedFilters.availability.includes(avail)}
+              onClick={() => handleFilterToggle('availability', avail)}
+            >
+              {avail}
+            </Chip>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <Section title="All Products">
-      <div style={shopStyles.shopBody}>
-        {/* Filters Sidebar */}
-        <div>
-          <FormField
-            type="text"
-            placeholder="Search products…"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginBottom: '24px' }}
-          />
-
-          {/* Category Filter */}
-          <div style={shopStyles.filterBlock}>
-            <div style={shopStyles.filterTitle}>Category</div>
-            <div style={shopStyles.filterChipRow}>
-              {categories.map((cat) => (
-                <Chip
-                  key={cat}
-                  active={selectedFilters.category.includes(cat)}
-                  onClick={() => handleFilterToggle('category', cat)}
-                >
-                  {cat}
-                </Chip>
-              ))}
+      <div style={shopStyles.shopBody} data-shop-body>
+        {/* Filters Sidebar - Desktop */}
+        {!isMobile && (
+          <div style={shopStyles.filterSidebar}>
+            {/* Search Bar - Desktop */}
+            <div style={{ marginBottom: '24px' }}>
+              <FormField
+                type="text"
+                placeholder="Search products…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
-          </div>
 
-          {/* Availability Filter */}
-          <div style={shopStyles.filterBlock}>
-            <div style={shopStyles.filterTitle}>Availability</div>
-            <div style={shopStyles.filterChipRow}>
-              {['In Stock', 'Pre-order'].map((avail) => (
-                <Chip
-                  key={avail}
-                  active={selectedFilters.availability.includes(avail)}
-                  onClick={() => handleFilterToggle('availability', avail)}
-                >
-                  {avail}
-                </Chip>
-              ))}
-            </div>
+            <FilterSection />
           </div>
-        </div>
+        )}
+
+        {/* Mobile: Search Bar + Filter Toggle */}
+        {isMobile && (
+          <div style={{ marginBottom: '16px' }} data-mobile-controls>
+            {/* Search Bar - Mobile */}
+            <div style={{ marginBottom: '12px' }}>
+              <FormField
+                type="text"
+                placeholder="Search products…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* Filter Toggle Button */}
+            <button
+              style={{
+                ...shopStyles.filterToggleButton,
+                display: 'block',
+              }}
+              onClick={() => setFilterOpen(!filterOpen)}
+            >
+              {filterOpen ? '✕ Hide Filters' : 'Show Filters'}
+            </button>
+          </div>
+        )}
+
+        {/* Mobile Filter Panel */}
+        {isMobile && filterOpen && (
+          <div style={shopStyles.filterPanel}>
+            <FilterSection />
+          </div>
+        )}
 
         {/* Products Area */}
-        <div>
+        <div data-products-area>
           <div style={shopStyles.toolbarRow}>
-            <span>Showing {displayStart}–{displayEnd} of {sortedProducts.length} products</span>
+            <span>Showing {displayStart}–{displayEnd} of {sortedProducts.length}</span>
             <select 
               style={shopStyles.selectMini}
               value={sortBy}
@@ -267,6 +373,23 @@ export default function ShopPageContent() {
           )}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          [data-shop-body] {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+          }
+          [data-products-area] {
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-shop-body] {
+            gap: 12px !important;
+          }
+        }
+      `}</style>
     </Section>
   );
 }

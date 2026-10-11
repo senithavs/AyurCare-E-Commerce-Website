@@ -14,7 +14,7 @@ export default function CategoryGrid({
   };
 
   return (
-    <div style={gridStyle} className={className}>
+    <div style={gridStyle} className={className} data-category-grid>
       {categories.map((category) => (
         <CategoryCard
           key={category.id}
@@ -23,6 +23,27 @@ export default function CategoryGrid({
           onClick={() => onCategoryClick?.(category.id)}
         />
       ))}
+
+      <style>{`
+        @media (max-width: 1024px) {
+          [data-category-grid] {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 14px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          [data-category-grid] {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 12px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-category-grid] {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

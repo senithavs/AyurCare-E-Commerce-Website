@@ -44,7 +44,7 @@ export default function Header({
   return (
     <header className={styles.siteHeader}>
       <Link href="/" className={styles.logo}>
-        <img src='/logo.png' alt="AyurCare Logo"></img>
+        <img src='https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Logo/logo.png' alt="AyurCare Logo"></img>
       </Link>
 
       <nav className={styles.navLinks}>
@@ -74,7 +74,7 @@ export default function Header({
             onClick={handleWishlistClick}
             style={{ cursor: 'pointer', position: 'relative' }}
           >
-            <img src='/wishlist.png' style={{ width: '24px', height: '24px' }} />
+            <img src='https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Nav%20bar/wishlist.png' style={{ width: '24px', height: '24px' }} />
             {wishlistCount > 0 && <span className={styles.badgeCount}>{wishlistCount}</span>}
           </span>
           <span
@@ -83,7 +83,7 @@ export default function Header({
             onClick={handleCartClick}
             style={{ cursor: 'pointer', position: 'relative' }}
           >
-            <img src='/cart.png' style={{ width: '24px', height: '24px' }} />
+            <img src='https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Nav%20bar/cart.png' style={{ width: '24px', height: '24px' }} />
             {cartCount > 0 && <span className={styles.badgeCount}>{cartCount}</span>}
           </span>
 

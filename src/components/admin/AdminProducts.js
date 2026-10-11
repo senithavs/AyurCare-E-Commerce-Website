@@ -187,6 +187,9 @@ export default function AdminProducts() {
     stock_quantity: '',
     product_benefits: '',
     availability: 'In Stock',
+    image_url: '',
+    imageFile: null,
+    imagePreview: null,
   });
 
   // Fetch products and categories from database on mount
@@ -247,8 +250,65 @@ export default function AdminProducts() {
       stock_quantity: '',
       product_benefits: '',
       availability: 'In Stock',
+      image_url: '',
+      imageFile: null,
+      imagePreview: null,
     });
     setEditingProduct(null);
+  };
+
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      setError('Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed');
+      return;
+    }
+
+    // Validate file size (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('File size exceeds 5MB limit');
+      return;
+    }
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFormData((prev) => ({
+        ...prev,
+        imageFile: file,
+        imagePreview: e.target.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+    setError('');
+  };
+
+  const uploadProductImage = async (file, productId) => {
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append('file', file);
+      formDataObj.append('productId', productId);
+
+      const response = await fetch('/api/products/upload', {
+        method: 'POST',
+        body: formDataObj,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to upload image');
+      }
+
+      const data = await response.json();
+      return data.imageUrl;
+    } catch (error) {
+      console.error('Image upload error:', error);
+      throw error;
+    }
   };
 
   const handleAddProduct = async () => {
@@ -262,7 +322,13 @@ export default function AdminProducts() {
 
     try {
       setIsLoading(true);
-      
+      let imageUrl = formData.image_url;
+
+      // Upload image if a new one was selected
+      if (formData.imageFile) {
+        imageUrl = await uploadProductImage(formData.imageFile, formData.product_id);
+      }
+
       if (editingProduct) {
         // Update product
         const response = await fetch('/api/products/update', {
@@ -270,12 +336,17 @@ export default function AdminProducts() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             id: editingProduct._id,
-            ...formData,
+            product_id: formData.product_id,
+            name: formData.name,
+            name_en: formData.name_en,
+            category: formData.category,
             price: parseFloat(formData.price),
             stock_quantity: parseInt(formData.stock_quantity) || 0,
             product_benefits: formData.product_benefits
               .split('\n')
               .filter((b) => b.trim()),
+            availability: formData.availability,
+            image_url: imageUrl,
           }),
         });
 
@@ -292,12 +363,17 @@ export default function AdminProducts() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ...formData,
+            product_id: formData.product_id,
+            name: formData.name,
+            name_en: formData.name_en,
+            category: formData.category,
             price: parseFloat(formData.price),
             stock_quantity: parseInt(formData.stock_quantity) || 0,
             product_benefits: formData.product_benefits
               .split('\n')
               .filter((b) => b.trim()),
+            availability: formData.availability,
+            image_url: imageUrl,
           }),
         });
 
@@ -328,12 +404,15 @@ export default function AdminProducts() {
     setFormData({
       product_id: product.product_id,
       name: product.name,
-      name_en: product.name,
+      name_en: product.name_en || product.name,
       category: product.category,
       price: product.price.toString(),
       stock_quantity: (product.stock_quantity || 0).toString(),
       product_benefits: (product.product_benefits || []).join('\n'),
       availability: product.availability || 'In Stock',
+      image_url: product.product_image?.image_url || '',
+      imageFile: null,
+      imagePreview: product.product_image?.image_url || null,
     });
     fetchCategories(); // Refresh categories when opening edit modal
     setShowModal(true);
@@ -521,6 +600,48 @@ export default function AdminProducts() {
             <div style={productsStyles.modalTitle}>{editingProduct ? 'Edit Product Details' : 'Add New Product'}</div>
 
             <div style={productsStyles.formGrid}>
+              {/* Image Upload Section */}
+              <div style={{ ...productsStyles.formGroup, ...productsStyles.formGridFull }}>
+                <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--green-900)', display: 'block', marginBottom: '12px' }}>
+                  Product Image
+                </label>
+                
+                {formData.imagePreview && (
+                  <img
+                    src={formData.imagePreview}
+                    alt="Product preview"
+                    style={productsStyles.imagePreview}
+                  />
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    ...productsStyles.uploadButton,
+                    opacity: isLoading ? 0.6 : 1,
+                  }}
+                  disabled={isLoading}
+                >
+                  📤 Choose Image (JPEG, PNG, WebP, GIF - Max 5MB)
+                </button>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleImageSelect}
+                  style={productsStyles.fileInput}
+                  disabled={isLoading}
+                />
+
+                {formData.imageFile && (
+                  <div style={{ fontSize: '12px', color: 'var(--green-700)', padding: '8px', background: 'rgba(106, 168, 79, 0.1)', borderRadius: '4px', marginBottom: '12px' }}>
+                    ✓ {formData.imageFile.name} ({(formData.imageFile.size / 1024 / 1024).toFixed(2)} MB)
+                  </div>
+                )}
+              </div>
+
               <div style={productsStyles.formGroup}>
                 <FormField
                   label="Product ID"

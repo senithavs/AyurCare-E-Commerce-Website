@@ -18,6 +18,9 @@
   border-bottom: 1px solid var(--line);
   background: #fff;
   gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .logo {

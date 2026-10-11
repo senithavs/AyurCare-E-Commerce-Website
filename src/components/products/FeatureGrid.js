@@ -13,7 +13,7 @@ export default function FeatureGrid({
   };
 
   return (
-    <div style={gridStyle} className={className}>
+    <div style={gridStyle} className={className} data-feature-grid>
       {features.map((feature, idx) => (
         <FeatureCard
           key={idx}
@@ -22,6 +22,26 @@ export default function FeatureGrid({
           description={feature.description}
         />
       ))}
+
+      <style>{`
+        @media (max-width: 1024px) {
+          [data-feature-grid] {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 768px) {
+          [data-feature-grid] {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-feature-grid] {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

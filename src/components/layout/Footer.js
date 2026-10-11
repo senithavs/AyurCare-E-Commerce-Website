@@ -11,7 +11,7 @@ export default function Footer() {
       <footer className={styles.siteFooter}>
         <div>
           <div className={styles.logo} style={{ color: '#fff', marginBottom: '14px' }}>
-            <img src='/footerLogo.png'></img>
+            <img src='https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Logo/Footer%20logo/footerLogo.png'></img>
           </div>
           <p className={styles.footerText}>
             Authentic Ayurvedic and herbal wellness, delivered with casre.

@@ -61,7 +61,7 @@ export default function ProductGrid({
   return (
     <>
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-      <div style={gridStyle} className={className}>
+      <div style={gridStyle} className={className} data-product-grid>
         {products.map((product) => (
           <ProductCard
             key={product._id || product.id || product.product_id}
@@ -72,6 +72,26 @@ export default function ProductGrid({
           />
         ))}
       </div>
+
+      <style>{`
+        @media (max-width: 1024px) {
+          [data-product-grid] {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+        @media (max-width: 768px) {
+          [data-product-grid] {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-product-grid] {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

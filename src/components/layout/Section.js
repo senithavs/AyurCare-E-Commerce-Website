@@ -10,7 +10,7 @@ export default function Section({
   className = '',
 }) {
   return (
-    <section className={`${styles.inner} ${className}`} id={id}>
+    <section className={`${styles.inner} ${className}`} id={id} data-section-content>
       {(title || subtitle) && (
         <div
           style={{
@@ -18,6 +18,8 @@ export default function Section({
             justifyContent: 'space-between',
             alignItems: 'flex-end',
             marginBottom: '24px',
+            flexWrap: 'wrap',
+            gap: '16px',
           }}
         >
           <div>
@@ -46,6 +48,26 @@ export default function Section({
         </div>
       )}
       {children}
+
+      <style>{`
+        @media (max-width: 768px) {
+          [data-section-content] h2 {
+            font-size: 18px !important;
+          }
+          [data-section-content] > div:first-child {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-section-content] h2 {
+            font-size: 16px !important;
+          }
+          [data-section-content] > div:first-child {
+            margin-bottom: 16px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
