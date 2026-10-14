@@ -18,6 +18,7 @@ export default function FeatureGrid({
         <FeatureCard
           key={idx}
           icon={feature.icon}
+          imageUrl={feature.imageUrl}
           title={feature.title}
           description={feature.description}
         />

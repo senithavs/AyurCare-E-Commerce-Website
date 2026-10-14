@@ -22,6 +22,7 @@
 
 import dbConnect from '@/lib/mongodb';
 import Order from '@/lib/models/Order';
+import Product from '@/lib/models/Product';
 import {
   generatePaymentHash,
   generateOrderId,
@@ -67,7 +68,6 @@ export async function POST(request) {
 
     // Get all products from database to verify prices
     // This prevents client-side price manipulation
-    const Product = require('@/lib/models/Product').default;
     const dbProducts = await Product.find({}).lean();
     const productMap = new Map(dbProducts.map((p) => [p.product_id, p]));
 

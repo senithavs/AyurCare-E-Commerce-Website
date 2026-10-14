@@ -176,21 +176,25 @@ const animationStyles = `
 const mockFeatures = [
   {
     icon: '🌿',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Authentic%20Ayurvedic%20Quality%20Emblem.png', // Add your Supabase image URL here
     title: 'Authentic Products',
     description: 'Sourced directly from certified Ayurvedic manufacturers.',
   },
   {
     icon: '🍃',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Natural%20Ingredients%20Botanical%20Seal.png', // Add your Supabase image URL here
     title: 'Natural Ingredients',
     description: 'No synthetic fillers — plant-based formulations only.',
   },
   {
     icon: '🛡️',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Trusted%20Quality%20Botanical%20Lab%20Emblem.png', // Add your Supabase image URL here
     title: 'Trusted Quality',
     description: 'Every batch tested for purity and potency.',
   },
   {
     icon: '🚚',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/convenient_shopping_transparent.png', // Add your Supabase image URL here
     title: 'Convenient Shopping',
     description: 'Fast, tracked delivery across the island.',
   },
