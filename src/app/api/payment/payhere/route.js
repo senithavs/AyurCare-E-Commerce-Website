@@ -28,7 +28,6 @@ import {
   validateCheckoutData,
   calculateOrderTotal,
 } from '@/lib/payment/payhere';
-import { getAllProducts } from '@/lib/productsData';
 
 export async function POST(request) {
   try {
@@ -66,22 +65,27 @@ export async function POST(request) {
     // 2. VERIFY PRODUCT PRICES (Server-side)
     // ========================================
 
-    // Get all products to verify prices
+    // Get all products from database to verify prices
     // This prevents client-side price manipulation
-    const allProducts = getAllProducts();
-    const productMap = new Map(allProducts.map((p) => [p.id, p]));
+    const Product = require('@/lib/models/Product').default;
+    const dbProducts = await Product.find({}).lean();
+    const productMap = new Map(dbProducts.map((p) => [p.product_id, p]));
 
     // Verify each cart item and recalculate prices
     const verifiedCartItems = cartItems.map((item) => {
-      const product = productMap.get(item.id);
+      // Try to find product by product_id, id, or _id
+      let product = productMap.get(item.product_id) || 
+                    productMap.get(item.id) ||
+                    dbProducts.find(p => p._id?.toString() === item._id?.toString());
 
       if (!product) {
-        throw new Error(`Product not found: ${item.id}`);
+        throw new Error(`Product not found: ${item.product_id || item.id}`);
       }
 
       // Use server-verified price, not client-sent price
       return {
         id: item.id,
+        product_id: item.product_id,
         name: item.name,
         quantity: Math.max(1, parseInt(item.quantity) || 1), // Ensure valid quantity
         price: product.price, // Use product's actual price from server
@@ -178,7 +182,16 @@ export async function POST(request) {
       .join(', ');
 
     // ========================================
-    // 9. STORE ORDER IN DATABASE
+    // 9. SPLIT FULLNAME INTO FIRST AND LAST NAME
+    // ========================================
+
+    // Split fullName into firstName and lastName
+    const nameParts = checkoutData.fullName.trim().split(/\s+/);
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || nameParts[0]; // Use first name if no last name
+
+    // ========================================
+    // 10. STORE ORDER IN DATABASE
     // ========================================
 
     try {
@@ -192,8 +205,9 @@ export async function POST(request) {
         total,
         currency,
         customer: {
-          firstName: checkoutData.firstName,
-          lastName: checkoutData.lastName,
+          fullName: checkoutData.fullName,
+          firstName: firstName,
+          lastName: lastName,
           email: checkoutData.email,
           phone: checkoutData.phone,
           address: checkoutData.address,
@@ -223,7 +237,7 @@ export async function POST(request) {
     }
 
     // ========================================
-    // 10. LOG PAYMENT INITIALIZATION (Safe Logging)
+    // 11. LOG PAYMENT INITIALIZATION (Safe Logging)
     // ========================================
 
     console.log('Payment initialized:', {
@@ -235,7 +249,7 @@ export async function POST(request) {
     });
 
     // ========================================
-    // 11. RETURN PAYMENT DATA
+    // 12. RETURN PAYMENT DATA
     // ========================================
 
     // Return all parameters needed by PayHereButton component
@@ -249,8 +263,8 @@ export async function POST(request) {
           items: itemsDescription,
           currency,
           amount: total,
-          first_name: checkoutData.firstName,
-          last_name: checkoutData.lastName,
+          first_name: firstName,
+          last_name: lastName,
           email: checkoutData.email,
           phone: checkoutData.phone,
           address: checkoutData.address,

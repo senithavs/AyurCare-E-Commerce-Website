@@ -145,11 +145,8 @@ export function validateCheckoutData(checkoutData) {
   const errors = {};
 
   // Customer information validation
-  if (!checkoutData.firstName?.trim()) {
-    errors.firstName = 'First name is required';
-  }
-  if (!checkoutData.lastName?.trim()) {
-    errors.lastName = 'Last name is required';
+  if (!checkoutData.fullName?.trim()) {
+    errors.fullName = 'Full name is required';
   }
   if (!checkoutData.email?.trim()) {
     errors.email = 'Email is required';

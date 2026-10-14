@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button, Badge } from '@/components/ui';
 
@@ -114,6 +115,8 @@ export default function ProductCard({
   slug = 'product',
   ...otherProps
 }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const handleCardHover = (e, isEnter) => {
     if (isEnter) {
       e.currentTarget.style.boxShadow = 'var(--shadow)';
@@ -149,7 +152,7 @@ export default function ProductCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              const product = { _id, id, product_id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
+              const product = { _id, id, product_id, product_image, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
               onWishlistToggle?.(product);
             }}
             aria-label="Toggle wishlist"
@@ -158,7 +161,7 @@ export default function ProductCard({
           </button>
           
           {/* Display actual image if available, otherwise show emoji */}
-          {product_image?.image_url ? (
+          {product_image?.image_url && !imageError ? (
             <img
               src={product_image.image_url}
               alt={name}
@@ -166,14 +169,20 @@ export default function ProductCard({
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                display: imageLoaded ? 'block' : 'none',
               }}
-              onError={(e) => {
-                e.target.style.display = 'none';
+              onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setImageError(true);
+                setImageLoaded(false);
               }}
             />
-          ) : (
+          ) : null}
+          
+          {/* Show emoji fallback if image not loaded or has error */}
+          {!imageLoaded || imageError ? (
             <span>{image}</span>
-          )}
+          ) : null}
         </div>
 
         {/* Product Info */}
@@ -202,7 +211,7 @@ export default function ProductCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              const product = { _id, id, product_id, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
+              const product = { _id, id, product_id, product_image, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
               onAddToCart?.(product);
             }}
             disabled={!inStock}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { LayoutWrapper, Section } from '@/components/layout';
 import { Button, QtyBox } from '@/components/ui';
@@ -50,6 +51,8 @@ const cartStyles = {
     justifyContent: 'center',
     background: 'var(--sage-100)',
     borderRadius: '8px',
+    overflow: 'hidden',
+    position: 'relative',
   },
   productInfo: {
     display: 'flex',
@@ -123,6 +126,10 @@ const cartStyles = {
 
 export default function CartPage() {
   const { cartItems, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const [imageLoadStates, setImageLoadStates] = useState({});
+  
+  // Debug: log cart items
+  console.log('Cart items:', cartItems);
 
   if (cartItems.length === 0) {
     return (
@@ -141,8 +148,12 @@ export default function CartPage() {
     );
   }
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const tax = subtotal * 0.1; // 10% tax
+  const subtotal = cartItems.reduce((sum, item) => {
+    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+    const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+    return sum + (price * quantity);
+  }, 0);
+  const tax = Math.round(subtotal * 0.1); // 10% tax
   const shipping = 500; // Fixed shipping
   const total = subtotal + tax + shipping;
 
@@ -163,9 +174,33 @@ export default function CartPage() {
             {cartItems.map((item, index) => {
               // Use product ID with fallback to index for unique key
               const itemKey = item._id || item.id || item.product_id || `cart-item-${index}`;
+              const imageLoaded = imageLoadStates[itemKey];
+              const hasImageUrl = item.product_image?.image_url;
+              const hasError = imageLoadStates[`${itemKey}_error`];
+              
               return (
               <div key={itemKey} style={cartStyles.tableRow}>
-                <div style={cartStyles.productImage}>{item.image}</div>
+                <div style={cartStyles.productImage}>
+                  {hasImageUrl && !hasError ? (
+                    <>
+                      <img
+                        src={item.product_image.image_url}
+                        alt={item.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: imageLoaded ? 'block' : 'none',
+                        }}
+                        onLoad={() => setImageLoadStates(prev => ({ ...prev, [itemKey]: true }))}
+                        onError={() => setImageLoadStates(prev => ({ ...prev, [`${itemKey}_error`]: true }))}
+                      />
+                      {!imageLoaded && <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>{item.image || '🌿'}</span>}
+                    </>
+                  ) : (
+                    <span>{item.image || '🌿'}</span>
+                  )}
+                </div>
                 <div style={cartStyles.productInfo}>
                   <div style={cartStyles.productName}>{item.name}</div>
                   <div style={cartStyles.productCategory}>{item.category}</div>

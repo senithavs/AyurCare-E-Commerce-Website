@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { LayoutWrapper, Section } from '@/components/layout';
 import { Button } from '@/components/ui';
@@ -7,7 +8,6 @@ import { EmptyState } from '@/components/utility';
 import { useWishlist } from '@/lib/WishlistContext';
 import { useCart } from '@/lib/CartContext';
 import { Toast } from '@/components/utility';
-import { useState } from 'react';
 
 const wishlistStyles = {
   container: {
@@ -45,6 +45,8 @@ const wishlistStyles = {
     justifyContent: 'center',
     background: 'var(--sage-100)',
     borderRadius: '8px',
+    overflow: 'hidden',
+    position: 'relative',
   },
   productInfo: {
     display: 'flex',
@@ -92,6 +94,7 @@ export default function WishlistPage() {
   const { wishlistItems, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const [toast, setToast] = useState(null);
+  const [imageLoadStates, setImageLoadStates] = useState({});
 
   const handleAddToCart = (product) => {
     addToCart(product, 1);
@@ -132,9 +135,35 @@ export default function WishlistPage() {
             <div>Action</div>
           </div>
 
-          {wishlistItems.map((item) => (
-            <div key={item._id || item.id || item.product_id} style={wishlistStyles.tableRow}>
-              <div style={wishlistStyles.productImage}>{item.image}</div>
+          {wishlistItems.map((item) => {
+            const itemKey = item._id || item.id || item.product_id;
+            const imageLoaded = imageLoadStates[itemKey];
+            const hasImageUrl = item.product_image?.image_url;
+            const hasError = imageLoadStates[`${itemKey}_error`];
+            
+            return (
+            <div key={itemKey} style={wishlistStyles.tableRow}>
+              <div style={wishlistStyles.productImage}>
+                {hasImageUrl && !hasError ? (
+                  <>
+                    <img
+                      src={item.product_image.image_url}
+                      alt={item.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: imageLoaded ? 'block' : 'none',
+                      }}
+                      onLoad={() => setImageLoadStates(prev => ({ ...prev, [itemKey]: true }))}
+                      onError={() => setImageLoadStates(prev => ({ ...prev, [`${itemKey}_error`]: true }))}
+                    />
+                    {!imageLoaded && <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>{item.image || '🌿'}</span>}
+                  </>
+                ) : (
+                  <span>{item.image || '🌿'}</span>
+                )}
+              </div>
               <div style={wishlistStyles.productInfo}>
                 <Link href={`/shop/${item.slug}`} style={{ textDecoration: 'none' }}>
                   <div style={wishlistStyles.productName}>{item.name}</div>
@@ -165,7 +194,8 @@ export default function WishlistPage() {
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
   );

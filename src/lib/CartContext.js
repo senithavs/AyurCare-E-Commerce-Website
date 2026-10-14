@@ -108,7 +108,11 @@ export function CartProvider({ children }) {
 
   const cartCount = cartItems.length; // Number of unique products
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0); // Total items
-  const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const cartTotal = cartItems.reduce((sum, item) => {
+    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+    const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+    return sum + (price * quantity);
+  }, 0);
 
   return (
     <CartContext.Provider

@@ -162,7 +162,11 @@ export default function CheckoutPage() {
     setError(''); // Clear error when user starts typing
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cartItems.reduce((sum, item) => {
+    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+    const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+    return sum + (price * quantity);
+  }, 0);
   const tax = Math.round(subtotal * 0.1); // 10% tax
   const deliveryFee = 350; // Fixed delivery fee
   const total = subtotal + tax + deliveryFee;
@@ -244,21 +248,26 @@ export default function CheckoutPage() {
 
             {/* Order Items */}
             <div style={{ marginBottom: '16px', borderBottom: '1px solid var(--line)', paddingBottom: '12px' }}>
-              {cartItems.map((item) => (
+              {cartItems.map((item) => {
+                const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+                const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+                const itemTotal = price * quantity;
+                return (
                 <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px', gap: '8px' }}>
                   <span style={{ flex: 1 }}>{item.name}</span>
-                  <span style={{ fontSize: '12px', color: 'var(--charcoal-60)', minWidth: '40px' }}>x{item.quantity}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--charcoal-60)', minWidth: '40px' }}>x{quantity}</span>
                   <span style={{ fontWeight: 600, minWidth: '80px', textAlign: 'right' }}>
-                    Rs. {(item.price * item.quantity).toLocaleString()}
+                    Rs. {Math.round(itemTotal).toLocaleString()}
                   </span>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <div style={checkoutStyles.summarySection}>
               <div style={checkoutStyles.summaryRow}>
                 <span>Subtotal:</span>
-                <span>Rs. {subtotal.toLocaleString()}</span>
+                <span>Rs. {Math.round(subtotal).toLocaleString()}</span>
               </div>
 
               <div style={checkoutStyles.summaryRow}>
@@ -276,7 +285,7 @@ export default function CheckoutPage() {
 
             <div style={checkoutStyles.summaryTotal}>
               <span>Total:</span>
-              <span>Rs. {total.toLocaleString()}</span>
+              <span>Rs. {Math.round(total).toLocaleString()}</span>
             </div>
 
             {/* Payment Button */}

@@ -8,10 +8,7 @@ import {
   FeatureGrid,
   PromoCard,
 } from '@/components/products';
-import { getFeaturedProducts } from '@/lib/productsData';
 import { useAdmin } from '@/lib/AdminContext';
-
-const mockProducts = getFeaturedProducts(8);
 
 // Animation styles
 const animationStyles = `
@@ -203,6 +200,9 @@ export default function HomePage() {
   const { categories } = useAdmin();
   const displayCategories = categories && categories.length > 0 ? categories : getDefaultCategories();
   
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  
   // Animation state
   const [navVisible, setNavVisible] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
@@ -212,6 +212,30 @@ export default function HomePage() {
     features: false,
     promo: false,
   });
+
+  // Fetch featured products from database
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        setIsLoadingProducts(true);
+        const response = await fetch('/api/products?limit=8');
+        const data = await response.json();
+        
+        if (data.success && Array.isArray(data.products)) {
+          setFeaturedProducts(data.products);
+        } else {
+          setFeaturedProducts([]);
+        }
+      } catch (error) {
+        console.error('Error fetching featured products:', error);
+        setFeaturedProducts([]);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
 
   // Initialize animations on mount
   useEffect(() => {
@@ -295,9 +319,19 @@ export default function HomePage() {
         }}
       >
         <Section title="Featured Products" subtitle="Bestsellers this month">
-          <div className="stagger-children">
-            <ProductGrid products={mockProducts} columns={4} />
-          </div>
+          {isLoadingProducts ? (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ color: 'var(--charcoal-60)' }}>Loading featured products...</p>
+            </div>
+          ) : featuredProducts.length > 0 ? (
+            <div className="stagger-children">
+              <ProductGrid products={featuredProducts} columns={4} />
+            </div>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ color: 'var(--charcoal-60)' }}>No products available</p>
+            </div>
+          )}
         </Section>
       </div>
 

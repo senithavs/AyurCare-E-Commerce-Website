@@ -158,11 +158,13 @@ export default function ProductPage({ params }) {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [activeTab, setActiveTab] = useState('description');
+  const [activeTab, setActiveTab] = useState('benefits');
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [reviewForm, setReviewForm] = useState({
     rating: 5,
     title: '',
@@ -359,7 +361,7 @@ export default function ProductPage({ params }) {
           {/* Gallery */}
           <div>
             <div style={detailStyles.gallery}>
-              {product.product_image?.image_url ? (
+              {product.product_image?.image_url && !imageError ? (
                 <img
                   src={product.product_image.image_url}
                   alt={product.name}
@@ -367,14 +369,18 @@ export default function ProductPage({ params }) {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    display: imageLoaded ? 'block' : 'none',
                   }}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
+                  onLoad={() => setImageLoaded(true)}
+                  onError={() => {
+                    setImageError(true);
+                    setImageLoaded(false);
                   }}
                 />
-              ) : (
+              ) : null}
+              {!imageLoaded || imageError ? (
                 <span>🌿</span>
-              )}
+              ) : null}
             </div>
           </div>
           {/* Details */}
@@ -445,13 +451,19 @@ export default function ProductPage({ params }) {
             {/* Tab Content */}
             <div style={{ fontSize: '13px', color: 'var(--charcoal-60)', lineHeight: 1.8, marginTop: '16px' }}>
               {activeTab === 'benefits' && (
-                <ul style={{ paddingLeft: '20px' }}>
-                  {(product.product_benefits || []).map((benefit, idx) => (
-                    <li key={idx} style={{ marginBottom: '8px' }}>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
+                <>
+                  {(product.product_benefits || []).length > 0 ? (
+                    <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                      {product.product_benefits.map((benefit, idx) => (
+                        <li key={idx} style={{ marginBottom: '8px' }}>
+                          {benefit}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p style={{ color: 'var(--charcoal-60)' }}>No benefits information available.</p>
+                  )}
+                </>
               )}
             </div>
           </div>
