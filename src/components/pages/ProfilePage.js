@@ -277,19 +277,26 @@ export default function ProfilePage() {
   }
 
   const pageContent = (
-    <div style={profileStyles.container}>
-      <div style={profileStyles.header}>
-        <h1 style={profileStyles.title}>My Profile</h1>
-        <Button
-          variant={isEditing ? 'outline' : 'primary'}
-          onClick={() => setIsEditing(!isEditing)}
-        >
-          {isEditing ? 'Cancel' : 'Edit Profile'}
-        </Button>
+    <div style={{
+      ...profileStyles.container,
+      position: 'relative',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '40px',
+        right: '40px',
+      }}>
+        <h1 style={{
+          ...profileStyles.title,
+          margin: 0,
+          fontSize: '24px',
+        }}>
+          My Profile
+        </h1>
       </div>
 
       {showSuccess && (
-        <div style={{ ...profileStyles.card, marginBottom: '24px' }}>
+        <div style={{ ...profileStyles.card, marginBottom: '24px', marginTop: '80px' }}>
           <div style={profileStyles.successMessage}>
             ✓ Profile updated successfully!
           </div>
@@ -299,7 +306,10 @@ export default function ProfilePage() {
       {!isEditing ? (
         <>
           {/* Profile Overview */}
-          <div style={profileStyles.card}>
+          <div style={{
+            ...profileStyles.card,
+            marginTop: showSuccess ? '0' : '80px',
+          }}>
             <div style={profileStyles.profileHeader}>
               <div style={profileStyles.avatar}>
                 {formData.name?.charAt(0).toUpperCase() || 'U'}
@@ -338,6 +348,15 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
+
+            <div style={{ marginTop: '32px', paddingTop: '32px', borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'var(--line)' }}>
+              <Button
+                variant={isEditing ? 'outline' : 'primary'}
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                {isEditing ? 'Cancel' : 'Edit Profile'}
+              </Button>
+            </div>
           </div>
 
           {/* Stats */}
@@ -361,7 +380,10 @@ export default function ProfilePage() {
         </>
       ) : (
         /* Edit Profile Form */
-        <div style={profileStyles.card}>
+        <div style={{
+          ...profileStyles.card,
+          marginTop: showSuccess ? '0' : '80px',
+        }}>
           <h3 style={profileStyles.sectionTitle}>✏️ Edit Your Information</h3>
           
           <div style={profileStyles.editForm}>

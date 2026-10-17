@@ -4,11 +4,9 @@ import { useState, useEffect } from 'react';
 import { Hero, Section } from '@/components/layout';
 import {
   ProductGrid,
-  CategoryGrid,
   FeatureGrid,
   PromoCard,
 } from '@/components/products';
-import { useAdmin } from '@/lib/AdminContext';
 
 // Animation styles
 const animationStyles = `
@@ -194,16 +192,13 @@ const mockFeatures = [
   },
   {
     icon: '🚚',
-    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/convenient_shopping_transparent.png', // Add your Supabase image URL here
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Fast-Tracked%20Island%20Delivery%20Crest.png', // Add your Supabase image URL here
     title: 'Convenient Shopping',
     description: 'Fast, tracked delivery across the island.',
   },
 ];
 
 export default function HomePage() {
-  const { categories } = useAdmin();
-  const displayCategories = categories && categories.length > 0 ? categories : getDefaultCategories();
-  
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   
@@ -299,21 +294,6 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Categories Section */}
-      <div
-        data-section="categories"
-        className={sectionsVisible.categories ? 'animate-fade-in-up' : 'opacity-0'}
-        style={{
-          animation: sectionsVisible.categories ? 'fadeInUp 0.6s ease-out' : 'none',
-        }}
-      >
-        <Section title="Shop by Category" subtitle={`${displayCategories.length} collections`}>
-          <div className="stagger-children">
-            <CategoryGrid categories={displayCategories} />
-          </div>
-        </Section>
-      </div>
-
       {/* Featured Products */}
       <div
         data-section="products"
@@ -372,16 +352,4 @@ export default function HomePage() {
       </div>
     </div>
   );
-}
-
-// Default categories fallback
-function getDefaultCategories() {
-  return [
-    { id: 1, icon: '🌱', name: 'Herbal Supplements' },
-    { id: 2, icon: '🧴', name: 'Ayurvedic Oils' },
-    { id: 3, icon: '✨', name: 'Natural Skincare' },
-    { id: 4, icon: '🍵', name: 'Organic Teas' },
-    { id: 5, icon: '🧼', name: 'Personal Care' },
-    { id: 6, icon: '🕉️', name: 'Wellness Kits' },
-  ];
 }

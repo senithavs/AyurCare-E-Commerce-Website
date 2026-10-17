@@ -196,11 +196,25 @@ export default function OrdersPage() {
   }
 
   const pageContent = (
-    <div style={ordersStyles.container}>
-      <div style={ordersStyles.header}>
-        <h1 style={ordersStyles.title}>My Orders</h1>
-        <p style={ordersStyles.subtitle}>Track and manage your orders</p>
+    <div style={{
+      ...ordersStyles.container,
+      position: 'relative',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '40px',
+        right: '40px',
+      }}>
+        <h1 style={{
+          ...ordersStyles.title,
+          margin: 0,
+          fontSize: '24px',
+        }}>
+          My Orders
+        </h1>
       </div>
+
+      <div style={{ marginTop: '80px' }}>
 
       {pageLoading ? (
         <div style={ordersStyles.card}>
@@ -298,6 +312,7 @@ export default function OrdersPage() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 

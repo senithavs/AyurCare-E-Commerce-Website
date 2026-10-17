@@ -248,11 +248,25 @@ export default function SettingsPage() {
   }
 
   const pageContent = (
-    <div style={settingsStyles.container}>
-      <div style={settingsStyles.header}>
-        <h1 style={settingsStyles.title}>Settings</h1>
-        <p style={settingsStyles.subtitle}>Manage your account preferences and security</p>
+    <div style={{
+      ...settingsStyles.container,
+      position: 'relative',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '40px',
+        right: '40px',
+      }}>
+        <h1 style={{
+          ...settingsStyles.title,
+          margin: 0,
+          fontSize: '24px',
+        }}>
+          Settings
+        </h1>
       </div>
+
+      <div style={{ marginTop: '80px' }}>
 
       {showSuccess && (
         <div style={settingsStyles.card}>
@@ -437,6 +451,7 @@ export default function SettingsPage() {
             Delete My Account
           </Button>
         </div>
+      </div>
       </div>
     </div>
   );
