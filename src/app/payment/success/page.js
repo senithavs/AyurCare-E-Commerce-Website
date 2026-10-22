@@ -152,6 +152,26 @@ function PaymentSuccessContent() {
             console.log('Order amount:', data.order?.amount, 'Type:', typeof data.order?.amount); // Debug log
             // The API returns { success, order, progressPercentage }
             setOrderData(data.order);
+
+            // Mark order as paid when user lands on success page
+            // (PayHere notify endpoint will also do this, but this ensures it happens immediately)
+            if (data.order && data.order.paymentStatus !== 'completed') {
+              try {
+                const updateResponse = await fetch(`/api/orders/${orderId}`, {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ paymentStatus: 'completed' }),
+                });
+                if (updateResponse.ok) {
+                  const updatedData = await updateResponse.json();
+                  console.log('✅ Order payment status updated to completed');
+                  setOrderData(updatedData.order);
+                }
+              } catch (updateErr) {
+                console.error('Error updating payment status:', updateErr);
+                // Don't fail - order is still created, payment will be confirmed via notify
+              }
+            }
           } else {
             console.error('❌ Response not ok'); // Debug log
             const responseText = await response.text();
@@ -202,17 +222,13 @@ function PaymentSuccessContent() {
                 </div>
 
                 <div style={successStyles.detailRow}>
-                  <span style={successStyles.detailLabel}>Order Date:</span>
-                  <span style={successStyles.detailValue}>
-                    {orderData.createdAt
-                      ? new Date(orderData.createdAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })
-                      : 'Just now'}
+                  <span style={successStyles.detailLabel}>Payment Status:</span>
+                  <span style={{
+                    ...successStyles.detailValue,
+                    fontWeight: 700,
+                    color: orderData.paymentStatus === 'completed' ? '#16a34a' : 'var(--charcoal-60)',
+                  }}>
+                    {orderData.paymentStatus === 'completed' ? '✓ Success' : orderData.paymentStatus || 'Processing'}
                   </span>
                 </div>
 
@@ -244,7 +260,7 @@ function PaymentSuccessContent() {
               <div style={successStyles.keyPoints}>
                 <div style={successStyles.keyPoint}>
                   <span style={successStyles.keyPointIcon}>📦</span>
-                  <span>Your order will be processed and shipped within 2-3 business days</span>
+                  <span>Your order will be processed and shipped within 5 business days</span>
                 </div>
                 <div style={successStyles.keyPoint}>
                   <span style={successStyles.keyPointIcon}>🚚</span>

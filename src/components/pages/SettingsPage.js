@@ -275,78 +275,10 @@ export default function SettingsPage() {
           </div>
         </div>
       )}
-
-      {/* Account Preferences */}
-      <div style={settingsStyles.card}>
-        <h2 style={settingsStyles.sectionTitle}>🔔 Notifications</h2>
-        
-        <div style={settingsStyles.settingItem}>
-          <div style={settingsStyles.settingInfo}>
-            <div style={settingsStyles.settingLabel}>Email Notifications</div>
-            <div style={settingsStyles.settingDescription}>
-              Receive notifications via email
-            </div>
-          </div>
-          <button
-            onClick={() => setEmailNotifications(!emailNotifications)}
-            style={{
-              ...settingsStyles.toggle,
-              ...(emailNotifications ? settingsStyles.toggleActive : {}),
-            }}
-          >
-            <div style={{
-              ...settingsStyles.toggleButton,
-              ...(emailNotifications ? settingsStyles.toggleButtonActive : {}),
-            }}></div>
-          </button>
-        </div>
-
-        <div style={settingsStyles.settingItem}>
-          <div style={settingsStyles.settingInfo}>
-            <div style={settingsStyles.settingLabel}>Order Updates</div>
-            <div style={settingsStyles.settingDescription}>
-              Get notified about order status changes
-            </div>
-          </div>
-          <button
-            onClick={() => setOrderUpdates(!orderUpdates)}
-            style={{
-              ...settingsStyles.toggle,
-              ...(orderUpdates ? settingsStyles.toggleActive : {}),
-            }}
-          >
-            <div style={{
-              ...settingsStyles.toggleButton,
-              ...(orderUpdates ? settingsStyles.toggleButtonActive : {}),
-            }}></div>
-          </button>
-        </div>
-
-        <div style={{ ...settingsStyles.settingItem, ...settingsStyles.settingItemLast }}>
-          <div style={settingsStyles.settingInfo}>
-            <div style={settingsStyles.settingLabel}>Promotions & Offers</div>
-            <div style={settingsStyles.settingDescription}>
-              Receive information about special offers
-            </div>
-          </div>
-          <button
-            onClick={() => setPromotions(!promotions)}
-            style={{
-              ...settingsStyles.toggle,
-              ...(promotions ? settingsStyles.toggleActive : {}),
-            }}
-          >
-            <div style={{
-              ...settingsStyles.toggleButton,
-              ...(promotions ? settingsStyles.toggleButtonActive : {}),
-            }}></div>
-          </button>
-        </div>
-      </div>
-
+   
       {/* Security Settings */}
       <div style={settingsStyles.card}>
-        <h2 style={settingsStyles.sectionTitle}>🔒 Security</h2>
+        <h2 style={settingsStyles.sectionTitle}>Change User Password</h2>
         
         <div style={settingsStyles.formGroup}>
           <label style={settingsStyles.label}>Current Password</label>
@@ -439,7 +371,7 @@ export default function SettingsPage() {
       {/* Danger Zone */}
       <div style={settingsStyles.card}>
         <div style={settingsStyles.dangerZone}>
-          <h3 style={settingsStyles.dangerTitle}>⚠️ Danger Zone</h3>
+          <h3 style={settingsStyles.dangerTitle}>⚠️ Delete Your Account</h3>
           <p style={settingsStyles.dangerText}>
             Once you delete your account, there is no going back. Please be certain.
           </p>

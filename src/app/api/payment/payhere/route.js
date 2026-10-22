@@ -203,6 +203,10 @@ export async function POST(request) {
     // ========================================
 
     try {
+      // Calculate expected delivery date (5 days from now)
+      const deliveryDate = new Date();
+      deliveryDate.setDate(deliveryDate.getDate() + 5); // Add 5 days
+
       const newOrder = new Order({
         orderId,
         userId: checkoutData.userId, // Store user ID if provided
@@ -224,6 +228,7 @@ export async function POST(request) {
         },
         status: 'pending',
         paymentStatus: 'pending',
+        expectedDelivery: deliveryDate,
         // Add initial progress timeline entry
         progressTimeline: [
           {

@@ -155,7 +155,6 @@ function PaymentCancelContent() {
   }, [orderId]);
 
   return (
-    <LayoutWrapper>
       <Section>
         <div style={cancelStyles.container}>
           {/* Cancel Icon & Title */}
@@ -294,6 +293,5 @@ function PaymentCancelContent() {
           </div>
         </div>
       </Section>
-    </LayoutWrapper>
   );
 }

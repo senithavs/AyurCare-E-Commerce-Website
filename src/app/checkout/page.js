@@ -293,6 +293,7 @@ export default function CheckoutPage() {
               formData={formData}
               cartItems={cartItems}
               orderTotal={total}
+              userId={user?.id}
               onError={setError}
               onSubmitting={setIsSubmitting}
             />

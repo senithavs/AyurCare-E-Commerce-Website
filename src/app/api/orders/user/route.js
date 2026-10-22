@@ -1,8 +1,6 @@
 /**
- * Get User Orders API
- * GET /api/orders/user
- * 
- * Retrieves all orders for a specific user
+ * User Orders API
+ * GET /api/orders/user - Get orders for the authenticated user
  */
 
 import dbConnect from '@/lib/mongodb';
@@ -17,51 +15,37 @@ export async function GET(request) {
 
     if (!userId) {
       return new Response(
-        JSON.stringify({ error: 'User ID is required' }),
+        JSON.stringify({
+          success: false,
+          error: 'User ID not provided',
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Get query parameters for filtering and sorting
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    const sort = searchParams.get('sort') || '-createdAt'; // default: newest first
-    const limit = parseInt(searchParams.get('limit') || '50');
-    const skip = parseInt(searchParams.get('skip') || '0');
+    console.log('📦 Fetching orders for user:', userId);
 
-    // Build filter
-    const filter = { userId };
-    if (status) {
-      filter.status = status;
-    }
+    // Fetch orders for this user
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 }).lean();
 
-    // Get total count
-    const total = await Order.countDocuments(filter);
-
-    // Fetch orders with pagination
-    const orders = await Order.find(filter)
-      .sort(sort)
-      .limit(limit)
-      .skip(skip)
-      .lean();
+    console.log(`Found ${orders.length} orders for user ${userId}`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        orders,
-        pagination: {
-          total,
-          limit,
-          skip,
-          pages: Math.ceil(total / limit),
-        },
+        orders: orders || [],
+        count: orders?.length || 0,
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Get user orders error:', error);
+    console.error('Get user orders error:', error?.message || error);
     return new Response(
-      JSON.stringify({ error: 'Failed to fetch orders' }),
+      JSON.stringify({
+        success: false,
+        error: 'Failed to fetch user orders',
+        message: error?.message || 'Unknown error',
+      }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

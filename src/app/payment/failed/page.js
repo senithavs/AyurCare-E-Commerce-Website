@@ -188,7 +188,6 @@ function PaymentFailedContent() {
   };
 
   return (
-    <LayoutWrapper>
       <Section>
         <div style={failedStyles.container}>
           {/* Failed Icon & Title */}
@@ -350,6 +349,5 @@ function PaymentFailedContent() {
           </div>
         </div>
       </Section>
-    </LayoutWrapper>
   );
 }

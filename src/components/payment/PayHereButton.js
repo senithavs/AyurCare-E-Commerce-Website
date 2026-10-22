@@ -22,6 +22,7 @@ export default function PayHereButton({
   formData,
   cartItems,
   orderTotal,
+  userId,
   onError,
   onSubmitting,
 }) {
@@ -59,7 +60,10 @@ export default function PayHereButton({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          checkoutData: formData,
+          checkoutData: {
+            ...formData,
+            userId: userId || 'guest', // Include userId in checkout data
+          },
           cartItems,
           orderTotal,
         }),

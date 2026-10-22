@@ -122,9 +122,6 @@ const ordersStyles = {
     gridTemplateColumns: '1fr 1fr 1fr',
     gap: '24px',
   },
-  detailField: {
-    fontSize: '13px',
-  },
   detailLabel: {
     color: 'var(--charcoal-60)',
     marginBottom: '4px',
@@ -282,28 +279,32 @@ export default function OrdersPage() {
                 <div style={ordersStyles.orderDetails}>
                   <div style={ordersStyles.detailField}>
                     <div style={ordersStyles.detailLabel}>Items Ordered</div>
-                    <div style={ordersStyles.detailValue}>{order.items || 1} item(s)</div>
+                    <div style={ordersStyles.detailValue}>
+                      {Array.isArray(order.items) ? order.items.length : 1} item(s)
+                    </div>
                   </div>
                   <div style={ordersStyles.detailField}>
                     <div style={ordersStyles.detailLabel}>Payment Status</div>
-                    <div style={ordersStyles.detailValue}>{order.paymentStatus || 'pending'}</div>
+                    <div style={{
+                      ...ordersStyles.statusBadge,
+                      ...(order.paymentStatus === 'completed' ? ordersStyles.statusDelivered : ordersStyles.statusPending),
+                    }}>
+                      {order.paymentStatus === 'completed' ? '✓ Success' : order.paymentStatus?.charAt(0).toUpperCase() + order.paymentStatus?.slice(1)}
+                    </div>
                   </div>
                   <div style={ordersStyles.detailField}>
-                    <div style={ordersStyles.detailLabel}>Tracking Number</div>
-                    <div style={ordersStyles.detailValue}>{order.tracking || 'Not available yet'}</div>
+                    <div style={ordersStyles.detailLabel}>Expected Delivery</div>
+                    <div style={ordersStyles.detailValue}>
+                      {order.expectedDelivery
+                        ? new Date(order.expectedDelivery).toLocaleDateString()
+                        : 'Calculating...'}
+                    </div>
                   </div>
-                  {order.shippingAddress && (
+                
+                  {order.customer?.address && (
                     <div style={{ ...ordersStyles.detailField, gridColumn: '1 / -1' }}>
                       <div style={ordersStyles.detailLabel}>Shipping Address</div>
-                      <div style={ordersStyles.detailValue}>{order.shippingAddress}</div>
-                    </div>
-                  )}
-                  {order.expectedDelivery && (
-                    <div style={{ ...ordersStyles.detailField, gridColumn: '1 / -1' }}>
-                      <div style={ordersStyles.detailLabel}>Expected Delivery</div>
-                      <div style={ordersStyles.detailValue}>
-                        {new Date(order.expectedDelivery).toLocaleDateString()}
-                      </div>
+                      <div style={ordersStyles.detailValue}>{order.customer.address}, Sri Lanka</div>
                     </div>
                   )}
                 </div>
