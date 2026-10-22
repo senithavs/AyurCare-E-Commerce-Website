@@ -12,23 +12,70 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: 'guest',
     },
-    items: {
+    // Array of ordered items
+    items: [
+      {
+        id: String,
+        product_id: String,
+        name: String,
+        quantity: {
+          type: Number,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    // Order pricing breakdown
+    subtotal: {
       type: Number,
-      default: 1,
+      required: true,
+    },
+    tax: {
+      type: Number,
+      required: true,
+    },
+    deliveryFee: {
+      type: Number,
+      required: true,
     },
     amount: {
       type: Number,
       required: true,
     },
+    total: {
+      type: Number,
+      required: true,
+    },
+    currency: {
+      type: String,
+      default: 'LKR',
+    },
+    // Customer details
+    customer: {
+      fullName: String,
+      firstName: String,
+      lastName: String,
+      email: String,
+      phone: String,
+      address: String,
+      city: String,
+      country: String,
+    },
+    // Order status
     status: {
       type: String,
-      enum: ['pending', 'processing', 'shipped', 'delivered'],
+      enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
       default: 'pending',
     },
-    date: {
-      type: Date,
-      default: Date.now,
+    paymentStatus: {
+      type: String,
+      enum: ['pending', 'completed', 'failed'],
+      default: 'pending',
     },
+    // Tracking and delivery
     tracking: {
       type: String,
       default: null,
@@ -37,19 +84,18 @@ const orderSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    customerName: {
-      type: String,
-      default: 'Customer',
-    },
-    shippingAddress: {
-      type: String,
-      default: '',
-    },
-    paymentStatus: {
-      type: String,
-      enum: ['pending', 'completed', 'failed'],
-      default: 'pending',
-    },
+    // Order timeline
+    progressTimeline: [
+      {
+        status: String,
+        description: String,
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+        notes: String,
+      },
+    ],
   },
   { timestamps: true }
 );

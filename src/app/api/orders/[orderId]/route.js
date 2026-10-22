@@ -14,25 +14,48 @@ import Order from '@/lib/models/Order';
  */
 export async function GET(request, { params }) {
   try {
+    console.log('📥 GET /api/orders/[orderId] called');
+    
+    // In Next.js 16+, params is a Promise and must be awaited
+    const { orderId } = await params;
+    console.log('Extracted orderId:', orderId, 'Type:', typeof orderId);
+    
     await dbConnect();
 
-    const { orderId } = params;
-
-    if (!orderId) {
+    if (!orderId || orderId.trim() === '') {
+      console.error('❌ orderId is missing or empty');
       return new Response(
-        JSON.stringify({ error: 'Order ID is required' }),
+        JSON.stringify({ 
+          error: 'Order ID is required',
+          received: orderId,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const order = await Order.findOne({ orderId }).populate('userId', 'username email name');
+    const trimmedOrderId = orderId.trim();
+    console.log('Searching for order with orderId:', trimmedOrderId);
+    
+    const order = await Order.findOne({ orderId: trimmedOrderId }).lean();
+    console.log('Database query result:', order ? 'Found' : 'Not found');
 
     if (!order) {
+      console.error('❌ Order not found in database for orderId:', trimmedOrderId);
+      // List all orders for debugging
+      const allOrders = await Order.find().select('orderId').limit(5).lean();
+      console.log('Sample orders in DB:', allOrders);
+      
       return new Response(
-        JSON.stringify({ error: 'Order not found' }),
+        JSON.stringify({ 
+          error: 'Order not found',
+          searchedFor: trimmedOrderId,
+          hint: 'Try refreshing the page or checking the order ID',
+        }),
         { status: 404, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('✅ Order found:', trimmedOrderId);
 
     // Calculate order progress percentage
     const statusProgression = ['pending', 'paid', 'processing', 'shipped', 'delivered'];
@@ -48,9 +71,12 @@ export async function GET(request, { params }) {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (err) {
-    console.error('Error fetching order:', err);
+    console.error('❌ Error in GET /api/orders:', err);
     return new Response(
-      JSON.stringify({ error: 'Failed to fetch order' }),
+      JSON.stringify({ 
+        error: 'Failed to fetch order',
+        message: err.message,
+      }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
@@ -64,7 +90,8 @@ export async function PATCH(request, { params }) {
   try {
     await dbConnect();
 
-    const { orderId } = params;
+    // In Next.js 16+, params is a Promise and must be awaited
+    const { orderId } = await params;
     const updates = await request.json();
 
     if (!orderId) {

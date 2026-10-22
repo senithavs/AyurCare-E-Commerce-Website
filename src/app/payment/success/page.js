@@ -10,7 +10,7 @@ import { useCart } from '@/lib/CartContext';
 const successStyles = {
   container: {
     maxWidth: '600px',
-    margin: '40px auto',
+    margin: '5px auto',
     textAlign: 'center',
   },
   successIcon: {
@@ -84,7 +84,7 @@ const successStyles = {
     textAlign: 'left',
     background: 'var(--sage-100)',
     borderRadius: 'var(--radius-m)',
-    padding: '20px',
+    padding: '10px',
     marginBottom: '20px',
   },
   keyPoint: {
@@ -122,32 +122,65 @@ function PaymentSuccessContent() {
   const { clearCart } = useCart();
   const [orderData, setOrderData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [cartCleared, setCartCleared] = useState(false);
+
+  console.log('PaymentSuccessContent mounted - orderId from URL:', orderId); // Debug log
 
   useEffect(() => {
-    if (orderId) {
+    console.log('useEffect running - orderId:', orderId, 'cartCleared:', cartCleared); // Debug log
+    console.log('orderId type:', typeof orderId, 'orderId === null:', orderId === null, 'orderId === undefined:', orderId === undefined); // Debug log
+    
+    if (orderId && !cartCleared) {
+      console.log('✅ Fetching order with ID:', orderId); // Debug log
       // Fetch order from database
       const fetchOrder = async () => {
         try {
-          const response = await fetch(`/api/orders/${orderId}`);
+          const url = `/api/orders/${orderId}`;
+          console.log('Making request to URL:', url); // Debug log
+          const response = await fetch(url);
+          console.log('✅ Response received - Status:', response.status); // Debug log
+          console.log('Response headers:', {
+            contentType: response.headers.get('content-type'),
+            contentLength: response.headers.get('content-length'),
+          });
+          
           if (response.ok) {
-            const order = await response.json();
-            setOrderData(order);
+            const data = await response.json();
+            console.log('✅ Order data received:', data); // Debug log
+            console.log('Order object:', data.order); // Debug log
+            console.log('Order total:', data.order?.total, 'Type:', typeof data.order?.total); // Debug log
+            console.log('Order amount:', data.order?.amount, 'Type:', typeof data.order?.amount); // Debug log
+            // The API returns { success, order, progressPercentage }
+            setOrderData(data.order);
+          } else {
+            console.error('❌ Response not ok'); // Debug log
+            const responseText = await response.text();
+            console.error('Response text:', responseText);
+            try {
+              const error = JSON.parse(responseText);
+              console.error('Parsed error:', error);
+            } catch (e) {
+              console.error('Could not parse response as JSON');
+            }
           }
         } catch (err) {
-          console.error('Failed to fetch order:', err);
+          console.error('❌ Exception caught:', err);
         } finally {
           setIsLoading(false);
         }
       };
 
       fetchOrder();
-      // Clear cart after successful payment
+      // Clear cart after successful payment (only once)
       clearCart();
+      setCartCleared(true);
+    } else if (!orderId) {
+      console.warn('⚠️ No orderId in URL params');
+      setIsLoading(false);
     }
-  }, [orderId, clearCart]);
+  }, [orderId, cartCleared, clearCart]);
 
   return (
-    <LayoutWrapper>
       <Section>
         <div style={successStyles.container}>
           {/* Success Icon & Title */}
@@ -156,12 +189,6 @@ function PaymentSuccessContent() {
           <p style={successStyles.successSubtitle}>
             Your payment has been processed successfully.
           </p>
-
-          {/* Info Box */}
-          <div style={successStyles.infoBox}>
-            <strong>Payment Status:</strong> The actual payment status will be validated via our secure
-            server-to-server notification from PayHere. Your order status will update shortly.
-          </div>
 
           {/* Order Details */}
           {isLoading ? (
@@ -172,31 +199,6 @@ function PaymentSuccessContent() {
                 <div style={successStyles.detailRow}>
                   <span style={successStyles.detailLabel}>Order ID:</span>
                   <span style={successStyles.detailValue}>{orderData.orderId}</span>
-                </div>
-
-                <div style={successStyles.detailRow}>
-                  <span style={successStyles.detailLabel}>Status:</span>
-                  <span
-                    style={{
-                      ...successStyles.detailValue,
-                      color: orderData.status === 'completed' ? '#4CAF50' : '#FF9800',
-                      fontWeight: 600,
-                    }}
-                  >
-                    {orderData.status === 'completed' ? 'Completed' : 'Pending'}
-                  </span>
-                </div>
-
-                <div style={successStyles.detailRow}>
-                  <span style={successStyles.detailLabel}>Payment Amount:</span>
-                  <span style={successStyles.detailValue}>
-                    Rs. {Math.round(orderData.total).toLocaleString()}
-                  </span>
-                </div>
-
-                <div style={successStyles.detailRow}>
-                  <span style={successStyles.detailLabel}>Currency:</span>
-                  <span style={successStyles.detailValue}>{orderData.currency}</span>
                 </div>
 
                 <div style={successStyles.detailRow}>
@@ -214,21 +216,9 @@ function PaymentSuccessContent() {
                   </span>
                 </div>
 
-                <div style={successStyles.detailRow}>
-                  <span style={successStyles.detailLabel}>Customer Email:</span>
-                  <span style={successStyles.detailValue}>{orderData.customer?.email}</span>
-                </div>
-
-                <div style={successStyles.detailRowLast}>
-                  <span style={successStyles.detailLabel}>Delivery Address:</span>
-                  <span style={successStyles.detailValue}>
-                    {orderData.customer?.address}, Sri Lanka
-                  </span>
-                </div>
-
                 {/* Items Summary */}
-                <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--line)' }}>
-                  <div style={successStyles.detailLabel} style={{ marginBottom: '12px' }}>
+                <div style={{ marginTop: '16px', paddingTop: '16px' }}>
+                  <div style={{ ...successStyles.detailLabel, marginBottom: '12px' }}>
                     Items:
                   </div>
                   {orderData.items?.map((item, index) => (
@@ -241,33 +231,17 @@ function PaymentSuccessContent() {
                   ))}
                 </div>
 
-                {/* Order Summary */}
+                {/* Order Total Only */}
                 <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--line)' }}>
-                  <div style={successStyles.detailRow}>
-                    <span style={successStyles.detailLabel}>Subtotal:</span>
-                    <span>Rs. {orderData.subtotal?.toLocaleString()}</span>
-                  </div>
-                  <div style={successStyles.detailRow}>
-                    <span style={successStyles.detailLabel}>Tax (10%):</span>
-                    <span>Rs. {orderData.tax?.toLocaleString()}</span>
-                  </div>
-                  <div style={successStyles.detailRow}>
-                    <span style={successStyles.detailLabel}>Delivery:</span>
-                    <span>Rs. {orderData.deliveryFee?.toLocaleString()}</span>
-                  </div>
                   <div style={successStyles.totalRow}>
                     <span>Total:</span>
-                    <span>Rs. {Math.round(orderData.total).toLocaleString()}</span>
+                    <span>Rs. {orderData.total ? Math.round(orderData.total).toLocaleString() : orderData.amount ? Math.round(orderData.amount).toLocaleString() : '0'}</span>
                   </div>
                 </div>
               </div>
 
               {/* Key Points */}
               <div style={successStyles.keyPoints}>
-                <div style={successStyles.keyPoint}>
-                  <span style={successStyles.keyPointIcon}>📧</span>
-                  <span>Confirmation email will be sent to {orderData.customer?.email}</span>
-                </div>
                 <div style={successStyles.keyPoint}>
                   <span style={successStyles.keyPointIcon}>📦</span>
                   <span>Your order will be processed and shipped within 2-3 business days</span>
@@ -278,10 +252,15 @@ function PaymentSuccessContent() {
                 </div>
               </div>
             </>
+          ) : isLoading ? (
+            <div style={successStyles.loadingMessage}>Loading order details...</div>
+          ) : !orderId ? (
+            <div style={successStyles.infoBox}>
+              <strong>⚠️ No Order ID:</strong> The payment system didn't return an order ID. Please check your email for payment confirmation or contact support.
+            </div>
           ) : (
             <div style={successStyles.infoBox}>
-              <strong>Order ID not found.</strong> If you just completed payment, your order details will appear
-              shortly.
+              <strong>Order ID not found:</strong> Order <code>{orderId}</code> is not yet in our system. If you just completed payment, your order details will appear shortly. Please refresh this page or check your email.
             </div>
           )}
 
@@ -300,7 +279,6 @@ function PaymentSuccessContent() {
           </div>
         </div>
       </Section>
-    </LayoutWrapper>
   );
 }
 

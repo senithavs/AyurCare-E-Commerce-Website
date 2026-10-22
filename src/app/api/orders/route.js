@@ -1,6 +1,7 @@
 /**
  * Orders API
  * GET /api/orders - Get all orders (with optional filters)
+ * GET /api/orders?debug=true - Get latest order (debug)
  */
 
 import dbConnect from '@/lib/mongodb';
@@ -15,6 +16,26 @@ export async function GET(request) {
     const status = searchParams.get('status');
     const limit = parseInt(searchParams.get('limit')) || 0;
     const skip = parseInt(searchParams.get('skip')) || 0;
+    const debug = searchParams.get('debug');
+
+    // Debug mode - show latest order
+    if (debug === 'true') {
+      console.log('🔍 DEBUG MODE: Fetching latest orders');
+      const latestOrders = await Order.find().sort({ createdAt: -1 }).limit(5).lean();
+      console.log('Latest orders in DB:', latestOrders.length, 'orders');
+      latestOrders.forEach((o, idx) => {
+        console.log(`  ${idx + 1}. orderId: ${o.orderId}, amount: ${o.amount}, status: ${o.status}`);
+      });
+      return new Response(
+        JSON.stringify({
+          success: true,
+          debug: true,
+          latestOrders,
+          total: latestOrders.length,
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Build filter object
     const filter = {};

@@ -25,29 +25,37 @@ function md5Hash(input) {
 /**
  * Generate PayHere payment hash for payment initialization
  * 
- * Hash is calculated as: md5(merchant_id + order_id + total_amount + merchant_secret)
+ * Hash is calculated as: md5(merchant_id + order_id + amount + currency + md5(merchant_secret))
  * 
  * According to PayHere documentation:
  * @see https://developers.payhere.lk/docs/payment-request
  * 
  * @param {string} merchantId - Your PayHere Merchant ID
  * @param {string} orderId - Unique order identifier
- * @param {number} totalAmount - Total amount to charge (in LKR, as integer)
+ * @param {number} totalAmount - Total amount to charge (in LKR, as number with 2 decimals)
+ * @param {string} currency - Currency code (e.g., 'LKR')
  * @param {string} merchantSecret - Your PayHere Merchant Secret (server-side only)
- * @returns {string} - Payment hash to send to PayHere
+ * @returns {string} - Payment hash to send to PayHere (uppercase)
  */
-export function generatePaymentHash(merchantId, orderId, totalAmount, merchantSecret) {
-  if (!merchantId || !orderId || !totalAmount || !merchantSecret) {
+export function generatePaymentHash(merchantId, orderId, totalAmount, currency, merchantSecret) {
+  if (!merchantId || !orderId || totalAmount === undefined || !currency || !merchantSecret) {
     throw new Error('Missing required parameters for hash generation');
   }
 
-  // PayHere requires the amount as an integer (no decimals)
-  const amount = Math.round(totalAmount);
+  // PayHere requires the amount as a string with exactly 2 decimals
+  const amount = typeof totalAmount === 'number' 
+    ? totalAmount.toFixed(2) 
+    : String(totalAmount);
   
-  // Hash format: md5(merchant_id + order_id + total_amount + merchant_secret)
-  const hashInput = `${merchantId}${orderId}${amount}${merchantSecret}`;
+  // Hash format: md5(merchant_id + order_id + amount + currency + md5(merchant_secret))
+  // Step 1: Hash the merchant secret
+  const hashedSecret = md5Hash(merchantSecret).toUpperCase();
   
-  return md5Hash(hashInput);
+  // Step 2: Create the hash string with all parameters
+  const hashString = `${merchantId}${orderId}${amount}${currency}${hashedSecret}`;
+  
+  // Step 3: Hash the complete string and return in uppercase
+  return md5Hash(hashString).toUpperCase();
 }
 
 /**

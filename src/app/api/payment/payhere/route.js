@@ -34,9 +34,11 @@ export async function POST(request) {
   try {
     // Connect to database
     await dbConnect();
+    console.log('✅ Database connected');
 
     // Parse request body
     const { checkoutData, cartItems } = await request.json();
+    console.log('📥 Received checkout request');
 
     // ========================================
     // 1. VALIDATION
@@ -45,6 +47,7 @@ export async function POST(request) {
     // Validate checkout data
     const { valid, errors } = validateCheckoutData(checkoutData);
     if (!valid) {
+      console.warn('❌ Checkout validation failed:', errors);
       return new Response(
         JSON.stringify({
           error: 'Invalid checkout data',
@@ -56,11 +59,14 @@ export async function POST(request) {
 
     // Validate cart items
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      console.warn('❌ Cart validation failed');
       return new Response(
         JSON.stringify({ error: 'Cart is empty' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('✅ Validation passed');
 
     // ========================================
     // 2. VERIFY PRODUCT PRICES (Server-side)
@@ -143,6 +149,7 @@ export async function POST(request) {
     // ========================================
 
     const orderId = generateOrderId();
+    console.log('📝 Generated orderId:', orderId);
 
     // ========================================
     // 6. GENERATE PAYHERE HASH
@@ -154,6 +161,7 @@ export async function POST(request) {
         merchantId,
         orderId,
         total,
+        currency,
         merchantSecret
       );
     } catch (err) {
@@ -202,7 +210,8 @@ export async function POST(request) {
         subtotal,
         tax,
         deliveryFee,
-        total,
+        amount: total, // Set the amount field
+        total: total, // Set the total field
         currency,
         customer: {
           fullName: checkoutData.fullName,
@@ -227,12 +236,18 @@ export async function POST(request) {
       });
 
       const savedOrder = await newOrder.save();
-      console.log('Order saved to database:', {
+      console.log('✅ Order saved to database:', {
         orderId: savedOrder.orderId,
         userId: savedOrder.userId,
+        _id: savedOrder._id,
+        amount: savedOrder.amount,
       });
     } catch (err) {
-      console.error('Failed to store order in database:', err);
+      console.error('❌ Failed to store order in database:', {
+        error: err.message,
+        orderId: orderId,
+        validationErrors: err.errors,
+      });
       // Continue anyway - payment can still be processed
     }
 
