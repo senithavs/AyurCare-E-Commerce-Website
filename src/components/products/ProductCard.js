@@ -1,0 +1,225 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button, Badge } from '@/components/ui';
+
+const productCardStyles = {
+  card: {
+    border: '1px solid var(--line)',
+    borderRadius: 'var(--radius-m)',
+    overflow: 'hidden',
+    background: '#fff',
+    position: 'relative',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer',
+  },
+  cardHover: {
+    boxShadow: 'var(--shadow)',
+    transform: 'translateY(-4px)',
+  },
+  photo: {
+    height: '150px',
+    position: 'relative',
+    background: 'linear-gradient(135deg,#DCE9DC,#B9CBB6)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '34px',
+    overflow: 'hidden',
+  },
+  wishlistDot: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    background: '#fff',
+    border: 'none',
+    fontSize: '20px',
+    cursor: 'pointer',
+    zIndex: 10,
+    transition: 'all 0.3s ease',
+    padding: '6px',
+    color: 'var(--charcoal-60)',
+    borderRadius: '50px',
+    width: '32px',
+    height: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 2px 6px rgba(0,0,0,.12)',
+  },
+  wishlistDotActive: {
+    color: 'var(--danger)',
+  },
+  discountTag: {
+    position: 'absolute',
+    top: '10px',
+    left: '10px',
+  },
+  body: {
+    padding: '14px',
+  },
+  category: {
+    fontSize: '10px',
+    textTransform: 'uppercase',
+    color: 'var(--sage)',
+    fontWeight: 700,
+    letterSpacing: '0.05em',
+  },
+  name: {
+    fontSize: '13.5px',
+    fontWeight: 600,
+    color: 'var(--green-900)',
+    margin: '5px 0 4px',
+  },
+  stars: {
+    color: 'var(--gold)',
+    fontSize: '11px',
+  },
+  priceRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    margin: '8px 0 12px',
+  },
+  price: {
+    fontWeight: 700,
+    fontSize: '14px',
+    color: 'var(--green-900)',
+  },
+  oldPrice: {
+    fontSize: '11.5px',
+    color: 'var(--charcoal-60)',
+    textDecoration: 'line-through',
+  },
+};
+
+export default function ProductCard({
+  _id,
+  id,
+  product_id,
+  image = '🌿',
+  product_image = null,
+  category = 'Supplements',
+  name = 'Product Name',
+  name_en = 'Product Name',
+  rating = 4.5,
+  reviewCount = 0,
+  price = 0,
+  oldPrice,
+  discount,
+  inStock = true,
+  onAddToCart,
+  onWishlistToggle,
+  isWishlisted = false,
+  slug = 'product',
+  ...otherProps
+}) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const handleCardHover = (e, isEnter) => {
+    if (isEnter) {
+      e.currentTarget.style.boxShadow = 'var(--shadow)';
+      e.currentTarget.style.transform = 'translateY(-4px)';
+    } else {
+      e.currentTarget.style.boxShadow = 'none';
+      e.currentTarget.style.transform = 'none';
+    }
+  };
+
+  // Use product_id for database products, fallback to slug for mock data
+  const productSlug = product_id || id || slug || 'product';
+
+  return (
+    <Link href={`/shop/${productSlug}`} style={{ textDecoration: 'none' }}>
+      <div
+        style={productCardStyles.card}
+        onMouseEnter={(e) => handleCardHover(e, true)}
+        onMouseLeave={(e) => handleCardHover(e, false)}
+      >
+        {/* Product Photo */}
+        <div style={productCardStyles.photo}>
+          {discount && (
+            <Badge variant="pending" style={productCardStyles.discountTag}>
+              {discount}
+            </Badge>
+          )}
+          <button
+            style={{
+              ...productCardStyles.wishlistDot,
+              ...(isWishlisted ? productCardStyles.wishlistDotActive : {}),
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const product = { _id, id, product_id, product_image, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
+              onWishlistToggle?.(product);
+            }}
+            aria-label="Toggle wishlist"
+          >
+            {isWishlisted ? '♥' : '♡'}
+          </button>
+          
+          {/* Display actual image if available, otherwise show emoji */}
+          {product_image?.image_url && !imageError ? (
+            <img
+              src={product_image.image_url}
+              alt={name}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: imageLoaded ? 'block' : 'none',
+              }}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setImageError(true);
+                setImageLoaded(false);
+              }}
+            />
+          ) : null}
+          
+          {/* Show emoji fallback if image not loaded or has error */}
+          {!imageLoaded || imageError ? (
+            <span>{image}</span>
+          ) : null}
+        </div>
+
+        {/* Product Info */}
+        <div style={productCardStyles.body}>
+          <div style={productCardStyles.category}>{category}</div>
+          <div style={productCardStyles.name}>{name}</div>
+
+          {/* Rating */}
+          <div style={productCardStyles.stars}>
+            ★★★★☆ {reviewCount > 0 && `(${reviewCount})`}
+          </div>
+
+          {/* Price */}
+          <div style={productCardStyles.priceRow}>
+            <span style={productCardStyles.price}>Rs. {price.toLocaleString()}</span>
+            {oldPrice && (
+              <span style={productCardStyles.oldPrice}>Rs. {oldPrice.toLocaleString()}</span>
+            )}
+          </div>
+
+          {/* Add to Cart Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            block
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const product = { _id, id, product_id, product_image, image, category, name, rating, reviewCount, price, oldPrice, discount, inStock, slug, ...otherProps };
+              onAddToCart?.(product);
+            }}
+            disabled={!inStock}
+          >
+            {inStock ? 'Add to Cart' : 'Out of Stock'}
+          </Button>
+        </div>
+      </div>
+    </Link>
+  );
+}

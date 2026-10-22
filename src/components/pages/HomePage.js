@@ -1,0 +1,355 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Hero, Section } from '@/components/layout';
+import {
+  ProductGrid,
+  FeatureGrid,
+  PromoCard,
+} from '@/components/products';
+
+// Animation styles
+const animationStyles = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideDownFade {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideUpFade {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zoomInFade {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes rotateInFade {
+    from {
+      opacity: 0;
+      transform: scale(0.85) rotateZ(-5deg);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) rotateZ(0deg);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-slide-down-fade {
+    animation: slideDownFade 0.8s ease-out forwards;
+  }
+
+  .animate-slide-up-fade {
+    animation: slideUpFade 0.8s ease-out forwards;
+  }
+
+  .animate-zoom-in-fade {
+    animation: zoomInFade 0.8s ease-out forwards;
+  }
+
+  .animate-rotate-in-fade {
+    animation: rotateInFade 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.5s ease-out forwards;
+  }
+
+  .stagger-children > * {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+`;
+
+const mockFeatures = [
+  {
+    icon: '🌿',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Authentic%20Ayurvedic%20Quality%20Emblem.png', // Add your Supabase image URL here
+    title: 'Authentic Products',
+    description: 'Sourced directly from certified Ayurvedic manufacturers.',
+  },
+  {
+    icon: '🍃',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Natural%20Ingredients%20Botanical%20Seal.png', // Add your Supabase image URL here
+    title: 'Natural Ingredients',
+    description: 'No synthetic fillers — plant-based formulations only.',
+  },
+  {
+    icon: '🛡️',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Trusted%20Quality%20Botanical%20Lab%20Emblem.png', // Add your Supabase image URL here
+    title: 'Trusted Quality',
+    description: 'Every batch tested for purity and potency.',
+  },
+  {
+    icon: '🚚',
+    imageUrl: 'https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Home%20page/Features/Fast-Tracked%20Island%20Delivery%20Crest.png', // Add your Supabase image URL here
+    title: 'Convenient Shopping',
+    description: 'Fast, tracked delivery across the island.',
+  },
+];
+
+export default function HomePage() {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  
+  // Animation state
+  const [navVisible, setNavVisible] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(false);
+  const [sectionsVisible, setSectionsVisible] = useState({
+    categories: false,
+    products: false,
+    features: false,
+    promo: false,
+  });
+
+  // Fetch featured products from database
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        setIsLoadingProducts(true);
+        const response = await fetch('/api/products?limit=8');
+        const data = await response.json();
+        
+        if (data.success && Array.isArray(data.products)) {
+          setFeaturedProducts(data.products);
+        } else {
+          setFeaturedProducts([]);
+        }
+      } catch (error) {
+        console.error('Error fetching featured products:', error);
+        setFeaturedProducts([]);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
+
+  // Initialize animations on mount
+  useEffect(() => {
+    // Stagger navbar and hero animations
+    setNavVisible(true);
+    const heroTimer = setTimeout(() => setHeroVisible(true), 200);
+
+    return () => clearTimeout(heroTimer);
+  }, []);
+
+  // Scroll animation observer
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px',
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute('data-section');
+          setSectionsVisible((prev) => ({
+            ...prev,
+            [sectionId]: true,
+          }));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe section triggers
+    const sectionElements = document.querySelectorAll('[data-section]');
+    sectionElements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div>
+      <style>{animationStyles}</style>
+
+      {/* Hero Section */}
+      <div
+        className={heroVisible ? 'animate-slide-down-fade' : 'opacity-0'}
+        style={{
+          animation: heroVisible ? 'slideDownFade 0.8s ease-out' : 'none',
+        }}
+      >
+        <Hero
+          badge="100% Authentic Ayurveda"
+          title="Nature's Wisdom Delivered to Your Door."
+          description="AyurCare brings authentic Ayurvedic and herbal wellness products, oils, teas and skincare — sourced for purity and backed by tradition."
+          ctaButtons={[
+            { label: 'Shop Now', variant: 'gold' },
+            { label: 'Explore Categories', variant: 'green' },
+          ]}
+        />
+      </div>
+
+      {/* Featured Products */}
+      <div
+        data-section="products"
+        className={sectionsVisible.products ? 'animate-fade-in-up' : 'opacity-0'}
+        style={{
+          animation: sectionsVisible.products ? 'fadeInUp 0.6s ease-out' : 'none',
+        }}
+      >
+        <Section title="Featured Products" subtitle="Bestsellers this month">
+          {isLoadingProducts ? (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ color: 'var(--charcoal-60)' }}>Loading featured products...</p>
+            </div>
+          ) : featuredProducts.length > 0 ? (
+            <div className="stagger-children">
+              <ProductGrid products={featuredProducts} columns={4} />
+            </div>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ color: 'var(--charcoal-60)' }}>No products available</p>
+            </div>
+          )}
+        </Section>
+      </div>
+
+      {/* Features Section */}
+      <div
+        data-section="features"
+        className={sectionsVisible.features ? 'animate-fade-in-up' : 'opacity-0'}
+        style={{
+          animation: sectionsVisible.features ? 'fadeInUp 0.6s ease-out' : 'none',
+        }}
+      >
+        <Section title="Why Choose AyurCare">
+          <div className="stagger-children">
+            <FeatureGrid features={mockFeatures} />
+          </div>
+        </Section>
+      </div>
+
+      {/* Promo Banner */}
+      <div
+        data-section="promo"
+        className={sectionsVisible.promo ? 'animate-fade-in-up' : 'opacity-0'}
+        style={{
+          animation: sectionsVisible.promo ? 'fadeInUp 0.6s ease-out' : 'none',
+        }}
+      >
+        <Section>
+          <PromoCard
+            title="Immunity Season Bundle"
+            description="Save 20% on curated wellness kits — this week only."
+            buttonLabel="Shop Now"
+          />
+        </Section>
+      </div>
+    </div>
+  );
+}
