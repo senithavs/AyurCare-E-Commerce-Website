@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Hero, Section } from '@/components/layout';
 import {
   ProductGrid,
@@ -199,6 +200,7 @@ const mockFeatures = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   
@@ -211,6 +213,11 @@ export default function HomePage() {
     features: false,
     promo: false,
   });
+
+  // Handler for shop now button
+  const handleShopNow = () => {
+    router.push('/shop');
+  };
 
   // Fetch featured products from database
   useEffect(() => {
@@ -288,8 +295,8 @@ export default function HomePage() {
           title="Nature's Wisdom Delivered to Your Door."
           description="AyurCare brings authentic Ayurvedic and herbal wellness products, oils, teas and skincare — sourced for purity and backed by tradition."
           ctaButtons={[
-            { label: 'Shop Now', variant: 'gold' },
-            { label: 'Explore Categories', variant: 'green' },
+            { label: 'Shop Now', variant: 'gold', onClick: handleShopNow },
+            { label: 'Explore Categories', variant: 'green', onClick: handleShopNow },
           ]}
         />
       </div>
@@ -344,9 +351,10 @@ export default function HomePage() {
       >
         <Section>
           <PromoCard
-            title="Immunity Season Bundle"
-            description="Save 20% on curated wellness kits — this week only."
+            title="Get 10% Off All Products"
+            description="Take 10% off your entire order when you shop online."
             buttonLabel="Shop Now"
+            onButtonClick={handleShopNow}
           />
         </Section>
       </div>

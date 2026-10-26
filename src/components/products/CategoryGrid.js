@@ -17,10 +17,11 @@ export default function CategoryGrid({
     <div style={gridStyle} className={className} data-category-grid>
       {categories.map((category) => (
         <CategoryCard
-          key={category.id}
+          key={category._id || category.id}
           icon={category.icon}
+          image={category.image}
           name={category.name}
-          onClick={() => onCategoryClick?.(category.id)}
+          onClick={() => onCategoryClick?.(category._id || category.id)}
         />
       ))}
 
