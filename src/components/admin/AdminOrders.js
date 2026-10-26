@@ -359,7 +359,7 @@ export default function AdminOrders() {
                   </td>
                   <td style={ordersStyles.td}>{order.customerName}</td>
                   <td style={ordersStyles.td}>Rs. {order.amount.toLocaleString()}</td>
-                  <td style={ordersStyles.td}>{order.items}</td>
+                  <td style={ordersStyles.td}>{Array.isArray(order.items) ? order.items.length : 1}</td>
                   <td style={ordersStyles.td}>
                     <select
                       value={order.status}
@@ -419,7 +419,7 @@ export default function AdminOrders() {
 
               <div style={ordersStyles.detailField}>
                 <div style={ordersStyles.detailLabel}>Number of Items</div>
-                <div style={ordersStyles.detailValue}>{selectedOrder.items}</div>
+                <div style={ordersStyles.detailValue}>{Array.isArray(selectedOrder.items) ? selectedOrder.items.length : 1}</div>
               </div>
 
               <div style={ordersStyles.detailField}>

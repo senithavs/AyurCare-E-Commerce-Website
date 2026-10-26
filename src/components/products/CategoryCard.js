@@ -2,27 +2,42 @@
 
 const categoryCardStyles = {
   card: {
-    background: 'var(--beige-200)',
+    background: '#fff',
     borderRadius: 'var(--radius-m)',
-    padding: '20px 14px',
-    textAlign: 'center',
+    overflow: 'hidden',
     border: '1px solid var(--line)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
   },
-  icon: {
-    width: '48px',
-    height: '80px',
-    borderRadius: '50%',
+  imageContainer: {
+    width: '100%',
+    height: '140px',
     background: 'var(--sage-100)',
-    margin: '0 auto 12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '20px',
+    fontSize: '40px',
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '40px',
+  },
+  content: {
+    padding: '16px 12px',
+    textAlign: 'center',
   },
   name: {
-    fontSize: '12.5px',
+    fontSize: '14px',
     fontWeight: 600,
     color: 'var(--green-900)',
   },
@@ -30,6 +45,7 @@ const categoryCardStyles = {
 
 export default function CategoryCard({
   icon = '🌱',
+  image,
   name = 'Category',
   onClick,
 }) {
@@ -48,8 +64,16 @@ export default function CategoryCard({
       role="button"
       tabIndex={0}
     >
-      <div style={categoryCardStyles.icon}>{icon}</div>
-      <div style={categoryCardStyles.name}>{name}</div>
+      <div style={categoryCardStyles.imageContainer}>
+        {image ? (
+          <img src={image} alt={name} style={categoryCardStyles.image} />
+        ) : (
+          <div style={categoryCardStyles.icon}>{icon}</div>
+        )}
+      </div>
+      <div style={categoryCardStyles.content}>
+        <div style={categoryCardStyles.name}>{name}</div>
+      </div>
     </div>
   );
 }

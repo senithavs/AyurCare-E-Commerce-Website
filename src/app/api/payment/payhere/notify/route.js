@@ -31,6 +31,7 @@
 import { validateNotificationHash, updateTemporaryOrderStatus } from '@/lib/payment/payhere';
 import dbConnect from '@/lib/mongodb';
 import Order from '@/lib/models/Order';
+import Product from '@/lib/models/Product';
 
 export async function POST(request) {
   try {
@@ -242,11 +243,47 @@ export async function POST(request) {
         amount: payhere_amount,
       });
 
-      // In production, you would:
-      // - Update database order status to 'paid'
-      // - Decrement inventory
-      // - Send confirmation email
-      // - Trigger fulfillment process
+      // Update stock quantities for all items in the order
+      try {
+        if (order && order.items && Array.isArray(order.items)) {
+          for (const item of order.items) {
+            // Find product by product_id or id
+            const product = await Product.findOne({
+              $or: [
+                { product_id: item.product_id },
+                { _id: item._id || item.id },
+              ],
+            });
+
+            if (product) {
+              // Decrement stock by the quantity ordered
+              const newStock = Math.max(0, product.stock_quantity - item.quantity);
+              
+              await Product.updateOne(
+                { _id: product._id },
+                {
+                  stock_quantity: newStock,
+                  // Update availability status based on stock
+                  availability: newStock > 0 ? 'In Stock' : 'Out of Stock',
+                  inStock: newStock > 0,
+                }
+              );
+
+              console.log('✓ Stock updated:', {
+                product_id: item.product_id,
+                quantity_ordered: item.quantity,
+                old_stock: product.stock_quantity,
+                new_stock: newStock,
+              });
+            } else {
+              console.warn('⚠️ Product not found for stock update:', item.product_id);
+            }
+          }
+        }
+      } catch (stockErr) {
+        console.error('Error updating stock quantities:', stockErr);
+        // Don't fail the payment notification - stock update is secondary
+      }
     } else if (paymentStatus === 'failed') {
       console.log('✗ Payment failed:', {
         order_id,

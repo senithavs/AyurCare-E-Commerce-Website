@@ -13,16 +13,64 @@ export default function Contact() {
     message: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({ type: '', text: '' });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // Clear message when user starts typing
+    if (submitMessage.text) {
+      setSubmitMessage({ type: '', text: '' });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Contact form submitted:', formData);
-    alert('Thank you for contacting us! We will get back to you soon.');
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    
+    // Validate form
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setSubmitMessage({
+        type: 'error',
+        text: 'Please fill in all required fields.',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitMessage({ type: '', text: '' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitMessage({
+          type: 'success',
+          text: data.message,
+        });
+        // Clear form
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        setSubmitMessage({
+          type: 'error',
+          text: data.error || 'Failed to send message. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setSubmitMessage({
+        type: 'error',
+        text: 'An error occurred. Please try again later.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfoStyles = {
@@ -40,6 +88,35 @@ export default function Contact() {
       color: 'var(--charcoal-60)',
       margin: 0,
       lineHeight: 1.6,
+    },
+  };
+
+  const messageStyles = {
+    success: {
+      background: '#E8F5E9',
+      border: '1px solid #C8E6C9',
+      borderRadius: 'var(--radius-m)',
+      padding: '16px',
+      marginBottom: '20px',
+      color: '#2E7D32',
+      fontSize: '14px',
+      fontWeight: 500,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+    },
+    error: {
+      background: '#FFEBEE',
+      border: '1px solid #FFCDD2',
+      borderRadius: 'var(--radius-m)',
+      padding: '16px',
+      marginBottom: '20px',
+      color: '#C62828',
+      fontSize: '14px',
+      fontWeight: 500,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
     },
   };
 
@@ -84,19 +161,17 @@ export default function Contact() {
                 hello@ayurcare.lk
               </p>
             </div>
-
-            <div style={contactInfoStyles.section}>
-              <h4 style={contactInfoStyles.title}>🕐 Business Hours</h4>
-              <p style={contactInfoStyles.text}>
-                Monday - Friday: 9:00 AM - 6:00 PM<br />
-                Saturday: 10:00 AM - 4:00 PM<br />
-                Sunday: Closed
-              </p>
-            </div>
           </div>
 
           {/* Contact Form - Desktop Right */}
           <form onSubmit={handleSubmit} data-contact-form>
+            {submitMessage.text && (
+              <div style={messageStyles[submitMessage.type]}>
+                <span>{submitMessage.type === 'success' ? '✓' : '✕'}</span>
+                <span>{submitMessage.text}</span>
+              </div>
+            )}
+
             <FormField
               label="Full Name"
               name="name"
@@ -104,6 +179,7 @@ export default function Contact() {
               onChange={handleChange}
               placeholder="Your name"
               required
+              disabled={isSubmitting}
             />
             <FormField
               label="Email"
@@ -113,6 +189,7 @@ export default function Contact() {
               onChange={handleChange}
               placeholder="your@email.com"
               required
+              disabled={isSubmitting}
             />
             <FormField
               label="Phone"
@@ -121,6 +198,7 @@ export default function Contact() {
               value={formData.phone}
               onChange={handleChange}
               placeholder="+94 7X XXX XXXX"
+              disabled={isSubmitting}
             />
             <FormField
               label="Subject"
@@ -129,6 +207,7 @@ export default function Contact() {
               onChange={handleChange}
               placeholder="How can we help?"
               required
+              disabled={isSubmitting}
             />
             <FormField
               label="Message"
@@ -138,9 +217,15 @@ export default function Contact() {
               onChange={handleChange}
               placeholder="Your message..."
               required
+              disabled={isSubmitting}
             />
-            <Button type="submit" variant="primary" block>
-              Send Message
+            <Button 
+              type="submit" 
+              variant="primary" 
+              block
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </Button>
           </form>
         </div>

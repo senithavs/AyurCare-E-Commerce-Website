@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useAdmin } from '@/lib/AdminContext';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui';
 import '@/styles/admin-animations.css';
 
@@ -99,8 +99,70 @@ const dashboardStyles = {
 };
 
 export default function AdminDashboard() {
-  const { products, orders, calculateAnalytics } = useAdmin();
-  const analytics = calculateAnalytics();
+  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [analytics, setAnalytics] = useState({
+    totalProducts: 0,
+    totalOrders: 0,
+    totalRevenue: 0,
+    lowStockProducts: 0,
+    ordersByStatus: {
+      all: 0,
+      pending: 0,
+      processing: 0,
+      shipped: 0,
+      delivered: 0,
+    },
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      setIsLoading(true);
+
+      // Fetch orders
+      const ordersRes = await fetch('/api/orders');
+      const ordersData = await ordersRes.json();
+      const fetchedOrders = ordersData.orders || [];
+      setOrders(fetchedOrders);
+
+      // Fetch products
+      const productsRes = await fetch('/api/products');
+      const productsData = await productsRes.json();
+      const fetchedProducts = productsData.products || [];
+      setProducts(fetchedProducts);
+
+      // Calculate analytics
+      const totalProducts = fetchedProducts.length;
+      const totalOrders = fetchedOrders.length;
+      const totalRevenue = fetchedOrders.reduce((sum, order) => sum + (order.total || order.amount || 0), 0);
+      const lowStockProducts = fetchedProducts.filter((p) => (p.stock_quantity || 0) < 10).length;
+
+      const ordersByStatus = {
+        all: fetchedOrders.length,
+        pending: fetchedOrders.filter((o) => o.status === 'pending').length,
+        processing: fetchedOrders.filter((o) => o.status === 'processing').length,
+        shipped: fetchedOrders.filter((o) => o.status === 'shipped').length,
+        delivered: fetchedOrders.filter((o) => o.status === 'delivered').length,
+      };
+
+      setAnalytics({
+        totalProducts,
+        totalOrders,
+        totalRevenue,
+        lowStockProducts,
+        ordersByStatus,
+      });
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const getStatusStyle = (status) => {
     switch (status) {
@@ -167,60 +229,98 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <table style={dashboardStyles.table} className="admin-table">
-          <thead>
-            <tr>
-              <th style={dashboardStyles.th}>Order ID</th>
-              <th style={dashboardStyles.th}>Customer</th>
-              <th style={dashboardStyles.th}>Total</th>
-              <th style={dashboardStyles.th}>Status</th>
-              <th style={dashboardStyles.th}>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.slice(0, 5).map((order) => (
-              <tr key={order.id}>
-                <td style={dashboardStyles.td}>{order.id}</td>
-                <td style={dashboardStyles.td}>{order.customerName}</td>
-                <td style={dashboardStyles.td}>Rs. {order.total.toLocaleString()}</td>
-                <td style={dashboardStyles.td}>
-                  <span style={{ ...dashboardStyles.badge, ...getStatusStyle(order.status) }}>
-                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                  </span>
-                </td>
-                <td style={dashboardStyles.td}>
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </td>
+        {isLoading ? (
+          <div style={{ padding: '20px', textAlign: 'center', color: 'var(--charcoal-60)' }}>
+            Loading orders...
+          </div>
+        ) : orders.length === 0 ? (
+          <div style={{ padding: '20px', textAlign: 'center', color: 'var(--charcoal-60)' }}>
+            No orders yet
+          </div>
+        ) : (
+          <table style={dashboardStyles.table} className="admin-table">
+            <thead>
+              <tr>
+                <th style={dashboardStyles.th}>Order ID</th>
+                <th style={dashboardStyles.th}>Customer</th>
+                <th style={dashboardStyles.th}>Total</th>
+                <th style={dashboardStyles.th}>Status</th>
+                <th style={dashboardStyles.th}>Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.slice(0, 5).map((order) => (
+                <tr key={order._id || order.orderId}>
+                  <td style={dashboardStyles.td}>{order.orderId}</td>
+                  <td style={dashboardStyles.td}>{order.customer?.fullName || 'N/A'}</td>
+                  <td style={dashboardStyles.td}>Rs. {(order.total || order.amount || 0).toLocaleString()}</td>
+                  <td style={dashboardStyles.td}>
+                    <span style={{ ...dashboardStyles.badge, ...getStatusStyle(order.status) }}>
+                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                    </span>
+                  </td>
+                  <td style={dashboardStyles.td}>
+                    {new Date(order.createdAt || order.date).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Order Status Overview */}
       <div style={dashboardStyles.section} className="admin-section-card">
         <div style={dashboardStyles.sectionTitle}>Order Status Overview</div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
-          {Object.entries(analytics.ordersByStatus).map(([status, count]) => (
+        {isLoading ? (
+          <div style={{ padding: '20px', textAlign: 'center', color: 'var(--charcoal-60)' }}>
+            Loading analytics...
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
+            {/* All Orders - First */}
             <div
-              key={status}
+              key="all"
               style={{
-                padding: '16px',
-                background: 'var(--sage-100)',
+                padding: '20px',
+                background: 'linear-gradient(135deg, var(--green-700) 0%, var(--green-900) 100%)',
                 borderRadius: '8px',
                 textAlign: 'center',
+                border: '2px solid var(--green-900)',
+                boxShadow: '0 4px 12px rgba(106, 168, 79, 0.2)',
               }}
             >
-              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--green-700)', marginBottom: '4px' }}>
-                {count}
+              <div style={{ fontSize: '32px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>
+                {analytics.ordersByStatus.all}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--charcoal-60)', textTransform: 'capitalize' }}>
-                {status}
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.9)' }}>
+                All Orders
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Other statuses */}
+            {['pending', 'processing', 'shipped', 'delivered'].map((status) => (
+              <div
+                key={status}
+                style={{
+                  padding: '16px',
+                  background: 'var(--sage-100)',
+                  borderRadius: '8px',
+                  textAlign: 'center',
+                  border: '2px solid var(--green-200)',
+                }}
+              >
+                <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--green-700)', marginBottom: '8px' }}>
+                  {analytics.ordersByStatus[status]}
+                </div>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--charcoal-60)', textTransform: 'capitalize' }}>
+                  {status}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

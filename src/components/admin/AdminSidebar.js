@@ -71,6 +71,7 @@ const getMenuItems = (isSuperAdmin) => {
         { icon: '🏷️', label: 'Categories', href: '/admin/categories' },
         { icon: '📋', label: 'Orders', href: '/admin/orders' },
         { icon: '📈', label: 'Stock', href: '/admin/stock' },
+        { icon: '💬', label: 'Contact Requests', href: '/admin/contact' },
         { icon: '📊', label: 'Sales Analytics', href: '/admin/analytics' }
       ],
     },
