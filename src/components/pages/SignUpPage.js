@@ -230,6 +230,8 @@ export default function SignUpPage() {
           name: formData.name,
           username: formData.username,
           email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
           password: formData.password,
         }),
       });

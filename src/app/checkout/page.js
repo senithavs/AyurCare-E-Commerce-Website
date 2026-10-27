@@ -167,9 +167,10 @@ export default function CheckoutPage() {
     const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
     return sum + (price * quantity);
   }, 0);
-  const tax = Math.round(subtotal * 0.1); // 10% tax
+  const discount = Math.round(subtotal * 0.1); // 10% discount
+  const subtotalAfterDiscount = subtotal - discount;
   const deliveryFee = 350; // Fixed delivery fee
-  const total = subtotal + tax + deliveryFee;
+  const total = subtotalAfterDiscount + deliveryFee;
 
   return (
     <LayoutWrapper>
@@ -270,9 +271,9 @@ export default function CheckoutPage() {
                 <span>Rs. {Math.round(subtotal).toLocaleString()}</span>
               </div>
 
-              <div style={checkoutStyles.summaryRow}>
-                <span>Tax (10%):</span>
-                <span>Rs. {tax.toLocaleString()}</span>
+              <div style={{ ...checkoutStyles.summaryRow, color: '#16a34a', fontWeight: 600 }}>
+                <span>Discount (10%):</span>
+                <span>-Rs. {discount.toLocaleString()}</span>
               </div>
 
               <div style={checkoutStyles.summaryRow}>

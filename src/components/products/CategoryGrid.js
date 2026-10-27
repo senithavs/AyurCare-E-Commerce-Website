@@ -9,8 +9,8 @@ export default function CategoryGrid({
 }) {
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(6, 1fr)',
-    gap: '16px',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '20px',
   };
 
   return (
@@ -28,20 +28,20 @@ export default function CategoryGrid({
       <style>{`
         @media (max-width: 1024px) {
           [data-category-grid] {
-            grid-template-columns: repeat(4, 1fr) !important;
-            gap: 14px !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 18px !important;
           }
         }
         @media (max-width: 768px) {
           [data-category-grid] {
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 12px !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 14px !important;
           }
         }
         @media (max-width: 480px) {
           [data-category-grid] {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px !important;
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
           }
         }
       `}</style>

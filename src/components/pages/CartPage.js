@@ -153,9 +153,10 @@ export default function CartPage() {
     const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
     return sum + (price * quantity);
   }, 0);
-  const tax = Math.round(subtotal * 0.1); // 10% tax
+  const discount = Math.round(subtotal * 0.1); // 10% discount
+  const subtotalAfterDiscount = subtotal - discount;
   const shipping = 500; // Fixed shipping
-  const total = subtotal + tax + shipping;
+  const total = subtotalAfterDiscount + shipping;
 
   return (
 
@@ -205,7 +206,7 @@ export default function CartPage() {
                   <div style={cartStyles.productName}>{item.name}</div>
                   <div style={cartStyles.productCategory}>{item.category}</div>
                 </div>
-                <div style={cartStyles.price}>Rs. {item.price.toLocaleString()}</div>
+                <div style={cartStyles.price}>Rs. {(typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0).toLocaleString()}</div>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <QtyBox 
                     value={item.quantity} 
@@ -217,7 +218,7 @@ export default function CartPage() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={cartStyles.subtotal}>
-                    Rs. {(item.price * item.quantity).toLocaleString()}
+                    Rs. {Math.round((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)).toLocaleString()}
                   </div>
                   <button
                     style={cartStyles.removeBtn}
@@ -252,9 +253,9 @@ export default function CartPage() {
               <span>Rs. {subtotal.toLocaleString()}</span>
             </div>
 
-            <div style={cartStyles.summaryRow}>
-              <span>Tax (10%):</span>
-              <span>Rs. {Math.round(tax).toLocaleString()}</span>
+            <div style={{ ...cartStyles.summaryRow, color: '#16a34a', fontWeight: 600 }}>
+              <span>Discount (10%):</span>
+              <span>-Rs. {discount.toLocaleString()}</span>
             </div>
 
             <div style={cartStyles.summaryRow}>

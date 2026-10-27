@@ -79,12 +79,12 @@ export default function Contact() {
     },
     title: {
       color: 'var(--green-700)',
-      fontSize: '14px',
+      fontSize: '18px',
       margin: '0 0 8px',
       fontWeight: 600,
     },
     text: {
-      fontSize: '13px',
+      fontSize: '16px',
       color: 'var(--charcoal-60)',
       margin: 0,
       lineHeight: 1.6,
