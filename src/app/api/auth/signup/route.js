@@ -13,10 +13,10 @@ export async function POST(request) {
   try {
     await dbConnect();
 
-    const { username, email, password, name } = await request.json();
+    const { username, email, password, name, phone, address } = await request.json();
 
     // Validate required fields
-    if (!username || !email || !password || !name) {
+    if (!username || !email || !password || !name || !phone || !address) {
       return new Response(
         JSON.stringify({ error: 'All fields are required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -50,6 +50,8 @@ export async function POST(request) {
       email: email.toLowerCase(),
       password: await hashPassword(password), // Hash password before saving
       name,
+      phone,
+      address,
       role: 'customer',
       isActive: true,
     });
@@ -71,6 +73,8 @@ export async function POST(request) {
           username: newUser.username,
           email: newUser.email,
           name: newUser.name,
+          phone: newUser.phone,
+          address: newUser.address,
           role: newUser.role,
         },
       }),

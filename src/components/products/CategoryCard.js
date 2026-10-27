@@ -11,7 +11,7 @@ const categoryCardStyles = {
   },
   imageContainer: {
     width: '100%',
-    height: '140px',
+    height: '150px',
     background: 'var(--sage-100)',
     display: 'flex',
     alignItems: 'center',
@@ -33,11 +33,11 @@ const categoryCardStyles = {
     fontSize: '40px',
   },
   content: {
-    padding: '16px 12px',
+    padding: '20px 16px',
     textAlign: 'center',
   },
   name: {
-    fontSize: '14px',
+    fontSize: '16px',
     fontWeight: 600,
     color: 'var(--green-900)',
   },

@@ -241,7 +241,7 @@ function PaymentSuccessContent() {
                     <div key={index} style={{ ...successStyles.detailRow, borderBottom: 'none', paddingLeft: '12px' }}>
                       <span>{item.name}</span>
                       <span>
-                        x{item.quantity} @ Rs. {item.price.toLocaleString()}
+                        x{item.quantity} - Rs. {item.price.toLocaleString()}
                       </span>
                     </div>
                   ))}

@@ -414,16 +414,6 @@ export default function SignInPage() {
           </Button>
         </form>
 
-        <div style={signInStyles.divider}>
-          <div style={signInStyles.dividerLine}></div>
-          <span>OR</span>
-          <div style={signInStyles.dividerLine}></div>
-        </div>
-
-        <button style={signInStyles.socialButton}>
-          Continue with Google
-        </button>
-
         <div style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: 'var(--charcoal-60)' }}>
           Don't have an account?{' '}
           <Link href="/signup" style={{ color: 'var(--green-700)', textDecoration: 'none', fontWeight: 600 }}>
