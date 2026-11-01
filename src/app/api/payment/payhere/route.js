@@ -120,7 +120,18 @@ export async function POST(request) {
 
     const merchantId = process.env.PAYHERE_MERCHANT_ID;
     const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    
+    // Get app URL - use explicit env var, fallback to request origin for Vercel
+    let appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    
+    if (!appUrl && typeof request.headers.get === 'function') {
+      // Try to construct from request headers (works in Vercel)
+      const protocol = request.headers.get('x-forwarded-proto') || 'https';
+      const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
+      if (host) {
+        appUrl = `${protocol}://${host}`;
+      }
+    }
 
     if (!merchantId || !merchantSecret) {
       console.error('PayHere credentials not configured');
@@ -134,7 +145,7 @@ export async function POST(request) {
     }
 
     if (!appUrl) {
-      console.error('NEXT_PUBLIC_APP_URL not configured');
+      console.error('NEXT_PUBLIC_APP_URL not configured and cannot be derived from request');
       return new Response(
         JSON.stringify({
           error: 'Application configuration error',
@@ -143,6 +154,8 @@ export async function POST(request) {
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('📍 Using app URL:', appUrl);
 
     // ========================================
     // 5. GENERATE ORDER ID

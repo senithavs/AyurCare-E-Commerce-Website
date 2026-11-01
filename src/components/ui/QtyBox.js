@@ -9,15 +9,18 @@ export default function QtyBox({
   max,
   className = '',
 }) {
+  // Ensure value is always a valid number
+  const numValue = typeof value === 'number' && !isNaN(value) ? value : 1;
+
   const handleDecrement = () => {
-    if (value > min) {
-      onChange?.(value - 1);
+    if (numValue > min) {
+      onChange?.(numValue - 1);
     }
   };
 
   const handleIncrement = () => {
-    if (!max || value < max) {
-      onChange?.(value + 1);
+    if (!max || numValue < max) {
+      onChange?.(numValue + 1);
     }
   };
 
@@ -26,7 +29,7 @@ export default function QtyBox({
       <button className={styles.qtyButton} onClick={handleDecrement}>
         –
       </button>
-      <div className={styles.qtyValue}>{value}</div>
+      <div className={styles.qtyValue}>{numValue}</div>
       <button className={styles.qtyButton} onClick={handleIncrement}>
         +
       </button>
