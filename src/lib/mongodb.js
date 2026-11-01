@@ -2,10 +2,6 @@ import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error('Please define MONGODB_URI in .env.local');
-}
-
 let cached = global.mongoose;
 
 if (!cached) {
@@ -13,6 +9,11 @@ if (!cached) {
 }
 
 async function dbConnect() {
+  // Only check MONGODB_URI when actually connecting, not at module load time
+  if (!MONGODB_URI) {
+    throw new Error('Please define MONGODB_URI in .env.local');
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
