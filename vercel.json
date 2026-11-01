@@ -1,0 +1,81 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm ci",
+  "framework": "nextjs",
+  "nodeVersion": "20.x",
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "description": "Supabase project URL",
+      "required": true
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "description": "Supabase anonymous key",
+      "required": true
+    },
+    "MONGODB_URI": {
+      "description": "MongoDB connection string",
+      "required": true
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "description": "Supabase service role key for server-side operations",
+      "required": true
+    },
+    "NEXTAUTH_SECRET": {
+      "description": "Secret key for NextAuth (optional, for future auth enhancement)",
+      "required": false
+    }
+  },
+  "regions": ["iad1"],
+  "functions": {
+    "src/app/api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin/login",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/:path*",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
+}
