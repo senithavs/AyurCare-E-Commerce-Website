@@ -3,7 +3,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm ci",
   "framework": "nextjs",
-  "nodeVersion": "20.x",
   "env": {
     "NEXT_PUBLIC_SUPABASE_URL": {
       "description": "Supabase project URL",
@@ -32,10 +31,6 @@
     "PAYHERE_MERCHANT_SECRET": {
       "description": "PayHere merchant secret from your PayHere account",
       "required": true
-    },
-    "NEXTAUTH_SECRET": {
-      "description": "Secret key for NextAuth (optional, for future auth enhancement)",
-      "required": false
     }
   },
   "regions": ["iad1"],
