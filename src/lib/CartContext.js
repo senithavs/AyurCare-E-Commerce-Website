@@ -72,13 +72,13 @@ export function CartProvider({ children }) {
     setCartItems((prev) => {
       // Normalize product ID
       const productId = getProductId(product);
-      const cartProduct = { ...product, id: productId };
+      const cartProduct = { ...product, id: productId, quantity: parseInt(quantity) || 1 };
       
       const existingItem = prev.find((item) => getProductId(item) === productId);
       if (existingItem) {
         return prev.map((item) =>
           getProductId(item) === productId
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: (parseInt(item.quantity) || 1) + (parseInt(quantity) || 1) }
             : item
         );
       }
@@ -91,12 +91,13 @@ export function CartProvider({ children }) {
   };
 
   const updateQuantity = (productId, quantity) => {
-    if (quantity <= 0) {
+    const numQuantity = parseInt(quantity) || 1;
+    if (numQuantity <= 0) {
       removeFromCart(productId);
     } else {
       setCartItems((prev) =>
         prev.map((item) =>
-          getProductId(item) === productId ? { ...item, quantity } : item
+          getProductId(item) === productId ? { ...item, quantity: numQuantity } : item
         )
       );
     }
@@ -107,7 +108,7 @@ export function CartProvider({ children }) {
   };
 
   const cartCount = cartItems.length; // Number of unique products
-  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0); // Total items
+  const cartItemCount = cartItems.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0); // Total items
   const cartTotal = cartItems.reduce((sum, item) => {
     const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
     const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
