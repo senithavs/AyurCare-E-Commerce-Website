@@ -20,14 +20,14 @@ export default function Footer() {
 
         <div className={styles.footerSection}>
           <h5>Customer Service</h5>
-          <Link href="/shipping" className={styles.footerLink}>
-            Shipping Info
-          </Link>
-          <Link href="/returns" className={styles.footerLink}>
-            Return Policy
-          </Link>
           <Link href="/contact" className={styles.footerLink}>
             Contact Us
+          </Link>
+          <Link href="/about" className={styles.footerLink}>
+            About Us
+          </Link>
+          <Link href="/categories" className={styles.footerLink}>
+            Categories
           </Link>
         </div>
 
@@ -36,10 +36,10 @@ export default function Footer() {
           <Link href="/shop" className={styles.footerLink}>
             Shop All
           </Link>
-          <Link href="/about" className={styles.footerLink}>
-            About Us
+          <Link href="/cart" className={styles.footerLink}>
+            Shopping Cart
           </Link>
-          <Link href="/account" className={styles.footerLink}>
+          <Link href="/profile" className={styles.footerLink}>
             My Account
           </Link>
         </div>
@@ -55,12 +55,16 @@ export default function Footer() {
       <div className={styles.footerBottom}>
         <span>© {currentYear} AyurCare. All rights reserved.</span>
         <span>
-          <Link href="/privacy" style={{ color: 'inherit' }}>
-            Privacy Policy
+          <Link href="/" style={{ color: 'inherit' }}>
+            Home
           </Link>
           {' · '}
-          <Link href="/terms" style={{ color: 'inherit' }}>
-            Terms &amp; Conditions
+          <Link href="/contact" style={{ color: 'inherit' }}>
+            Contact
+          </Link>
+          {' · '}
+          <Link href="/shop" style={{ color: 'inherit' }}>
+            Shop
           </Link>
         </span>
       </div>
