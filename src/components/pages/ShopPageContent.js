@@ -6,6 +6,7 @@ import { Section } from '@/components/layout';
 import { ProductGrid, CategoryGrid } from '@/components/products';
 import { Chip, FormField, Pagination } from '@/components/ui';
 import { EmptyState } from '@/components/utility';
+import '@/styles/admin-animations.css';
 
 const shopStyles = {
   shopBody: {
@@ -363,8 +364,23 @@ export default function ShopPageContent() {
               )}
             </>
           ) : isLoading ? (
-            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-              <p style={{ color: 'var(--charcoal-60)' }}>Loading products...</p>
+            <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+              <div style={{ 
+                display: 'inline-block',
+                marginBottom: '24px'
+              }}>
+                <div style={{
+                  width: '50px',
+                  height: '50px',
+                  border: '4px solid var(--green-200)',
+                  borderTop: '4px solid var(--green-700)',
+                  borderRadius: '50%',
+                  animation: 'rotate 1s linear infinite'
+                }}></div>
+              </div>
+              <p style={{ color: 'var(--charcoal-60)', fontSize: '14px', fontWeight: 500 }}>
+                Loading products...
+              </p>
             </div>
           ) : (
             <EmptyState

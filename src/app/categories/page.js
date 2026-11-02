@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { LayoutWrapper, Section } from '@/components/layout';
 import { CategoryGrid } from '@/components/products';
+import '@/styles/admin-animations.css';
 
 export default function Categories() {
   const router = useRouter();
@@ -45,8 +46,23 @@ export default function Categories() {
     <LayoutWrapper>
       <Section title="Shop by Category" subtitle="Browse our collections">
         {isLoading ? (
-          <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--charcoal-60)' }}>
-            Loading categories...
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <div style={{ 
+              display: 'inline-block',
+              marginBottom: '24px'
+            }}>
+              <div style={{
+                width: '50px',
+                height: '50px',
+                border: '4px solid var(--green-200)',
+                borderTop: '4px solid var(--green-700)',
+                borderRadius: '50%',
+                animation: 'rotate 1s linear infinite'
+              }}></div>
+            </div>
+            <p style={{ color: 'var(--charcoal-60)', fontSize: '14px', fontWeight: 500 }}>
+              Loading categories...
+            </p>
           </div>
         ) : categories.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--charcoal-60)' }}>
