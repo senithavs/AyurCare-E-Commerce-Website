@@ -155,14 +155,6 @@ export default function AdminLoginPage() {
         <h1 style={loginStyles.title}>AyurCare Admin</h1>
         <p style={loginStyles.subtitle}>Sign in to your account</p>
 
-        <div style={loginStyles.demoNote}>
-          📝 Main Admin Credentials:
-          <br />
-          Email: admin@ayurcare.com
-          <br />
-          Password: Se@admin@123
-        </div>
-
         {errors.submit && (
           <div
             style={{
