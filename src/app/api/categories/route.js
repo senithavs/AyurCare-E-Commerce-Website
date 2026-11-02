@@ -9,16 +9,20 @@ export async function GET(request) {
     const search = searchParams.get('search');
 
     let filter = { isActive: true };
+    let query = Category.find(filter);
 
     if (search) {
+      // Use text search for better performance with regex
       filter = {
         ...filter,
-        name: { $regex: search, $options: 'i' },
+        $text: { $search: search },
       };
+      query = Category.find(filter);
     }
 
-    const categories = await Category.find(filter)
+    const categories = await query
       .sort({ createdAt: -1 })
+      .select('-__v')
       .lean();
 
     return Response.json({

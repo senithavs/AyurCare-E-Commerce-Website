@@ -36,8 +36,10 @@ export async function GET(request) {
       ];
     }
 
-    // Fetch products with filter
-    let query = Product.find(filter);
+    // Build query with optimizations
+    let query = Product.find(filter)
+      .select('-__v')
+      .sort({ createdAt: -1 });
 
     if (skip > 0) {
       query = query.skip(skip);
@@ -47,8 +49,11 @@ export async function GET(request) {
       query = query.limit(limit);
     }
 
-    const products = await query.sort({ createdAt: -1 }).lean();
-    const total = await Product.countDocuments(filter);
+    // Execute both queries in parallel for better performance
+    const [products, total] = await Promise.all([
+      query.lean(),
+      Product.countDocuments(filter),
+    ]);
 
     return new Response(
       JSON.stringify({
