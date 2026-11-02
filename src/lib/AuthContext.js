@@ -4,20 +4,44 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+// Session configuration
+const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [sessionToken, setSessionToken] = useState(null);
+  const [inactivityTimer, setInactivityTimer] = useState(null);
 
-  // Initialize auth state on mount
+  // Initialize auth state on mount and validate session
   useEffect(() => {
     const initializeAuth = () => {
       try {
         const currentUser = localStorage.getItem('currentUser');
-        if (currentUser) {
+        const userSession = localStorage.getItem('userSession');
+
+        if (currentUser && userSession) {
           const parsedUser = JSON.parse(currentUser);
-          setUser(parsedUser);
-          setIsAuthenticated(true);
+          const parsedSession = JSON.parse(userSession);
+
+          // Check if session is expired
+          const expiresAt = new Date(parsedSession.expiresAt);
+          if (expiresAt < new Date()) {
+            // Session expired, clear data
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('userSession');
+            setUser(null);
+            setIsAuthenticated(false);
+            setSessionToken(null);
+          } else {
+            // Session valid
+            setUser(parsedUser);
+            setSessionToken(parsedSession.sessionToken);
+            setIsAuthenticated(true);
+            setupInactivityTimer();
+          }
         }
       } catch (error) {
         console.error('Failed to initialize auth:', error);
@@ -27,7 +51,55 @@ export function AuthProvider({ children }) {
     };
 
     initializeAuth();
+
+    // Setup activity listener for inactivity timeout
+    const handleActivity = () => {
+      if (isAuthenticated) {
+        clearInactivityTimer();
+        setupInactivityTimer();
+      }
+    };
+
+    window.addEventListener('mousedown', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    window.addEventListener('scroll', handleActivity);
+    window.addEventListener('touchstart', handleActivity);
+
+    return () => {
+      window.removeEventListener('mousedown', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('scroll', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+    };
   }, []);
+
+  // Setup inactivity timer
+  const setupInactivityTimer = () => {
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer);
+    }
+
+    const timer = setTimeout(() => {
+      console.warn('Session inactive for 30 minutes, logging out...');
+      signOut();
+      window.location.href = '/signin?session=expired';
+    }, INACTIVITY_TIMEOUT);
+
+    setInactivityTimer(timer);
+  };
+
+  // Clear inactivity timer
+  const clearInactivityTimer = () => {
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer);
+      setInactivityTimer(null);
+    }
+  };
+
+  // Generate session token
+  const generateSessionToken = () => {
+    return 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  };
 
   // Sign up function
   const signUp = async (userData) => {
@@ -47,10 +119,30 @@ export function AuthProvider({ children }) {
         throw new Error(data.error || 'Sign up failed');
       }
 
-      // Save user to localStorage session
+      // Create session
+      const token = generateSessionToken();
+      const expiresAt = new Date();
+      expiresAt.setTime(expiresAt.getTime() + SESSION_TIMEOUT);
+
+      const sessionData = {
+        sessionToken: token,
+        userId: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        createdAt: new Date().toISOString(),
+        expiresAt: expiresAt.toISOString(),
+        lastActivity: new Date().toISOString(),
+        isActive: true,
+      };
+
+      // Save user and session to localStorage
       localStorage.setItem('currentUser', JSON.stringify(data.user));
+      localStorage.setItem('userSession', JSON.stringify(sessionData));
+      
       setUser(data.user);
+      setSessionToken(token);
       setIsAuthenticated(true);
+      setupInactivityTimer();
 
       return { success: true, user: data.user };
     } catch (error) {
@@ -78,15 +170,34 @@ export function AuthProvider({ children }) {
         throw new Error(data.error || 'Sign in failed');
       }
 
-      // Save user to localStorage session
+      // Create session
+      const token = generateSessionToken();
+      const expiresAt = new Date();
+      expiresAt.setTime(expiresAt.getTime() + SESSION_TIMEOUT);
+
+      const sessionData = {
+        sessionToken: token,
+        userId: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        createdAt: new Date().toISOString(),
+        expiresAt: expiresAt.toISOString(),
+        lastActivity: new Date().toISOString(),
+        isActive: true,
+      };
+
+      // Save user and session to localStorage
       localStorage.setItem('currentUser', JSON.stringify(data.user));
+      localStorage.setItem('userSession', JSON.stringify(sessionData));
 
       if (rememberMe) {
         localStorage.setItem('rememberMe', 'true');
       }
 
       setUser(data.user);
+      setSessionToken(token);
       setIsAuthenticated(true);
+      setupInactivityTimer();
 
       return { success: true, user: data.user };
     } catch (error) {
@@ -99,16 +210,22 @@ export function AuthProvider({ children }) {
   // Sign out function
   const signOut = () => {
     try {
+      clearInactivityTimer();
+
       // Clear user-specific cart and wishlist if they exist
       if (user?.id) {
         localStorage.removeItem(`ayurcare_cart_user_${user.id}`);
         localStorage.removeItem(`ayurcare_wishlist_user_${user.id}`);
       }
-      
+
       localStorage.removeItem('currentUser');
+      localStorage.removeItem('userSession');
       localStorage.removeItem('rememberMe');
+      
       setUser(null);
+      setSessionToken(null);
       setIsAuthenticated(false);
+      
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
@@ -271,6 +388,7 @@ export function AuthProvider({ children }) {
     user,
     isAuthenticated,
     isLoading,
+    sessionToken,
     signUp,
     signIn,
     signOut,
