@@ -21,7 +21,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      index: true,
     },
     category_si: {
       type: String,
@@ -87,10 +86,6 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// Create compound index for category + availability queries
-productSchema.index({ category: 1, availability: 1 });
-productSchema.index({ createdAt: -1 });
 
 // Prevent model recompilation
 let Product;

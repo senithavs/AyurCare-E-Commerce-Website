@@ -7,7 +7,6 @@ const categorySchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      index: true,
     },
     icon: {
       type: String,
@@ -26,7 +25,6 @@ const categorySchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
-      index: true,
     },
     createdAt: {
       type: Date,
@@ -40,9 +38,9 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Create indexes for optimal query performance
-categorySchema.index({ isActive: 1, createdAt: -1 });
-categorySchema.index({ name: 'text' });
+// Create indexes for better query performance
+categorySchema.index({ isActive: 1 });
+categorySchema.index({ name: 1, isActive: 1 });
 
 // Prevent model recompilation
 let Category;

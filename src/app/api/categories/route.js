@@ -9,27 +9,32 @@ export async function GET(request) {
     const search = searchParams.get('search');
 
     let filter = { isActive: true };
-    let query = Category.find(filter);
 
     if (search) {
-      // Use text search for better performance with regex
       filter = {
         ...filter,
-        $text: { $search: search },
+        name: { $regex: search, $options: 'i' },
       };
-      query = Category.find(filter);
     }
 
-    const categories = await query
+    const categories = await Category.find(filter)
       .sort({ createdAt: -1 })
-      .select('-__v')
       .lean();
 
-    return Response.json({
-      success: true,
-      categories,
-      count: categories.length,
-    });
+    // Add caching headers for better performance
+    return Response.json(
+      {
+        success: true,
+        categories,
+        count: categories.length,
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=300, stale-while-revalidate=3600', // 5 min cache
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   } catch (error) {
     console.error('Error fetching categories:', error);
     return Response.json(
@@ -52,15 +57,6 @@ export async function POST(request) {
       );
     }
 
-    // Check if category already exists
-    const existingCategory = await Category.findOne({ name });
-    if (existingCategory) {
-      return Response.json(
-        { success: false, error: 'Category already exists' },
-        { status: 400 }
-      );
-    }
-
     const category = new Category({
       name,
       icon: icon || '📦',
@@ -79,6 +75,15 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('Error creating category:', error);
+    
+    // Handle unique constraint violation
+    if (error.code === 11000) {
+      return Response.json(
+        { success: false, error: 'Category already exists' },
+        { status: 400 }
+      );
+    }
+
     return Response.json(
       { success: false, error: error.message || 'Failed to create category' },
       { status: 500 }
