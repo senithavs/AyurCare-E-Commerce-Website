@@ -21,19 +21,6 @@ export async function PUT(request) {
       );
     }
 
-    // Check if another category with same name exists
-    const existingCategory = await Category.findOne({
-      name,
-      _id: { $ne: id },
-    });
-
-    if (existingCategory) {
-      return Response.json(
-        { success: false, error: 'Category name already exists' },
-        { status: 400 }
-      );
-    }
-
     const updatedCategory = await Category.findByIdAndUpdate(
       id,
       {
@@ -60,6 +47,15 @@ export async function PUT(request) {
     });
   } catch (error) {
     console.error('Error updating category:', error);
+    
+    // Handle unique constraint violation on name
+    if (error.code === 11000 && error.keyPattern?.name) {
+      return Response.json(
+        { success: false, error: 'Category name already exists' },
+        { status: 400 }
+      );
+    }
+
     return Response.json(
       { success: false, error: error.message || 'Failed to update category' },
       { status: 500 }

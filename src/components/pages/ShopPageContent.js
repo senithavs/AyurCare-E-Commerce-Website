@@ -110,15 +110,19 @@ export default function ShopPageContent() {
       try {
         setIsLoading(true);
 
-        // Fetch products
-        const productsResponse = await fetch('/api/products');
-        
+        // Fetch products and categories in parallel for better performance
+        const [productsResponse, categoriesResponse] = await Promise.all([
+          fetch('/api/products'),
+          fetch('/api/categories'),
+        ]);
+
+        // Handle products response
         if (!productsResponse.ok) {
           const text = await productsResponse.text();
           console.error('Products API error response:', text);
           throw new Error(`Products API error: ${productsResponse.status}`);
         }
-        
+
         const contentType = productsResponse.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
           const text = await productsResponse.text();
@@ -126,7 +130,7 @@ export default function ShopPageContent() {
           console.error('Response text:', text.substring(0, 500));
           throw new Error(`Invalid content type: ${contentType}`);
         }
-        
+
         const productsData = await productsResponse.json();
 
         if (productsData.success && Array.isArray(productsData.products)) {
@@ -136,9 +140,7 @@ export default function ShopPageContent() {
           setProducts([]);
         }
 
-        // Fetch categories from database
-        const categoriesResponse = await fetch('/api/categories');
-        
+        // Handle categories response
         if (!categoriesResponse.ok) {
           console.error('Categories API error:', categoriesResponse.status);
           throw new Error(`Categories API error: ${categoriesResponse.status}`);
