@@ -2,18 +2,34 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAdminAuth } from '@/lib/AdminAuthContext';
 import { Button, FormField } from '@/components/ui';
 import Link from 'next/link';
+import '@/styles/admin-animations.css';
 
 const loginStyles = {
   container: {
     minHeight: '100vh',
+    backgroundImage: 'url(https://xrejvwbivhtfnblavofv.supabase.co/storage/v1/object/public/Images/Signin-Signup%20Image/reg.jpeg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(135deg, var(--green-50) 0%, var(--sage-100) 100%)',
     padding: '20px',
+  },
+  containerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0, 0, 0, 0.5)',
+    backdropFilter: 'blur(3px)',
+    zIndex: 1,
   },
   card: {
     background: '#fff',
@@ -21,41 +37,37 @@ const loginStyles = {
     padding: '40px',
     maxWidth: '400px',
     width: '100%',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
+    animation: 'scaleUp 0.5s ease-out',
+    position: 'relative',
+    zIndex: 10,
   },
   logo: {
-    fontSize: '32px',
-    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: '24px',
   },
-  title: {
-    fontSize: '24px',
-    fontWeight: 700,
-    color: 'var(--green-900)',
-    margin: '0 0 8px',
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: '13px',
-    color: 'var(--charcoal-60)',
+  header: {
     textAlign: 'center',
     marginBottom: '32px',
-    margin: '8px 0 32px',
+  },
+  title: {
+    fontSize: '28px',
+    fontWeight: 700,
+    color: 'var(--green-900)',
+    marginBottom: '8px',
+  },
+  subtitle: {
+    fontSize: '14px',
+    color: 'var(--charcoal-60)',
   },
   formGroup: {
-    marginBottom: '16px',
+    marginBottom: '24px',
+    animation: 'slideUp 0.6s ease-out backwards',
   },
   submitBtn: {
     marginTop: '24px',
-  },
-  demoNote: {
-    background: 'var(--sage-100)',
-    border: '1px solid var(--green-200)',
-    borderRadius: '8px',
-    padding: '12px',
-    marginBottom: '20px',
-    fontSize: '12px',
-    color: 'var(--green-700)',
   },
   link: {
     textAlign: 'center',
@@ -133,27 +145,48 @@ export default function AdminLoginPage() {
     return (
       <div
         style={{
+          minHeight: '100vh',
+          backgroundImage: 'url(/reg.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          position: 'relative',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, var(--green-50) 0%, var(--sage-100) 100%)',
         }}
       >
-        <div style={{ textAlign: 'center' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 1,
+          }}
+        ></div>
+        <div style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
           <div style={{ fontSize: '32px', marginBottom: '16px' }}>⏳</div>
-          <p style={{ color: 'var(--charcoal-60)', fontSize: '14px' }}>Redirecting to dashboard...</p>
+          <p style={{ color: '#fff', fontSize: '14px' }}>Redirecting to dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={loginStyles.container}>
+    <div style={loginStyles.container} className="auth-background-loading">
+      <div style={loginStyles.containerOverlay} className="auth-background-overlay"></div>
       <div style={loginStyles.card}>
-        <div style={loginStyles.logo}>🌿</div>
-        <h1 style={loginStyles.title}>AyurCare Admin</h1>
-        <p style={loginStyles.subtitle}>Sign in to your account</p>
+        <div style={loginStyles.logo}>
+          <Image src="/logo.png" alt="AyurCare" width={60} height={60} priority />
+        </div>
+        <div style={loginStyles.header}>
+          <h1 style={loginStyles.title}>AyurCare Admin</h1>
+          <p style={loginStyles.subtitle}>Sign in to your account</p>
+        </div>
 
         {errors.submit && (
           <div
