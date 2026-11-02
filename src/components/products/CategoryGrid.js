@@ -1,6 +1,7 @@
 'use client';
 
 import CategoryCard from './CategoryCard';
+import '@/styles/admin-animations.css';
 
 export default function CategoryGrid({
   categories = [],
@@ -15,14 +16,22 @@ export default function CategoryGrid({
 
   return (
     <div style={gridStyle} className={className} data-category-grid>
-      {categories.map((category) => (
-        <CategoryCard
+      {categories.map((category, index) => (
+        <div
           key={category._id || category.id}
-          icon={category.icon}
-          image={category.image}
-          name={category.name}
-          onClick={() => onCategoryClick?.(category._id || category.id)}
-        />
+          className="category-card-wrapper"
+          style={{
+            animation: 'slideUp 0.6s ease-out backwards',
+            animationDelay: `${index * 0.05}s`,
+          }}
+        >
+          <CategoryCard
+            icon={category.icon}
+            image={category.image}
+            name={category.name}
+            onClick={() => onCategoryClick?.(category._id || category.id)}
+          />
+        </div>
       ))}
 
       <style>{`

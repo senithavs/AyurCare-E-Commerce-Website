@@ -5,6 +5,7 @@ import ProductCard from './ProductCard';
 import { useCart } from '@/lib/CartContext';
 import { useWishlist } from '@/lib/WishlistContext';
 import { Toast } from '@/components/utility';
+import '@/styles/admin-animations.css';
 
 const gridStyles = {
   grid4: {
@@ -62,14 +63,22 @@ export default function ProductGrid({
     <>
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
       <div style={gridStyle} className={className} data-product-grid>
-        {products.map((product) => (
-          <ProductCard
+        {products.map((product, index) => (
+          <div
             key={product._id || product.id || product.product_id}
-            {...product}
-            onAddToCart={handleAddToCart}
-            onWishlistToggle={handleWishlistToggle}
-            isWishlisted={isInWishlist(product._id || product.id || product.product_id)}
-          />
+            className="product-card-wrapper"
+            style={{
+              animation: 'slideUp 0.6s ease-out backwards',
+              animationDelay: `${index * 0.05}s`,
+            }}
+          >
+            <ProductCard
+              {...product}
+              onAddToCart={handleAddToCart}
+              onWishlistToggle={handleWishlistToggle}
+              isWishlisted={isInWishlist(product._id || product.id || product.product_id)}
+            />
+          </div>
         ))}
       </div>
 
