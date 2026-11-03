@@ -223,12 +223,14 @@ export default function ShopPageContent() {
       case 'rating':
         return b.rating - a.rating;
       case 'newest':
-        // Newer products have higher IDs (based on product_id)
-        return b.id.localeCompare(a.id);
+        // Newer products have higher IDs (based on product_id or id or _id)
+        const aId = String(a.product_id || a.id || a._id || '');
+        const bId = String(b.product_id || b.id || b._id || '');
+        return bId.localeCompare(aId);
       case 'featured':
       default:
         // Featured: sort by rating and review count
-        return b.rating - a.rating || b.reviewCount - a.reviewCount;
+        return (b.rating || 0) - (a.rating || 0) || (b.reviewCount || 0) - (a.reviewCount || 0);
     }
   });
 
