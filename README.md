@@ -72,12 +72,6 @@ The footer provides three sections on every page: **Customer Service** (Contact 
 
 > Note: this README describes the publicly deployed site; the source repository it was built from is not part of this document.
 
-## Contact
-
-- **Address:** 123 Herbal Lane, Colombo 03, Sri Lanka
-- **Email:** [hello@ayurcare.lk](mailto:hello@ayurcare.lk)
-- **Phone:** +94 77 000 0000
-
 ## License
 
 © 2026 AyurCare. All rights reserved. This README is informational documentation for the AyurCare website and claims no ownership of the site or its content.
